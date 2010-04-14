@@ -1,0 +1,3 @@
+SNOR är den del i servern som tar emot en XML-fil från mobiltelefonen och skickar tillbaka en behandlad XML-fil samma telefon.
+
+SNOR is the part of the server that recives a XML file from the cell phone and then sends back a managed XML file to the same phone.
