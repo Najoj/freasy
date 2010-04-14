@@ -7,9 +7,9 @@
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.12
+ *  Version:  2010.04.14
  *  
- *  Beskrivning:  Kommer senare.
+ *  Beskrivning:  Server. Lyssnar på socket som server och startar ny tråd.
  *  
 \******************************************************************************/
 
@@ -67,11 +67,6 @@ class snor {
             try {
                 new snortHead(serverSocket.accept()).start();
             } catch(IOException e) {
-                /**
-                 * Denna kanske vi inte vill ha eftersom det blir väldigt mycket
-                 * utskrivet då eftersom den här oftast inte kommer göra någon-
-                 * ting alls
-                 */
                 System.err.println(new Date() + ": " + e);
             }
         }

@@ -7,7 +7,7 @@
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.12
+ *  Version:  2010.04.14
  *  
  *  Beskrivning:  Testar så att snor.java fungerar som den är menad att göra.
  *  
@@ -26,12 +26,12 @@ import java.net.UnknownHostException;
 public class snorTest {
     /**
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
-     *  XXX  Kom ihåg att ändra denna!  XXX
+     *  XXX  Kom ihåg att ändra dessa!  XXX
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
      */
     private static final int PORT = 8989;
     private static final String skicka = "snorTest.java";   //  :-O
-    private static final String taemot = "FIL";   //  :-O
+    private static final String taemot = "FIL";            //  :-O
     private static int fileLength, i;
     
     private static Socket socket = null;
@@ -45,7 +45,7 @@ public class snorTest {
      *  Main-metod.
      */
     public static void main(String args[]) {
-        /**
+        /***********************************************************************
          *  Ansluter till server.
          */
         try {
@@ -58,7 +58,7 @@ public class snorTest {
             System.exit(-1);
         }
         
-        /**
+        /***********************************************************************
          *  Skickar till server.
          */
         try {
@@ -84,7 +84,7 @@ public class snorTest {
             System.err.println(e);
             System.exit(-1);
         }
-        
+
         /**
          * Får en OutputStream av vår socket, och skickar byte[].
          */
@@ -97,15 +97,15 @@ public class snorTest {
             System.exit(-1);
         }
         
-        
-        /**
+        /***********************************************************************
          *  Tar emot från server.
          */
-        byteArray = new byte[1024*1024];
-        i = 0;
+        byteArray = new byte[1024^3];
         try {
             instream = socket.getInputStream();
-            while((byteArray[i] = (byte)instream.read()) > -1 && (++i) < fileLength) {}
+            i = 0;
+            while((byteArray[++i] = (byte) instream.read()) > -1 && i < fileLength) {
+            }
             instream.close();
         } catch(IOException e) {
             System.err.println(e);
@@ -128,7 +128,7 @@ public class snorTest {
             System.exit(-1);
         } 
 
-        /**
+        /***********************************************************************
          *  Stänger anslutning till server.
          */
         try {

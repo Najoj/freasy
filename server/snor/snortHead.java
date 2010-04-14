@@ -7,7 +7,7 @@
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.12
+ *  Version:  2010.04.14
  *  
  *  Beskrivning:  Kommer senare.
  *  
@@ -32,6 +32,7 @@ class snortHead extends Thread {
     private Socket clientSocket = null;
     private FileOutputStream fos = null;
     private InputStream instream = null;
+    private FileInputStream fis = null;
     
     /**
      * Filnamnet är på formatet "(sekunder sedan 01/01/1970)_(pseudoslumpat
@@ -44,7 +45,7 @@ class snortHead extends Thread {
     private File toSend;
     
     snortHead(Socket clientSocket) {
-    	super("snortHead");
+    	super();
         this.clientSocket = clientSocket;
         
         /**
@@ -59,8 +60,7 @@ class snortHead extends Thread {
          */
         recived.delete();
         toSend.delete();
-
-        // FIXME SOME KIND OF FAIL HERE
+        
         try {
             clientSocket.close();
         } catch(IOException e) {
@@ -81,7 +81,9 @@ class snortHead extends Thread {
         i = 0;
         try {
             instream = clientSocket.getInputStream();
-            while((byteArray[i] = (byte)instream.read()) > -1 && (++i) < fileLength) {}
+            while((byteArray[++i] = (byte) instream.read()) > -1 && i < fileLength) {
+            }
+            instream.close();
         } catch(IOException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
@@ -115,9 +117,9 @@ class snortHead extends Thread {
         fileLength = (int) toSend.length();
         i = 0;
         try {
-            instream = new FileInputStream(toSend);
-            while((byteArray[i] = (byte)instream.read()) > -1 && (++i) < fileLength) {}
-            instream.close();
+            fis = new FileInputStream(toSend);
+            while((byteArray[++i] = (byte)fis.read()) > -1 && i < fileLength) {}
+            fis.close();
         } catch(FileNotFoundException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
