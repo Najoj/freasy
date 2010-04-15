@@ -2,14 +2,16 @@
  *  
  *  Send aNd Only Recive THrEAD     (SNORTHEAD)
  *
- *  Skriven av Johan Öhlin, 2010.
+ *  Skriven av Johan Öhlin
  *             johanohl@kth.se
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.14
+ *  Version:  2010.04.16
  *  
- *  Beskrivning:  Kommer senare.
+ *  Beskrivning:  Trådklass som laddar ner XML-filen, skickar till en behandlare
+ *                som i sin tur skickar tillbaka en fil efter kommunikation med
+ *                server.
  *  
 \******************************************************************************/
 
@@ -25,42 +27,50 @@ import java.util.Date;
 import java.util.Random;
 
 class snortHead extends Thread {
-    private int fileLength = 1024^3;    // Förväntad maximal filstorlek på 1 MB.
-    private int i;
+    private static int fileLength;
+    private static int i;
     
-    private byte[] byteArray = null;
-    private Socket clientSocket = null;
-    private FileOutputStream fos = null;
-    private InputStream instream = null;
-    private FileInputStream fis = null;
+    private static byte[] byteArray = null;
+    private static Socket clientSocket = null;
+    
+    private static FileOutputStream fos = null;
+    private static InputStream is = null;
+    private static FileInputStream fis = null;
+    private static OutputStream os = null;
     
     /**
      * Filnamnet är på formatet "(sekunder sedan 01/01/1970)_(pseudoslumpat
      * hexadecimalt värde).xml". Gäller inte toSend, eventuellt. Det namnet
-     * bestämmer OlleXML.
+     * bestämmer Olle.
      */
-    private File recived = new File( new Date().getTime() + "_" +
+    private File received = new File( new Date().getTime() + "_" +
                             Integer.toHexString(new Random().nextInt()) +
                             ".xml");
-    private File toSend;
+    private File toSend = new File("SKICKA");
     
     snortHead(Socket clientSocket) {
-    	super();
+        super();
         this.clientSocket = clientSocket;
-        
+    }
+    
+    public void start() {    
         /**
          * Det viktigaste. Ta emot filen, skicka vidare filen och skicka
          * tillbaka filen.
          */
         receive();
-        //toSend = OlleXML.translator(recived);   // Något i den här stilen.
+        //toSend = OlleXML.translator(received, toSend);   // Något i den här stilen.
         send();
+        
         /**
          * Vi tar bort filerna när vi är klara.
          */
-        recived.delete();
+        received.delete();
         toSend.delete();
         
+        /**
+         * Försöker stänga socket.
+         */
         try {
             clientSocket.close();
         } catch(IOException e) {
@@ -74,32 +84,36 @@ class snortHead extends Thread {
      * Tar emot en fil.
      */
     private void receive() {
-        /**
-         * Vi använder InputStream för att ta emot en ström.
-         */
+        // Förväntad maximal filstorlek på 1 MB, vilket är generöst.
+        fileLength = 1024*1024*1024;
         byteArray = new byte[fileLength];
-        i = 0;
+        
+        /**
+         * Skapar InputStream för att hämta strömmen vi tar emot. Den sparas i
+         * byteArray.
+         */
         try {
-            instream = clientSocket.getInputStream();
-            while((byteArray[++i] = (byte) instream.read()) > -1 && i < fileLength) {
-            }
-            instream.close();
+            is = clientSocket.getInputStream();
+            i = 0;
+            while( (byteArray[i] = (byte) is.read()) != -1 )
+                i++;
+            is.close();
         } catch(IOException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
         }
-        
         /**
-         * Här har vi byte:arna i filen. Nu ska vi skriva den till filen, vilket
-         * görs med FileOutputStream.
+         * Skapar FileOutputStream för att skriva vår byteArray till fil.
          */
         try {
-            fos = new FileOutputStream(recived);
-            fos.write(byteArray, 0, i);
-            fos.close();
+            fos = new FileOutputStream(received);
         } catch(FileNotFoundException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
+        }
+        try {
+            fos.write(byteArray, 0, (i-1));
+            fos.close();
         } catch(IOException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
@@ -110,36 +124,35 @@ class snortHead extends Thread {
      * Skickar tillbaka en behandlad XML-fil
      */
     private void send() {
-        /**
-         * Gör en File till en byte[].
-         */
-        byteArray  = new byte[(int)toSend.length()];
+        // Filens storlek.
         fileLength = (int) toSend.length();
-        i = 0;
+        byteArray = new byte[fileLength];
+        /**
+         * Läser in filen som ska skickas med FileInputStream.
+         */
         try {
             fis = new FileInputStream(toSend);
-            while((byteArray[++i] = (byte)fis.read()) > -1 && i < fileLength) {}
-            fis.close();
         } catch(FileNotFoundException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
+        }
+        try {
+            fis.read(byteArray);
+            fis.close();
         } catch(IOException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
         }
-        
         /**
-         * Får en OutputStream av vår socket, och skickar byte[].
+         * Med en OutputStream skickar vi iväg vår fil på äventyr i stora världen.
          */
         try {
-            OutputStream os = clientSocket.getOutputStream();
+            os = clientSocket.getOutputStream();
             os.write(byteArray);
-            os.flush();
             os.close();
         } catch(IOException e) {
             System.err.println(new Date() + ": " + e);
             System.exit(-1);
-        }        
+        }
     }
-    
 }

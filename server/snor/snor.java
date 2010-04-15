@@ -2,14 +2,15 @@
  *  
  *  Send aNd Only Recive    (SNOR)
  *
- *  Skriven av Johan Öhlin, 2010.
+ *  Skriven av Johan Öhlin
  *             johanohl@kth.se
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.14
+ *  Version:  2010.04.16
  *  
- *  Beskrivning:  Server. Lyssnar på socket som server och startar ny tråd.
+ *  Beskrivning:  Server. Lyssnar på socket som server och startar ny tråd som
+ *                        tar hand om resten.
  *  
 \******************************************************************************/
 
@@ -18,24 +19,28 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Lyssnar på ServerSocket för att få enheter som kontaktar.
+ * Använder Javas ServerSocket-klass som lyssnas för att kunna ta emot en
+ * förfrågan som sedan vidarebefodras till trådklassen snortHead.java.
+ * @author  Johan Öhlin <johanohl@kth.se>
+ * @note    Byt port om du behöver.
  */
 class snor {
-    private static ServerSocket serverSocket;
-
-    /**
+    /*
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
      *  XXX  Kom ihåg att ändra denna!  XXX
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
      */
     private static final int PORT = 8989;
-    
+    private static ServerSocket serverSocket;    
     /**
-     * Huvudmetoden. Startar avlyssningen. Ska _inte_ ha någon indata.
+     * @author  Johan Öhlin <johanohl@kth.se>
+     * @brief   Startar avlyssningen.
+     * @param   <Ingenting>
+     * @return  <Ingenting>
      */
     public static void main(String args[]) {
         /**
-         * Kollar längden på indata. Ska vara noll.
+         * Längden av indata ska vara noll, annars antar vi att något är fel.
          */
         if(args.length != 0) {
             System.err.println(new Date() + ": För många argument (" +
@@ -65,7 +70,9 @@ class snor {
          */
         while(true) {
             try {
-                new snortHead(serverSocket.accept()).start();
+                System.out.print(new Date() + ": Väntar... ");
+                new Thread( new snortHead( serverSocket.accept() ) ).start();
+                System.out.println("Ny tråd skapad.");
             } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);
             }
