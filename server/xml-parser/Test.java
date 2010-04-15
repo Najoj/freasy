@@ -14,10 +14,11 @@ public class Test {
 		ParserConstants.Initialize();	// Körs en gång i början av programmet, är statisk.	
 		
 		File input = new File("/home/olle/workspace/MvkServer-XML/src/testrequest.xml");
+		File output = new File("/home/olle/workspace/MvkServer-XML/src/testanswer.xml");
 		
 		FileToParse parser = new FileToParse();		
-		File output = parser.parseFile( input );
-		
+		parser.parseFile( input, output );
+			
 		
 	}
 

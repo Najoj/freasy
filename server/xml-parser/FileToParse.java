@@ -8,32 +8,25 @@ public class FileToParse
 {
 	
 	/*
-	 * Constructor 
-	 * @author Olle Hassel
-	 */
-	public FileToParse()
-	{
-		
-	}
-
-	
-	/*
 	 * Inputs a File and recieves a File that answers according to the input.
 	 * 
 	 * @author Olle Hassel
 	 * @param an XML-file instanced as a File object
 	 * @return an XML-file answer to the request, or an exception-xml file if unable to parse
 	 */
-	public File parseFile( File XMLrequest )
+	public void parseFile( File XMLrequest, File XMLanswer )
 	{
 		Request request = new Request( XMLrequest );
 		
 		String SQLstatement = request.toSQL();
 		
-		System.out.println(request.toString());
-		System.out.println(request.toSQL());
+		Answer answer = new Answer();
 		
-		return null;
+		//System.out.println(request.toString());
+		//System.out.println(request.toSQL());		
+		//System.out.println( answer.toString() );
+		
+		answer.exportXML( XMLanswer );
 	}
 
 }

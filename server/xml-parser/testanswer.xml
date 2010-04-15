@@ -1,0 +1,18 @@
+<answer>
+<number_of_objects>3</number_of_objects>
+<offset>0</offset>
+<last_offset>3</last_offset>
+<list_length>4711</list_length>
+<pad element="0">
+<appName>Tetris</appName>
+<appId>4711</appId>
+</pad>
+<pad element="1">
+<appName>Space Invaders</appName>
+<appId>17</appId>
+</pad>
+<pad element="2">
+<appName>Hello Kitty Offline</appName>
+<appId>666</appId>
+</pad>
+</answer>
