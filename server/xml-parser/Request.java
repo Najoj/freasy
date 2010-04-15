@@ -113,7 +113,7 @@ public class Request // implements InterfaceRequest
 			    {
 			       element = (Element) root.item(i);
 			       
-			       Iterator<String> iter = Constants.attributesIterator();
+			       Iterator<String> iter = ParserConstants.attributesIterator();
 			       String attributeTag;
 			       
 					while ( iter.hasNext() )
@@ -298,7 +298,7 @@ public class Request // implements InterfaceRequest
 		sb.append("FROM");
 		sb.append(" ");
 		
-		sb.append( Constants.getPadTableName() );
+		sb.append( ParserConstants.getPadTableName() );
 		
 		if ( matching )
 		{
