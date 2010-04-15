@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 
 
-public class Constants 
+public class ParserConstants 
 {
 
 	private static HashSet<String> AllowedAttributes;

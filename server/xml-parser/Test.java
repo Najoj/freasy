@@ -8,12 +8,16 @@ public class Test {
 	 */
 	public static void main(String[] args) 
 	{
+		
 		// TODO Auto-generated method stub
 
-		Constants.Initialize();
-		Request request = new Request(new File("/home/olle/workspace/MvkServer-XML/src/testrequest.xml") );
-		System.out.println(request.toString());
-		System.out.println(request.toSQL());
+		ParserConstants.Initialize();	// Körs en gång i början av programmet, är statisk.	
+		
+		File input = new File("/home/olle/workspace/MvkServer-XML/src/testrequest.xml");
+		
+		FileToParse parser = new FileToParse();		
+		File output = parser.parseFile( input );
+		
 		
 	}
 
