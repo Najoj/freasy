@@ -28,6 +28,8 @@ public class FileToParse
 	{
 		Request request = new Request( XMLrequest );
 		
+		String SQLstatement = request.toSQL();
+		
 		System.out.println(request.toString());
 		System.out.println(request.toSQL());
 		
