@@ -17,14 +17,6 @@ public class XMLNotAttributeException extends XMLParseException
 		  this.WhatValue = WhatValue;
 	  }
 	  
-	  public XMLNotAttributeException(String WhichTag, String WhichAttribute, String WhatValue)
-	  {
-		  super("The attribute '"+ WhatValue+"' inside tag <"+WhichAttribute+"> at tag <" + WhichTag+"> is not a legal attribute according to spec."+
-				  "\n Must be one of the following:\n\n"+ParserConstants.listAllowedAttributes(), WhichTag);
-		  this.WhichAttribute = WhichAttribute;
-		  this.WhatValue = WhatValue;
-	  }
-	  
 	  public String getWhichAttribute()
 	  {
 		  return WhichAttribute;
