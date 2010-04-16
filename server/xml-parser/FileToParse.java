@@ -1,4 +1,7 @@
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.xml.sax.SAXParseException;
 
@@ -20,41 +23,54 @@ public class FileToParse
 	{
 		Request request = new Request( XMLrequest );
 		
+		String answerFile = null;
+		
 		try
 		{
 			request.parseXML();
-		}
-		catch ( XMLAttributeException e )
-		{
-			// Anropa exception-klassen som parsar exception-xml-filen!
 			
-			System.out.println("XMLAttributeParseException! \n\n"+e.getMessage()+"\n\n"+e.getWhichTag() + " -> "+ e.getWhichAttribute() + " = " +e.getWhatValue());
+			//System.out.println(request.toString());
+			//System.out.println(request.toSQL());	
+			
+			Answer answer = new Answer();
+			answerFile = answer.exportXML();
+			
+			//System.out.println( answer.toString() );
+			
 		}
 		catch ( XMLParseException e )
 		{
-			System.out.println(e.getMessage()+"\n"+e.getWhichTag());
+			ExceptionParser error = new ExceptionParser();
+			answerFile = error.parseException( XMLanswer, e );
 		}
 		catch ( SAXParseException e )
 		{
-			System.out.println(e.getMessage());
+			ExceptionParser error = new ExceptionParser();
+			answerFile = error.parseException( XMLanswer, e );	
 		}
 		catch ( Exception e )
 		{
 			
 		}
 		
-		System.out.println(request.toString());
-		//System.out.println(request.toSQL());		
-		
-		
-		//String SQLstatement = request.toSQL();
-		
-		//Answer answer = new Answer();
-		
+		//printStringToFile( XMLanswer, answerFile );
+		System.out.println( answerFile );
 
-		//System.out.println( answer.toString() );
-		
-		//answer.exportXML( XMLanswer );
+	}
+	
+	private void printStringToFile( File XMLfile, String s )
+	{
+        try 
+        {
+        	BufferedOutputStream outputFile = new BufferedOutputStream( new FileOutputStream( XMLfile ) );
+        	// Print string
+            outputFile.write( s.getBytes() );
+            outputFile.flush();
+        }
+        catch (IOException e)  
+        {
+        	// Exception!
+        }
 	}
 
 }

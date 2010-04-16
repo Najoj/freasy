@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 
 import org.w3c.dom.*;
@@ -54,7 +50,7 @@ public class Answer
 		return element;
 	}
 	
-	public void exportXML( File answer )
+	public String exportXML()
 	{
 		try {
             /////////////////////////////
@@ -114,24 +110,11 @@ public class Answer
             DOMSource source = new DOMSource(doc);
             trans.transform(source, result);
             
-            BufferedOutputStream outputFile = null;
-            
-            try 
-            {
-            	outputFile = new BufferedOutputStream( new FileOutputStream( answer ) );
-            }
-            catch (IOException e)  
-            {
-            	// Exception!
-            }
-            
-            // Print xml
-            outputFile.write( sw.toString().getBytes() );
-            outputFile.flush();
-            
+            return sw.toString();
             
         } catch (Exception e) {
             System.out.println(e);
+            return null;
         }
 	}
 	

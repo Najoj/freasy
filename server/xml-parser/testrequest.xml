@@ -9,7 +9,7 @@
 	</match_by>
 	
 	<match_by>
-		<attribute>app1Name</attribute> 
+		<attribute>appName</attribute> 
 		<operator>LIKE</operator> 
 		<value>%z</value> 
 	</match_by>
@@ -22,7 +22,7 @@
 	
 	<order_by>
 		<attribute>appName</attribute>
-		<!--<direction>DESC</direction>-->
+		<direction>DESC</direction>
 	</order_by>
 
 	<answer_format>

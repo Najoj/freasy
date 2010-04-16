@@ -70,6 +70,28 @@ public class ParserConstants
 		return sb.toString();
 	}
 	
+	public static String listAllowedOperators()
+	{
+		Iterator<String> iter = AllowedOperators.iterator();
+		
+		StringBuilder sb = new StringBuilder();
+		
+		while (iter.hasNext())
+		{
+			sb.append( iter.next() );
+			if (iter.hasNext())
+			{
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
+	}
+	
+	public static String listAllowedMatchByFilters()
+	{
+		return "";
+	}
+	
 	public static String getPadTableName()
 	{
 		return PAD_TABLE_NAME;
@@ -88,15 +110,11 @@ public class ParserConstants
 	public static boolean allowedAttribute( String s )
 	{
 		return AllowedAttributes.contains( s );
-		
-		/*if ( AllowedAttributes.contains( s ) )
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}*/
+	}
+	
+	public static boolean allowedMatchByFilter( String s )
+	{
+		return true; // TODO
 	}
 }
 
