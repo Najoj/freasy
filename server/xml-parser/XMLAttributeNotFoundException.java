@@ -13,13 +13,7 @@ public class XMLAttributeNotFoundException extends XMLParseException
 		super(message, WhichTag);
 		this.WhichAttribute = WhichAttribute;
 	}
-	
-	public XMLAttributeNotFoundException(String WhichTag, String WhichAttribute)
-	{
-		super("The attribute <"+WhichAttribute+"> at tag <"+WhichTag+"> wasn't found when parsing, is required.", WhichTag);
-		this.WhichAttribute = WhichAttribute;
-	}
-	
+		
 	  public String getWhichAttribute()
 	  {
 		  return WhichAttribute;

@@ -94,9 +94,8 @@ public class Request // implements InterfaceRequest
 		{
 			nodeListMemory = element.getElementsByTagName(attribute);
 			if ( nodeListMemory.getLength() == 0 )
-			{
-				throw new XMLAttributeNotFoundException(superTag, attribute);
-			}
+			{ throw new XMLAttributeNotFoundException( ExceptionMessages.XMLAttributeNotFoundExceptionMessage(superTag, attribute), superTag, attribute); }
+			
 			elementMemory = (Element) nodeListMemory.item(0);
 		    String extractedAttribute = getCharacterDataFromElement(elementMemory);
 		    
@@ -106,7 +105,7 @@ public class Request // implements InterfaceRequest
 	    	}
 	    	else
 	    	{
-	    		throw new XMLNotAttributeException(superTag, attribute ,extractedAttribute );
+	    		throw new XMLNotAttributeException( ExceptionMessages.XMLNotAttributeExceptionMessage(superTag, attribute, extractedAttribute), superTag, attribute ,extractedAttribute );
 	    	}
 		}
 		
@@ -114,9 +113,8 @@ public class Request // implements InterfaceRequest
 		{
 			nodeListMemory = element.getElementsByTagName(attribute);
 			if ( nodeListMemory.getLength() == 0 )
-			{
-				throw new XMLAttributeNotFoundException(superTag, attribute);
-			}
+			{ throw new XMLAttributeNotFoundException( ExceptionMessages.XMLAttributeNotFoundExceptionMessage(superTag, attribute), superTag, attribute); }
+			
 			elementMemory = (Element) nodeListMemory.item(0);
 		    String extracted = getCharacterDataFromElement(elementMemory);
 		    
@@ -126,8 +124,7 @@ public class Request // implements InterfaceRequest
 	    	}
 	    	else
 	    	{
-	    		throw new XMLNotLegalValueException("The value "+extracted+" in attribute <"+attribute+"> in tag <"+superTag+"> is not an legal operator"+
-	  				  "\n\nMust be an operator of one of the following types.",superTag, attribute ,extracted );
+	    		throw new XMLNotLegalValueException( ExceptionMessages.XMLNotLegalOperatorExceptionMessage(superTag, attribute, extracted),superTag, attribute ,extracted );
 	    	}
 		}
 		
@@ -135,9 +132,8 @@ public class Request // implements InterfaceRequest
 		{
 			nodeListMemory = element.getElementsByTagName(attribute);
 			if ( nodeListMemory.getLength() == 0 )
-			{
-				throw new XMLAttributeNotFoundException(superTag, attribute);
-			}
+			{ throw new XMLAttributeNotFoundException( ExceptionMessages.XMLAttributeNotFoundExceptionMessage(superTag, attribute), superTag, attribute); }
+			
 			elementMemory = (Element) nodeListMemory.item(0);
 		    String extracted = getCharacterDataFromElement(elementMemory);
 		    
@@ -147,8 +143,7 @@ public class Request // implements InterfaceRequest
 	    	}
 	    	else
 	    	{
-	    		throw new XMLNotLegalValueException("The value "+extracted+" in attribute <"+attribute+"> in tag <"+superTag+"> is not an integer"+
-	  				  "\n\nMust be an integer.",superTag, attribute ,extracted );
+	    		throw new XMLNotLegalValueException( ExceptionMessages.XMLNotLegalIntegerExceptionMessage(superTag, attribute, extracted), superTag, attribute ,extracted );
 	    	}
 		}
 		
@@ -156,9 +151,8 @@ public class Request // implements InterfaceRequest
 		{
 			nodeListMemory = element.getElementsByTagName(attribute);
 			if ( nodeListMemory.getLength() == 0 )
-			{
-				throw new XMLAttributeNotFoundException(superTag, attribute);
-			}
+			{ throw new XMLAttributeNotFoundException( ExceptionMessages.XMLAttributeNotFoundExceptionMessage(superTag, attribute), superTag, attribute); }
+			
 			elementMemory = (Element) nodeListMemory.item(0);
 		    String extracted = getCharacterDataFromElement(elementMemory);
 		    
@@ -168,8 +162,7 @@ public class Request // implements InterfaceRequest
 	    	}
 	    	else
 	    	{
-	    		throw new XMLNotLegalValueException("The value "+extracted+" in attribute <"+attribute+"> in tag <"+superTag+"> is not a legal matchby field"+
-	  				  "\n\nMust be an text of one of the following standards."+ParserConstants.listAllowedMatchByFilters(), superTag, attribute ,extracted );
+	    		throw new XMLNotLegalValueException( ExceptionMessages.XMLNotLegalMatchesValueExceptionMessage(superTag, attribute, extracted), superTag, attribute ,extracted );
 	    	}
 		}
 		
@@ -189,8 +182,7 @@ public class Request // implements InterfaceRequest
 	    	}
 	    	else
 	    	{
-	    		throw new XMLNotLegalValueException("The value "+extracted+" in attribute <"+attribute+"> in tag <"+superTag+"> is not a legal <direction> field"+
-		  				  "\n\nMust be an 'ASC' or 'DESC'\n The attribute is not required, if not included request defaults to 'DESC'", superTag, attribute ,extracted );
+	    		throw new XMLNotLegalValueException(  ExceptionMessages.XMLNotLegalASC_DESCExceptionMessage(superTag, attribute, extracted), superTag, attribute ,extracted );
 	    	}
 		}
 		
@@ -265,7 +257,7 @@ public class Request // implements InterfaceRequest
 			    
 			    currentTag = "order_by";	// read <order_by> tag
 			    root = doc.getElementsByTagName( currentTag );
-			    if (root.getLength()==0)  {throw new XMLTagNotFoundException(currentTag);}
+			    if (root.getLength()==0)  {throw new XMLTagNotFoundException( ExceptionMessages.XMLTagNotFoundExceptionMessage(currentTag), currentTag );}
 			    
 			    element = (Element) root.item(0);
 
@@ -275,7 +267,7 @@ public class Request // implements InterfaceRequest
 			    
 			    currentTag = "answer_format"; // read <answer_format> tag
 			    root = doc.getElementsByTagName( currentTag );
-			    if (root.getLength()==0)  {throw new XMLTagNotFoundException(currentTag);}
+			    if (root.getLength()==0)  {throw new XMLTagNotFoundException( ExceptionMessages.XMLTagNotFoundExceptionMessage(currentTag), currentTag );}
 			    
 			    element = (Element) root.item(0);
 
@@ -285,7 +277,7 @@ public class Request // implements InterfaceRequest
 			    
 			    currentTag = "pad_reference_object"; // read <pad_reference_object> tag
 			    root = doc.getElementsByTagName(currentTag);
-			    if (root.getLength()==0)  {throw new XMLTagNotFoundException(currentTag);}
+			    if (root.getLength()==0)  {throw new XMLTagNotFoundException( ExceptionMessages.XMLTagNotFoundExceptionMessage(currentTag), currentTag );}
 
 			    element = (Element) root.item(0);
 			       
@@ -304,8 +296,7 @@ public class Request // implements InterfaceRequest
 					}  
 					if (ReferenceObject.isEmpty())
 					{
-						throw new XMLParseException("No legal PAD attributes found at tag <"+currentTag+"+n\n+nMust include atleast one legal attribute."+
-								">\n\nLegal attributes are:\n\n"+ParserConstants.listAllowedAttributes(),currentTag);
+						throw new XMLParseException( ExceptionMessages.XMLParseNoPADAttributesFoundExceptionMessage(currentTag), currentTag);
 					}
    
 			}
@@ -345,8 +336,6 @@ public class Request // implements InterfaceRequest
 	
 	private void setSortDirection( String direction)
 	{
-		assert ( ( direction == "ASC") || ( direction == "DESC") ); // throws exception
-		
 		OrderByAscDesc = direction;
 	}
 	

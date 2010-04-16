@@ -16,17 +16,7 @@ public class XMLNotLegalValueException extends XMLParseException
 		  this.WhichAttribute = WhichAttribute;
 		  this.WhatValue = WhatValue;
 	  }
-	  
-	  /*public XMLNotLegalValueException(String WhichTag , String WhichAttribute, String WhatValue)
-	  {
-		  super("The value "+WhatValue+" in attribute <"+WhichAttribute+"> in tag <"+WhichTag+"> is not an integer"+
-				  "\n\nMust be an integer.", WhichTag);
-		  
-		  this.WhichAttribute = WhichAttribute;
-		  this.WhatValue = WhatValue;
-  
-	  }*/
-	  	  
+	  	  	  
 	  public String getWhichAttribute()
 	  {
 		  return WhichAttribute;

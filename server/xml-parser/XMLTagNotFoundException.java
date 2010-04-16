@@ -11,11 +11,5 @@ public class XMLTagNotFoundException extends XMLParseException
 		{
 			super(message, WhichTag);
 		}
-		
-		public XMLTagNotFoundException(String WhichTag)
-		{
-			super("The tag <"+WhichTag+"> wasn't found when parsing, is required.", WhichTag);
-		}
-	  
 	
 }
