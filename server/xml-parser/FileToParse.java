@@ -1,5 +1,7 @@
 import java.io.File;
 
+import org.xml.sax.SAXParseException;
+
 /**
  * @author olle
  *
@@ -18,15 +20,41 @@ public class FileToParse
 	{
 		Request request = new Request( XMLrequest );
 		
-		String SQLstatement = request.toSQL();
+		try
+		{
+			request.parseXML();
+		}
+		catch ( XMLAttributeException e )
+		{
+			// Anropa exception-klassen som parsar exception-xml-filen!
+			
+			System.out.println("XMLAttributeParseException! \n\n"+e.getMessage()+"\n\n"+e.getWhichTag() + " -> "+ e.getWhichAttribute() + " = " +e.getWhatValue());
+		}
+		catch ( XMLParseException e )
+		{
+			System.out.println(e.getMessage()+"\n"+e.getWhichTag());
+		}
+		catch ( SAXParseException e )
+		{
+			System.out.println(e.getMessage());
+		}
+		catch ( Exception e )
+		{
+			
+		}
 		
-		Answer answer = new Answer();
-		
-		//System.out.println(request.toString());
+		System.out.println(request.toString());
 		//System.out.println(request.toSQL());		
+		
+		
+		//String SQLstatement = request.toSQL();
+		
+		//Answer answer = new Answer();
+		
+
 		//System.out.println( answer.toString() );
 		
-		answer.exportXML( XMLanswer );
+		//answer.exportXML( XMLanswer );
 	}
 
 }

@@ -8,6 +8,7 @@ public class ParserConstants
 {
 
 	private static HashSet<String> AllowedAttributes;
+	private static HashSet<String> AllowedOperators;
 
 	final private static String PAD_TABLE_NAME = "tabell";
 	
@@ -15,6 +16,7 @@ public class ParserConstants
 	{
 		
 		AllowedAttributes = new HashSet<String>();
+		AllowedOperators = new HashSet<String>();
 		
 	
 		AllowedAttributes.add("appName");  // the name of the application.
@@ -39,6 +41,33 @@ public class ParserConstants
 		AllowedAttributes.add("authorEmail");  // Email-adress to the author.
 		AllowedAttributes.add("applicationHash");  // a calculated checksum of the actual application (i.e. the binary file).
 		
+		
+		AllowedOperators.add("="); // The operators allowed in the match_by tag
+		AllowedOperators.add("<>");
+		AllowedOperators.add(">");
+		AllowedOperators.add(">=");
+		AllowedOperators.add("<");
+		AllowedOperators.add("<=");
+		AllowedOperators.add("LIKE");
+
+		
+	}
+	
+	public static String listAllowedAttributes()
+	{
+		Iterator<String> iter = AllowedAttributes.iterator();
+		
+		StringBuilder sb = new StringBuilder();
+		
+		while (iter.hasNext())
+		{
+			sb.append( iter.next() );
+			if (iter.hasNext())
+			{
+				sb.append(", ");
+			}
+		}
+		return sb.toString();
 	}
 	
 	public static String getPadTableName()
@@ -51,16 +80,23 @@ public class ParserConstants
 		return AllowedAttributes.iterator();
 	}
 	
+	public static boolean allowedOperators( String s )
+	{
+		return AllowedOperators.contains( s );
+	}
+	
 	public static boolean allowedAttribute( String s )
 	{
-		if ( AllowedAttributes.contains( s ) )
+		return AllowedAttributes.contains( s );
+		
+		/*if ( AllowedAttributes.contains( s ) )
 		{
 			return true;
 		}
 		else
 		{
 			return false;
-		}
+		}*/
 	}
 }
 

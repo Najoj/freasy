@@ -2,10 +2,14 @@
 
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
 import java.util.Iterator;
 import java.util.Stack;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class Request // implements InterfaceRequest 
@@ -13,27 +17,45 @@ public class Request // implements InterfaceRequest
 	
 	File XMLrequest;
 	
+	private class MatchBy_Object
+	{
+		String Attribute;
+		String Operator;
+		String Value;
+		
+		public MatchBy_Object( String Attribute, String Operator, String Value )
+		{
+			this.Attribute = Attribute;
+			this.Operator = Operator;
+			this.Value = Value;
+		}
+		
+		public String getAttribute()
+		{
+			return Attribute;
+		}
+		
+		public String getOperator()
+		{
+			return Operator;
+		}
+		
+		public String getValue()
+		{
+			return Value;
+		}
+	}
 	
-	// select -> match by. The list will be filtered according to the following attribute.
-	private String SoughtAttribute; // Can be null.
-	
-	// The filter will use the following operator to compare the attribute with the value. Possible choices are: =, <>, >, >=, <, <=, LIKE, Between. See SQL for defenition.
-	private String SoughtOperator; // Can be null.
-	
-	// select -> match by. The sought attribute is matched against this value.
-	private String SoughtValue; // Can be n enull.
-	
-	private boolean matching;
+	private Stack<MatchBy_Object> MatchByStack;
 
 	// order by. The list will be sorted according to the following attribute.
 	private String OrderBy; 
 	// order by. Defines wherver the objects are to be ordered ascending or descending to the chosen attribute. Must be one, cannot be both.
 	private String OrderByAscDesc; // Defaulted to descending.
 
-	// answer format. The offset of where in the list to begin collecting objects to return.
-	private int Offset;
-	// answer format. Maximum number of objects returned.
-	private int NumberOfObjects;
+	private int Offset;  // answer format. The offset of where in the list to begin collecting objects to return.
+	
+	private int NumberOfObjects;  // answer format. Maximum number of objects returned.
              
     // Define a "reference PAD object", the answer will include the following attributes.
 	//private PAD ReferenceObject;
@@ -49,188 +71,279 @@ public class Request // implements InterfaceRequest
 		//SoughtValue = null;
 		//OrderByAscDesc = null;
 		
+		MatchByStack = new Stack<MatchBy_Object>();		
 		ReferenceObject = new Stack<String>();
-		
-		importXML();
-		
-		matching = false;		
-		if ( ( SoughtAttribute != null ) && ( SoughtValue != null ) )
+
+	}
+	
+	private class AttributeParser
+	{
+	    private Element elementMemory = null;
+	    private NodeList nodeListMemory = null;
+	    
+		private boolean existsAttribute( Element element, String attribute ) // attribute and lnie is sent to reuse the memory space.
 		{
-			matching = true;
+			nodeListMemory = element.getElementsByTagName(attribute);
+			if ( nodeListMemory.getLength() != 0 )
+			{
+				return true;
+			}
+			else
+			{
+				// Kasta exception!
+				return false;
+			}
+		}
+	    
+		private String extractAttribute( Element element, String attribute, String superTag ) throws XMLAttributeException // attribute and lnie is sent to reuse the memory space.
+		{
+			nodeListMemory = element.getElementsByTagName(attribute);
+			elementMemory = (Element) nodeListMemory.item(0);
+		    String extractedAttribute = getCharacterDataFromElement(elementMemory);
+		    
+	    	if ( isLegalAttribute( extractedAttribute ) )
+	    	{
+	    		return extractedAttribute;
+	    	}
+	    	else
+	    	{
+	    		throw new XMLAttributeException("The attribute '"+ extractedAttribute +"' at tag <" + superTag+"> is not a legal attribute according to spec.\n Must be one of the following:\n\n"+listAllowedAttributes()
+	    				, superTag, attribute ,extractedAttribute );
+	    	}
+		}
+		
+		private String listAllowedAttributes()
+		{
+			return ParserConstants.listAllowedAttributes();
+		}
+		
+		private String extractOperator( Element element, String attribute, String superTag ) throws XMLAttributeException // attribute and lnie is sent to reuse the memory space.
+		{
+			nodeListMemory = element.getElementsByTagName(attribute);
+			if ( nodeListMemory.getLength() == 0 )
+			{
+				throw new XMLAttributeException("Attribute <"+attribute+"> in tag <"+superTag+"> wasn't found in the file, is required.",superTag,attribute);
+			}
+			elementMemory = (Element) nodeListMemory.item(0);
+		    String extracted = getCharacterDataFromElement(elementMemory);
+		    
+	    	if ( isLegalOperator( extracted ) )
+	    	{
+	    		return extracted;
+	    	}
+	    	else
+	    	{
+	    		throw new XMLAttributeException("", superTag, attribute ,extracted );
+	    	}
+		}
+		
+		private int extractInteger( Element element, String attribute, String superTag ) throws XMLAttributeException // attribute and lnie is sent to reuse the memory space.
+		{
+			nodeListMemory = element.getElementsByTagName(attribute);
+			if ( nodeListMemory.getLength() == 0 )
+			{
+				throw new XMLAttributeException("Attribute <"+attribute+"> in tag <"+superTag+"> wasn't found in the file, is required.",superTag,attribute);
+			}
+			elementMemory = (Element) nodeListMemory.item(0);
+		    String extracted = getCharacterDataFromElement(elementMemory);
+		    
+	    	if ( isLegalInteger( extracted ) )
+	    	{
+	    		return Integer.parseInt(extracted);
+	    	}
+	    	else
+	    	{
+	    		throw new XMLAttributeException("", superTag, attribute ,extracted );
+	    	}
+		}
+		
+		private String extractMatchesValue( Element element, String attribute, String superTag ) throws XMLAttributeException // attribute and lnie is sent to reuse the memory space.
+		{
+			nodeListMemory = element.getElementsByTagName(attribute);
+			if ( nodeListMemory.getLength() == 0 )
+			{
+				throw new XMLAttributeException("Attribute <"+attribute+"> in tag <"+superTag+"> wasn't found in the file, is required.",superTag,attribute);
+			}
+			elementMemory = (Element) nodeListMemory.item(0);
+		    String extracted = getCharacterDataFromElement(elementMemory);
+		    
+	    	if ( isLegalMatchedValue( extracted ) )
+	    	{
+	    		return extracted;
+	    	}
+	    	else
+	    	{
+	    		throw new XMLAttributeException("", superTag, attribute ,extracted );
+	    	}
+		}
+		
+		private String extractOptionalASC_DESC( Element element, String attribute, String superTag ) throws XMLAttributeException // attribute and lnie is sent to reuse the memory space.
+		{
+			nodeListMemory = element.getElementsByTagName(attribute);
+			if ( nodeListMemory.getLength() == 0 )
+			{
+				return "DESC";
+			}
+			elementMemory = (Element) nodeListMemory.item(0);
+		    String extracted = getCharacterDataFromElement(elementMemory);
+		    
+	    	if ( isLegalASC_DESC( extracted ) )
+	    	{
+	    		return extracted;
+	    	}
+	    	else
+	    	{
+	    		throw new XMLAttributeException("", superTag, attribute ,extracted );
+	    	}
+		}
+		
+		
+		private boolean isLegalASC_DESC( String ASC_DESC )
+		{
+			return ( (ASC_DESC == "ASC") || (ASC_DESC == "DESC") );
+		}
+		
+		private boolean isLegalAttribute( String attribute )
+		{
+			return ParserConstants.allowedAttribute(attribute);
+		}
+		
+		private boolean isLegalOperator( String operator )
+		{
+			return ParserConstants.allowedOperators( operator );
+		}
+		
+		private boolean isLegalInteger( String integer )
+		{
+			try
+			{
+				Integer.parseInt( integer );
+			}
+			catch (NumberFormatException e)
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		private boolean isLegalMatchedValue( String match )
+		{
+			return true; // TODO insert restrictions of what can be used.
 		}
 	}
-		
 	
+		
 	/*
 	 * Transfers the data from the XML-file to the request-object.
 	 * 
 	 * @author Olle Hassel
 	 * @param The XML-file whose data is to be transferred.
 	 */
-	private void importXML() throws IllegalArgumentException
+	public void parseXML() throws XMLParseException, SAXParseException, IOException, ParserConfigurationException, SAXException
 	{
 		try {
 				DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			    Document doc = builder.parse(XMLrequest);
 			    
-  
 			    NodeList root;
-			    Element line = null;
-			    NodeList attribute = null;
+			    
+			    AttributeParser attributeParser = new AttributeParser();
+			    
+			    //Element elementMemory = null;
+			    //NodeList nodeListMemory = null;
+			    
 			    Element element = null;
-			
 			    
-			    root = doc.getElementsByTagName("match_by");
+			    
+			    String currentTag;
+
+		    	currentTag = "match_by";	// read <match_by> tag
+			    root = doc.getElementsByTagName( currentTag );
 			    for (int i = 0; i < root.getLength(); i++) 
 			    {
-			       element = (Element) root.item(i);
-			      
-			       setSoughtAttribute( extractAttribute( element, "attribute", attribute, line ) );
-			       setSoughtOperator( extractAttribute( element, "operator", attribute, line ) );
-			       setSoughtValue( extractAttribute( element, "value", attribute, line ) );
-			     }
+			    	element = (Element) root.item(i);
+			    		
+			    	addMatchByTag( 
+			    			attributeParser.extractAttribute( element, "attribute", currentTag ),
+			    			attributeParser.extractOperator( element, "operator", currentTag),
+			    			attributeParser.extractMatchesValue( element, "value", currentTag) );
+
+			    }
 			    
-			    root = doc.getElementsByTagName("order_by");
-			    for (int i = 0; i < root.getLength(); i++) 
-			    {
-			       element = (Element) root.item(i);
-			       
-			       setSortAttribute( extractAttribute( element, "attribute", attribute, line ) );
-			       setSortDirection( extractOptionalAttribute( element, "direction", attribute, line ) );
-			     }
+			    currentTag = "order_by";	// read <order_by> tag
+			    root = doc.getElementsByTagName( currentTag );
+			    if (root.getLength()==0)  {throw new XMLParseException("No tag of the type '"+currentTag+"' is found, but is required.",currentTag);}
 			    
-			    if ( OrderByAscDesc == null ) { OrderByAscDesc = "DESC"; }
+			    element = (Element) root.item(0);
+
+			    setSortAttribute( attributeParser.extractAttribute( element, "attribute", currentTag ) );
+			    setSortDirection( attributeParser.extractOptionalASC_DESC( element, "direction", currentTag ) );
+			  
 			    
-			    root = doc.getElementsByTagName("answer_format");
-			    for (int i = 0; i < root.getLength(); i++) 
-			    {
-			       element = (Element) root.item(i);
-			       
-			       setOffset( Integer.parseInt( extractAttribute( element, "offset", attribute, line ) ) );
-			       setNumberOfObjects( Integer.parseInt( extractAttribute( element, "number_of_objects", attribute, line ) ) );
-			     }
+			    currentTag = "answer_format"; // read <answer_format> tag
+			    root = doc.getElementsByTagName( currentTag );
+			    if (root.getLength()==0)  {throw new XMLParseException("No tag of the type '"+currentTag+"' is found, but is required.",currentTag);}
 			    
-			    root = doc.getElementsByTagName("pad_reference_object");
-			    for (int i = 0; i < root.getLength(); i++) 
-			    {
-			       element = (Element) root.item(i);
+			    element = (Element) root.item(0);
+
+			    setOffset( attributeParser.extractInteger( element, "offset", currentTag ) );
+			    setNumberOfObjects( attributeParser.extractInteger( element, "number_of_objects", currentTag ) );
+			    
+			    
+			    currentTag = "pad_reference_object"; // read <pad_reference_object> tag
+			    root = doc.getElementsByTagName(currentTag);
+			    if (root.getLength()==0)  {throw new XMLParseException("No tag of the type '"+currentTag+"' is found, but is required.",currentTag);}
+
+			    element = (Element) root.item(0);
 			       
 			       Iterator<String> iter = ParserConstants.attributesIterator();
+			       
 			       String attributeTag;
 			       
 					while ( iter.hasNext() )
 					{
 						attributeTag = iter.next();
-					    if ( existsAttribute( element, attributeTag, attribute ) )
+						if (attributeParser.existsAttribute(element, attributeTag))
 					    {
 					     addPADAttribute( attributeTag );
 					    }
+					    
 					}  
-			       
-			    }
-			    
-			    
-			   }
-			catch (Exception e) 
-			{
-				 e.printStackTrace();
+					if (ReferenceObject.isEmpty())
+					{
+						throw new XMLParseException("No legal PAD attributes found at tag <"+currentTag+">\n\nLegal attributes are:\n\n"+ParserConstants.listAllowedAttributes(),currentTag);
+					}
+   
 			}
-	}
-	
-	private boolean existsAttribute( Element element, String tag, NodeList attribute) // attribute and lnie is sent to reuse the memory space.
-	{
-		attribute = element.getElementsByTagName(tag);
-		if ( attribute.getLength() != 0 )
-		{
-			return true;
-		}
-		else
-		{
-			// Kasta exception!
-			return false;
-		}
-	}
-	
-	private String extractAttribute( Element element, String tag, NodeList attribute, Element line ) // attribute and lnie is sent to reuse the memory space.
-	{
-		attribute = element.getElementsByTagName(tag);
-		line = (Element) attribute.item(0);
-	    return getCharacterDataFromElement(line);
-	}
-	
-	private String extractOptionalAttribute( Element element, String tag, NodeList attribute, Element line ) // attribute and lnie is sent to reuse the memory space.
-	{
-		attribute = element.getElementsByTagName(tag);
-		if ( attribute.getLength() == 0 )
-		{
-			return null;
-		}
-		else
-		{
-			line = (Element) attribute.item(0);
-		    return getCharacterDataFromElement(line);
-		}
-	}
-	
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		
-		if ( matching )
-		{
-			sb.append("-match by");
-			sb.append("\n");
-			sb.append("   attribute: " + SoughtAttribute );
-			sb.append("\n");
-			sb.append("   operator: " + SoughtOperator );
-			sb.append("\n");
-			sb.append("   direction: " + SoughtValue );
-			sb.append("\n");
-		}
+			catch (XMLParseException e)
+			{
+				throw e;
+			}
+			catch (SAXParseException e)
+			{
+				throw e;
+			}
+			catch (IOException e)
+			{
+				throw e;
+			}
+			catch (ParserConfigurationException e)
+			{
+				throw e;
+			}
+			catch (SAXException e)
+			{
+				throw e;
+			}
 
-		sb.append("-order by");
-		sb.append("\n");
-		sb.append("   attribute: " + OrderBy );
-		sb.append("\n");
-		sb.append("   direction: " + OrderByAscDesc );
-		sb.append("\n");
-		
-		sb.append("-answer_format");
-		sb.append("\n");
-		sb.append("   offset: " + Offset );
-		sb.append("\n");
-		sb.append("   number_of_objects: " + NumberOfObjects );
-		sb.append("\n");
-		
-		sb.append("-PAD_reference_object");
-		sb.append("\n");
-		
-		Iterator<String> iter = ReferenceObject.iterator();
-		
-		while ( iter.hasNext() )
-		{
-			sb.append("   "+iter.next());
-			sb.append("\n");
-		}
-		
-		return sb.toString();
 	}
-	
-	private void setSoughtAttribute( String attribute )
+		
+
+	private void addMatchByTag( String attribute, String operator, String matchesValue )
 	{
-		this.SoughtAttribute = attribute;
-	}
-	
-	private void setSoughtOperator( String operator )
-	{
-		this.SoughtOperator = operator;
-	}
-	
-	private void setSoughtValue( String value )
-	{
-		this.SoughtValue = value; 
-	}
-	
+		MatchByStack.add( new MatchBy_Object( attribute, operator, matchesValue) );
+	}		
+		
 	private void setSortAttribute( String attribute )
 	{
 		this.OrderBy = attribute;
@@ -257,7 +370,7 @@ public class Request // implements InterfaceRequest
 	{
 		ReferenceObject.push( attribute );
 	}
-	
+		
 	private static String getCharacterDataFromElement(Element e) 
 	{
 		Node child = e.getFirstChild();
@@ -282,18 +395,14 @@ public class Request // implements InterfaceRequest
 		sb.append("SELECT");
 		sb.append(" ");
 		
-		//Iterator<Attribute> iter = ReferenceObject.containsAttributes();
-		Iterator<String> iter = ReferenceObject.iterator();
-		//Attribute tmpA;
+		Iterator<String> PADiter = ReferenceObject.iterator();
 		
-		sb.append(iter.next());
+		sb.append(PADiter.next());
 		
-		while ( iter.hasNext() )
+		while ( PADiter.hasNext() )
 		{
-			//tmpA = iter.next();
-			//sb.append( tmpA.getName() );
 			sb.append(", ");
-			sb.append(iter.next());
+			sb.append(PADiter.next());
 		}
 		
 		sb.append(" ");
@@ -302,13 +411,31 @@ public class Request // implements InterfaceRequest
 		
 		sb.append( ParserConstants.getPadTableName() );
 		
-		if ( matching )
+		Iterator<MatchBy_Object> matchIter = MatchByStack.iterator();
+		MatchBy_Object tmp;
+		
+		if ( !MatchByStack.isEmpty() )
 		{
+			
 			sb.append(" ");
 			sb.append("WHERE");
 			sb.append(" ");
-			sb.append(SoughtAttribute+" "+SoughtOperator+" \""+SoughtValue+"\"");
+			
+			while ( matchIter.hasNext() )
+			{
+				tmp = matchIter.next();
+								
+				sb.append(tmp.getAttribute()+" "+tmp.getOperator()+" \""+tmp.getValue()+"\"");
+				
+				if ( matchIter.hasNext() )
+				{
+					sb.append(" AND ");
+				}
+				
+			}
+			
 		}
+		
 		sb.append(" ");
 		sb.append("ORDER BY");
 		sb.append(" ");
@@ -336,5 +463,59 @@ public class Request // implements InterfaceRequest
 	}
 	
 	
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		
+		
+		Iterator<MatchBy_Object> matchIter = MatchByStack.iterator();
+		MatchBy_Object tmp;
+		if ( !MatchByStack.isEmpty() )
+		{
+			
+			while ( matchIter.hasNext() )
+			{
+				tmp = matchIter.next();
+								
+				sb.append("-match by");
+				sb.append("\n");
+				sb.append("   attribute: " + tmp.getAttribute() );
+				sb.append("\n");
+				sb.append("   operator: " + tmp.getOperator() );
+				sb.append("\n");
+				sb.append("   direction: " + tmp.getValue() );
+				sb.append("\n");
+			}
+			
+		}
+
+		sb.append("-order by");
+		sb.append("\n");
+		sb.append("   attribute: " + OrderBy );
+		sb.append("\n");
+		sb.append("   direction: " + OrderByAscDesc );
+		sb.append("\n");
+		
+		sb.append("-answer_format");
+		sb.append("\n");
+		sb.append("   offset: " + Offset );
+		sb.append("\n");
+		sb.append("   number_of_objects: " + NumberOfObjects );
+		sb.append("\n");
+		
+		sb.append("-PAD_reference_object");
+		sb.append("\n");
+		
+		Iterator<String> PADiter = ReferenceObject.iterator();
+		
+		while ( PADiter.hasNext() )
+		{
+			sb.append("   "+PADiter.next());
+			sb.append("\n");
+		}
+		
+		return sb.toString();
+	}
 	
 }
