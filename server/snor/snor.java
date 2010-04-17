@@ -25,7 +25,7 @@ import java.util.Random;
  * @author  Johan Öhlin <johanohl@kth.se>
  * @note    Byt port om du behöver.
  */
-class snor {
+public class snor {
     /*
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
      *  XXX  Kom ihåg att ändra denna!  XXX
