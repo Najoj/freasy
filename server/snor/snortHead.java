@@ -29,9 +29,6 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.Random;
 
-// Egen XML-parser
-import ../xml-parser/FileToParse;
-
 class snortHead extends Thread {
     private static int fileLength, readBytes;
     
