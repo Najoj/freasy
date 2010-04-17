@@ -50,16 +50,20 @@ public class FileToParse
 		}
 		catch ( Exception e )
 		{
+			// Major error, probably bug in the server code.
 			
+			// Spara undan requesten, kolla varför felet inträffade!
 		}
 		
-		//printStringToFile( XMLanswer, answerFile );
-		System.out.println( answerFile );
+		printStringToFile( XMLanswer, answerFile );
 
 	}
+
 	
 	private void printStringToFile( File XMLfile, String s )
 	{
+
+		
         try 
         {
         	BufferedOutputStream outputFile = new BufferedOutputStream( new FileOutputStream( XMLfile ) );
@@ -71,6 +75,7 @@ public class FileToParse
         {
         	// Exception!
         }
+        
 	}
 
 }

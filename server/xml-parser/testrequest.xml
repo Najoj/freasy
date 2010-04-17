@@ -1,5 +1,3 @@
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-
 <request>
 
 	<match_by>
@@ -7,19 +5,7 @@
 		<operator>LIKE</operator> 
 		<value>a%</value> 
 	</match_by>
-	
-	<match_by>
-		<attribute>appName</attribute> 
-		<operator>LIKE</operator> 
-		<value>%z</value> 
-	</match_by>
-	
-	<match_by>
-		<attribute>appId</attribute> 
-		<operator>=</operator> 
-		<value>4711</value> 
-	</match_by>
-	
+
 	<order_by>
 		<attribute>appName</attribute>
 		<direction>DESC</direction>
