@@ -7,15 +7,15 @@
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.16
+ *  Version:  2010.04.17
  *  
  *  Beskrivning:  Server. Lyssnar på socket som server och startar ny tråd som
  *                        tar hand om resten.
  *  
 \******************************************************************************/
 
-import java.net.ServerSocket;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Date;
 
 /**
@@ -71,8 +71,8 @@ class snor {
         while(true) {
             try {
                 System.out.print(new Date() + ": Väntar... ");
-                new Thread( new snortHead( serverSocket.accept() ) ).start();
-                System.out.println("Ny tråd skapad.");
+                new snortHead(serverSocket.accept()).start();
+                System.out.println("Tråd skapad.");
             } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);
             }

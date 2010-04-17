@@ -7,23 +7,25 @@
  *
  *  Licens:   GNU General Public License, version 2
  *
- *  Version:  2010.04.16
+ *  Version:  2010.04.17
  *  
  *  Beskrivning:  Testar så att snor.java fungerar som den är menad att göra.
- *                När den körs ska filen TAEMOT vara exakt samma som SKICKA.
- *                Dessutom ska en XML-fil finnas med samma innehåll.
+ *                När den körs ska filen TAMOT vara exakt samma som SKICKA.
+ *                Dessutom ska en XML-fil finnas med samma innehåll, givet att
+ *                filerna inte tas bort i snortHead.java.
  *  
 \******************************************************************************/
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class snorTest {
     /**
@@ -36,110 +38,67 @@ public class snorTest {
     private static final File taemot = new File("TAMOT");
     private static int fileLength, i;
     
+    private static byte[] byteArray = null;
     private static Socket socket = null;
     private static File file = null;
-    private static OutputStream os = null;
-    private static byte[] byteArray = null;
-    private static InputStream is = null;
+    
+    private static BufferedInputStream bis = null;
+    private static BufferedOutputStream bos = null;
     private static FileInputStream fis = null;
     private static FileOutputStream fos = null;
+    private static InputStream is = null;
+    private static OutputStream os = null;
     
     /**
      *  Main-metod.
      */
-    public static void main(String args[]) {
-        /***********************************************************************
-         *  Ansluter till server.
-         */
-        System.out.print("Skapar ny Socket... ");
-        try {
-            socket = new Socket("localhost", PORT);
-        } catch (UnknownHostException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        } catch (IOException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
-        System.out.println("Klar!");
-        
+    public static void main(String args[]) throws IOException {
         /***********************************************************************
          *  Skickar till server.
          */
-        fileLength = (int) skicka.length();
-        System.out.print("Skapar en byte[] av File... ");
-        byteArray = new byte[fileLength];
-        try {
-            fis = new FileInputStream(skicka);
-        } catch(FileNotFoundException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
-        try {
-            for(i = 0; i < fileLength; i++)
-                byteArray[i] = (byte) fis.read();
-            fis.close();
-        } catch(IOException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
-        System.out.println("Klar!");
+        System.out.print("Skickar till server... ");
+        socket = new Socket("localhost", PORT);
         
-        System.out.print("Skapar en FileOutputStream och skriver... ");
-        try {
-            os = socket.getOutputStream();
-            os.write(byteArray);
-        } catch(IOException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
+        fileLength = (int)skicka.length();
+        byteArray  = new byte[fileLength];
+        
+        fis = new FileInputStream(skicka);
+        bis = new BufferedInputStream(fis);
+        bis.read(byteArray, 0, fileLength);
+        
+        os = socket.getOutputStream();
+        os.write(byteArray, 0, fileLength);
+        os.flush();
+
         System.out.println("Klar!");
         
         /***********************************************************************
          *  Tar emot från server.
          */
-        System.out.print("Skapar en InputStream och läser... ");
+        System.out.print("Tar emot från server... ");
+
         fileLength = 1024*1024;
-        byteArray = new byte[fileLength];
-        try {
-            is = socket.getInputStream();
-            i = 0;
-            while( (byteArray[i] = (byte) is.read()) != -1 )
-                i++;
-            is.close();
-        } catch(IOException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
-        System.out.println("Klar!");
+        byteArray  = new byte[fileLength];
+        int current;
         
-        System.out.print("Skapar en File av byte[]... ");
-        try {
-            fos = new FileOutputStream(taemot);
-        } catch(FileNotFoundException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
-        try {
-            fos.write(byteArray, 0, (i-1));
-            fos.close();
-        } catch(IOException e) {
-            System.err.println("Error: " + e);
-            System.exit(-1);
-        }
-        System.out.println("Klar!");
+        is = socket.getInputStream();
+
+        int bytesRead = is.read(byteArray, 0, fileLength);
+        current = bytesRead;
+
+        do {
+            bytesRead = is.read(byteArray, current, (fileLength-current));
+            if(bytesRead >= 0) current += bytesRead;
+        } while(bytesRead > -1);
+        is.close();
+
+        fos = new FileOutputStream(taemot);
+        bos = new BufferedOutputStream(fos);
+        bos.write(byteArray, 0, current);
+        bos.flush();
+        bos.close();
         
-        /***********************************************************************
-         *  Stänger anslutning till server.
-         */
-        System.out.print("Stänger Socket... ");
-        try {
-            socket.close();
-            os.close();
-        } catch(IOException e) {
-            System.err.println(e);
-            System.exit(-1);
-        }
+        socket.close();
         System.out.println("Klar!");
         
         System.out.println("Hej då.");
