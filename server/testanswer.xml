@@ -1,0 +1,26 @@
+<answer>
+<number_of_objects>4</number_of_objects>
+<offset>0</offset>
+<last_offset>4</last_offset>
+<list_length>4711</list_length>
+<pad element="0">
+<category>Weather</category>
+<appname>Todays Weather</appname>
+<appid>3</appid>
+</pad>
+<pad element="1">
+<category>Games</category>
+<appname>Tetris</appname>
+<appid>1</appid>
+</pad>
+<pad element="2">
+<category>Sports</category>
+<appname>Online Betting</appname>
+<appid>4</appid>
+</pad>
+<pad element="3">
+<category>Games</category>
+<appname>Hello Kitty Adventure Offline (HKAO)</appname>
+<appid>2</appid>
+</pad>
+</answer>
