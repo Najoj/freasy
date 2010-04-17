@@ -14,9 +14,13 @@
  *  
 \******************************************************************************/
 
+package snor;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Date;
+
+import Static.Initializer;
 
 /**
  * Använder Javas ServerSocket-klass som lyssnas för att kunna ta emot en
@@ -54,6 +58,12 @@ class snor {
             System.err.println("");
             System.exit(-1);
         }
+        
+        /**
+         * Initializes the Static classes.
+         * @author Olle Hassel
+         */
+        Initializer.initialize();
         
         /**
          * Försöker att skapa en ServerSocket.

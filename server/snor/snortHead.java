@@ -15,6 +15,8 @@
  *  
 \******************************************************************************/
 
+package snor;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -28,6 +30,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.Random;
+
+import xmlParser.FileToParse;
 
 class snortHead extends Thread {
     private static int fileLength, readBytes;
