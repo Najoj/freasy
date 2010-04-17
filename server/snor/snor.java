@@ -14,13 +14,10 @@
  *  
 \******************************************************************************/
 
-package snor;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Date;
-
-import Static.Initializer;
+import java.util.Random;
 
 /**
  * Använder Javas ServerSocket-klass som lyssnas för att kunna ta emot en
@@ -35,7 +32,9 @@ class snor {
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
      */
     private static final int PORT = 8989;
-    private static ServerSocket serverSocket;    
+    private static final Random random = new Random();
+    private static Date date = new Date();
+    private static ServerSocket serverSocket;
     /**
      * @author  Johan Öhlin <johanohl@kth.se>
      * @brief   Startar avlyssningen.
@@ -60,12 +59,6 @@ class snor {
         }
         
         /**
-         * Initializes the Static classes.
-         * @author Olle Hassel
-         */
-        Initializer.initialize();
-        
-        /**
          * Försöker att skapa en ServerSocket.
          */
         try {
@@ -75,13 +68,17 @@ class snor {
                 " ServerSocket: " + e);
             System.exit(-1);
         }
+        
+
         /**
          * Accepterar klienter som kommer.
          */
         while(true) {
             try {
                 System.out.print(new Date() + ": Väntar... ");
-                new snortHead(serverSocket.accept()).start();
+                new snortHead(serverSocket.accept(),
+                              new Date().getTime(),
+                              random.nextInt() Oke).start();
                 System.out.println("Tråd skapad.");
             } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);

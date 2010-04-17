@@ -1,3 +1,11 @@
-SNOR är den del i servern som tar emot en XML-fil från mobiltelefonen och skickar tillbaka en behandlad XML-fil samma telefon.
+snor.java:
+MD5:    d6b1d369443cdc8d67ed7e14476979d8
+Usage:  Receives requests. Remember to edit PORT before compiling.
 
-SNOR is the part of the server that recives a XML file from the cell phone and then sends back a managed XML file to the same phone.
+snortHead.java:
+MD5:    6b6c2b3b36c7988f8f6362109dcc8d85
+Usage:  The thread part that does the reciving and sending of files.
+
+snorTest.java:
+MD5:    d1493f7f8cf48c73583ec11f3e41128e
+Usage:  Used to test snor and snortHead. Remember to edit host adress and port.

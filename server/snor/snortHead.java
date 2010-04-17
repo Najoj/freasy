@@ -15,8 +15,6 @@
  *  
 \******************************************************************************/
 
-package snor;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -28,43 +26,38 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
-import java.util.Random;
 
-import xmlParser.FileToParse;
 
 class snortHead extends Thread {
     private static int fileLength, readBytes;
     
-    private static byte[] byteArray = null;
-    private static Socket clientSocket = null;
     private static ServerSocket serverSocket = null;
-    private static Socket socket = null;
-    /**
-     * Episkt, Java... Episkt.
-     */
-    private static BufferedInputStream bis = null;
-    private static BufferedOutputStream bos = null;
-    private static FileInputStream fis = null;
-    private static FileOutputStream fos = null;
-    private static InputStream is = null;
-    private static OutputStream os = null;
+    private static Socket clientSocket       = null;
+    private static byte[] byteArray          = null;
+    private static String name               = null;
     
-    /**
-     * Filnamnet är på formatet "(sekunder sedan 1 januari 1970)_(pseudoslumpat
-     * hexadecimalt värde)_(received eller send).xml".
-     */
-    private static final String name = new Date().getTime() + "_" +
-                            Integer.toHexString(new Random().nextInt());
-    private static File received = new File( name + "_received.xml");
-    private static File send     = new File( name + "_send.xml");
+    private static BufferedOutputStream bos = null;
+    private static BufferedInputStream bis  = null;
+    private static FileOutputStream fos     = null;
+    private static FileInputStream fis      = null;
+    private static OutputStream os          = null;
+    private static InputStream is           = null;
+    private static File received            = null;
+    private static File send                = null;
     
     /**
      * En konstruktor som inte gör så vidare mycket alls.
      */
-    snortHead(Socket clientSocket) {
+    snortHead(Socket clientSocket, long time, int random) {
         super("snortHead");
         this.clientSocket = clientSocket;
+        /**
+         * Filnamnet är på formatet "(sekunder sedan 1 januari 1970)_(pseudoslumpat
+         * hexadecimalt värde)_(received eller send).xml".
+         */
+        this.name     = time + "_" + Integer.toHexString(random);
+        this.received = new File( name + "_received.xml" );
+        this.send     = new File( name + "_send.xml" );
     }
     
     /**
@@ -90,7 +83,7 @@ class snortHead extends Thread {
             /*******************************************************************
              * Anropar parser.
              */
-             new FileToParse().parseFile(received, send);
+             new FileToParse().parseFile(input, output);
             
             /*******************************************************************
              * Skickar filen.
