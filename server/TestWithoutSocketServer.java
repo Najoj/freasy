@@ -6,6 +6,8 @@ import xmlParser.FileToParse;
 
 public class TestWithoutSocketServer {
 
+
+	
 	/**
 	 * @param args
 	 */
@@ -24,5 +26,7 @@ public class TestWithoutSocketServer {
 			
 		
 	}
+	
+	
 
 }

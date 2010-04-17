@@ -90,7 +90,7 @@ class snortHead extends Thread {
             /*******************************************************************
              * Anropar parser.
              */
-             new FileToParse().parseFile(input, output);
+             new FileToParse().parseFile(received, send);
             
             /*******************************************************************
              * Skickar filen.
