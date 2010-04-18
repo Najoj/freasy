@@ -21,8 +21,6 @@ import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Random;
 
-import xmlParser.FileToParse;
-
 import Static.Initializer;
 
 /**
