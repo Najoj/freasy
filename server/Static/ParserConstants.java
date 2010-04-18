@@ -7,6 +7,8 @@ import java.util.Iterator;
 
 public class ParserConstants 
 {
+	
+	final static String LINE_BREAK = "<![CDATA[<br/>]]>";
 
 	private static HashSet<String> AllowedAttributes;
 	private static HashSet<String> AllowedOperators;
@@ -52,6 +54,11 @@ public class ParserConstants
 		AllowedOperators.add("LIKE");
 
 		
+	}
+	
+	public static String getLineBreak()
+	{
+		return LINE_BREAK;
 	}
 	
 	public static String listAllowedAttributes()
