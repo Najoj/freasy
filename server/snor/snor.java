@@ -42,8 +42,6 @@ public class snor {
     /**
      * @author  Johan Öhlin <johanohl@kth.se>
      * @brief   Startar avlyssningen.
-     * @param   <Ingenting>
-     * @return  <Ingenting>
      */
     public static void main(String args[]) {
         /**
@@ -67,7 +65,7 @@ public class snor {
         * @author Olle Hassel		
         */		
         Initializer.initialize();
-        
+                
         /**
          * Försöker att skapa en ServerSocket.
          */

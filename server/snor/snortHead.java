@@ -21,33 +21,20 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-//import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-//import java.net.ServerSocket;
 import java.net.Socket;
 
 import xmlParser.FileToParse;
+import Files.RequestFile;
 
 
 class snortHead extends Thread {
-    private int fileLength, readBytes;
-    
-    //private ServerSocket serverSocket = null;
+
     private Socket clientSocket       = null;
-    private byte[] byteArray          = null;
-    private String name               = null;
-    
-    private BufferedOutputStream bos = null;
-    private BufferedInputStream bis  = null;
-    private FileOutputStream fos     = null;
-    private FileInputStream fis      = null;
-    private OutputStream os          = null;
-    private InputStream is           = null;
-    private File received            = null;
-    private File send                = null;
+    RequestFile request;
     
     /**
      * En konstruktor som inte gör så vidare mycket alls.
@@ -55,68 +42,68 @@ class snortHead extends Thread {
     snortHead(Socket clientSocket, long time, int random) {
         super("snortHead");
         this.clientSocket = clientSocket;
+       
         /**
          * Filnamnet är på formatet "(sekunder sedan 1 januari 1970)_(pseudoslumpat
          * hexadecimalt värde)_(received eller send).xml".
          */
-        this.name     = time + "_" + Integer.toHexString(random);
-        this.received = new File( name + "_received.xml" );
-        this.send     = new File( name + "_send.xml" );
+        String fileName = time + "_" + Integer.toHexString(random);
+        request = new RequestFile( new File( fileName + "_received.xml" ),
+    			new File( fileName + "_send.xml" ) );
     }
     
     /**
      * Startas av Thread
      */
     public void start() {
-        try {
+        try {  	
+        	
             /*******************************************************************
              * Tar emot filen.
              */
             // Uppskattad maximal filstorlek, 1 MB. Det är generöst.
-            fileLength = 1024*1024;
-            byteArray = new byte[fileLength];
+            int fileLength = 1024*1024;
+            byte[] byteArray = new byte[fileLength];
             
-            is = clientSocket.getInputStream();
-            readBytes = is.read(byteArray);
+            InputStream is = clientSocket.getInputStream();
+            int readBytes = is.read(byteArray);
             
-            fos = new FileOutputStream(received);
-            bos = new BufferedOutputStream(fos);
+            BufferedOutputStream bos = new BufferedOutputStream( new FileOutputStream( request.getRequest() ) );
             bos.write(byteArray, 0, readBytes);
             bos.flush();
             
             /*******************************************************************
              * Anropar parser.
              */
-             new FileToParse().parseFile(received, send);
+             new FileToParse().parseFile( request );
             
             /*******************************************************************
              * Skickar filen.
              */
-            fileLength = (int)send.length();
+            fileLength = (int)request.getAnswer().length();
             byteArray = new byte[fileLength];
             
-            fis = new FileInputStream(send);
-            bis = new BufferedInputStream(fis);
+            BufferedInputStream bis = new BufferedInputStream( new FileInputStream( request.getAnswer() ) );
             bis.read(byteArray, 0, fileLength);
             
-            os = clientSocket.getOutputStream();
+            OutputStream os = clientSocket.getOutputStream();
             os.write(byteArray, 0, fileLength);
             os.flush();
 
             clientSocket.close();
         } catch(IOException e) {
             System.err.println(e);
-            received.delete();
-            send.delete();
+            
+            request.delete();
+            
             System.exit(-1);
         }
         
         /***********************************************************************
          * Vi tar bort filerna när vi är klara.
          */
-        /* XXX På begäran av Olle ligger dessa filer kvar till en början.
-        received.delete();
-        send.delete();
-        */
+
+        request.delete();
+        
     }
 }

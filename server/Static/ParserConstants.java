@@ -28,10 +28,10 @@ public class ParserConstants
 		AllowedAttributes.add("relaseDate");  // could either be date when it was added to	the server of first released.
 		AllowedAttributes.add("size");  // the size of the actual application (the “binary” file).
 		AllowedAttributes.add("category");  // specifies which category the application should be stored in.
-		AllowedAttributes.add("description");  // a string giving a description of the application.
-		AllowedAttributes.add("applicationInfoUrl");  // a string that contains an URL with more information about the application..
-		AllowedAttributes.add("screenShotURL");  // a string specifying an URL that points to	where a screenshot of the application can be found.
-		AllowedAttributes.add("iconURL");  // a string specifying an URL that points to where an icon representing the application can be found.
+		AllowedAttributes.add("shortDescription");  // a string giving a description of the application.
+		//AllowedAttributes.add("applicationInfoUrl");  // a string that contains an URL with more information about the application..
+		AllowedAttributes.add("Screenshot");  // a string specifying an URL that points to	where a screenshot of the application can be found.
+		AllowedAttributes.add("icon");  // a string specifying an URL that points to where an icon representing the application can be found.
 		AllowedAttributes.add("primaryDownloadURL");  // URL that points towards the primary download location.
 		AllowedAttributes.add("secondaryDownloadURL");  // URL that points towards the secondary download location.
 		AllowedAttributes.add("downloadOtherURL1");  // URL that points towards the primary mirror download location.

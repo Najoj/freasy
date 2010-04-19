@@ -1,5 +1,6 @@
 package Static;
 
+import java.io.File;
 import Database.PADSQL;
 
 public class Initializer 
@@ -8,6 +9,8 @@ public class Initializer
 	public static void initialize()
 	{
 		ParserConstants.Initialize();
+		
+		FilePrinter.setRequestLog( new File("requestLog") );
 		
 		try	{ PADSQL.Initialize(); }
 		catch (Exception e)	
