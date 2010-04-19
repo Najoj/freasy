@@ -37,7 +37,7 @@ public class snor {
      */
     private static final int PORT = 8989;
     private static final Random random = new Random();
-    private static Date date = new Date();
+    //private static Date date = new Date();
     private static ServerSocket serverSocket;
     /**
      * @author  Johan Öhlin <johanohl@kth.se>

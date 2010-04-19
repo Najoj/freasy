@@ -22,7 +22,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
@@ -38,11 +38,11 @@ public class snorTest {
     private static final int PORT = 8989;
     private static final File skicka = new File("SKICKA");
     private static final File taemot = new File("TAMOT");
-    private static int fileLength, i;
+    private static int fileLength;//, i;
     
     private static byte[] byteArray = null;
     private static Socket socket = null;
-    private static File file = null;
+    //private static File file = null;
     
     private static BufferedInputStream bis = null;
     private static BufferedOutputStream bos = null;

@@ -21,33 +21,33 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.ServerSocket;
+//import java.net.ServerSocket;
 import java.net.Socket;
 
 import xmlParser.FileToParse;
 
 
 class snortHead extends Thread {
-    private static int fileLength, readBytes;
+    private int fileLength, readBytes;
     
-    private static ServerSocket serverSocket = null;
-    private static Socket clientSocket       = null;
-    private static byte[] byteArray          = null;
-    private static String name               = null;
+    //private ServerSocket serverSocket = null;
+    private Socket clientSocket       = null;
+    private byte[] byteArray          = null;
+    private String name               = null;
     
-    private static BufferedOutputStream bos = null;
-    private static BufferedInputStream bis  = null;
-    private static FileOutputStream fos     = null;
-    private static FileInputStream fis      = null;
-    private static OutputStream os          = null;
-    private static InputStream is           = null;
-    private static File received            = null;
-    private static File send                = null;
+    private BufferedOutputStream bos = null;
+    private BufferedInputStream bis  = null;
+    private FileOutputStream fos     = null;
+    private FileInputStream fis      = null;
+    private OutputStream os          = null;
+    private InputStream is           = null;
+    private File received            = null;
+    private File send                = null;
     
     /**
      * En konstruktor som inte gör så vidare mycket alls.
