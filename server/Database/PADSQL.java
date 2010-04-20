@@ -33,6 +33,8 @@ import java.util.Properties;
 	    	
 	    	try 
 	    	{
+	    		
+	    			System.out.println("Skickar följande SQL-sats:\n\n"+query);
 
 	    			ResultSet rs = db.createStatement().executeQuery(query);
 
@@ -66,13 +68,13 @@ import java.util.Properties;
 	    		e.printStackTrace();
 	    		return null;
 	    	}
-	    	catch( Exception e)
+	    	/*catch( Exception e)
 	    	{
 	    		System.err.println("Något är allvarligt fel!");
 	    		System.err.println("Exception: "+e.getMessage());
 	    		e.printStackTrace();
 	    		return null;
-	    	}
+	    	}*/
 	}
 	}
 	

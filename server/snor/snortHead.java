@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import java.net.SocketException;
+
 import xmlParser.FileToParse;
 import Files.RequestFile;
 
@@ -48,8 +50,8 @@ class snortHead extends Thread {
          * hexadecimalt värde)_(received eller send).xml".
          */
         String fileName = time + "_" + Integer.toHexString(random);
-        request = new RequestFile( new File( fileName + "_received.xml" ),
-    			new File( fileName + "_send.xml" ) );
+        request = new RequestFile( new File( fileName + "_request.xml" ),
+    			new File( fileName + "_answer.xml" ) );
     }
     
     /**
@@ -58,6 +60,8 @@ class snortHead extends Thread {
     public void start() {
         try {  	
         	
+        	System.out.println("Connection gjord!");
+        	
             /*******************************************************************
              * Tar emot filen.
              */
@@ -65,12 +69,19 @@ class snortHead extends Thread {
             int fileLength = 1024*1024;
             byte[] byteArray = new byte[fileLength];
             
-            InputStream is = clientSocket.getInputStream();
-            int readBytes = is.read(byteArray);
+            try
+            {
+            	InputStream is = clientSocket.getInputStream();
+            	int readBytes = is.read(byteArray);
             
-            BufferedOutputStream bos = new BufferedOutputStream( new FileOutputStream( request.getRequest() ) );
-            bos.write(byteArray, 0, readBytes);
-            bos.flush();
+            	BufferedOutputStream bos = new BufferedOutputStream( new FileOutputStream( request.getRequest() ) );
+            	bos.write(byteArray, 0, readBytes);
+            	bos.flush();
+            }
+            catch ( SocketException e )
+            {
+            	System.out.println( e.getMessage() );
+            }
             
             /*******************************************************************
              * Anropar parser.
