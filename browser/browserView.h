@@ -17,5 +17,6 @@ char* getAppName(int index);
  * SET FUNCTIONS
  **************************************************/
 void putApp(char*); //The freasy class can add apps to the list via this function
+void putInfoScreen(Screen*); //Add info-screens to the view TODO
 
 #endif /* BROWSERVIEW_H_ */
