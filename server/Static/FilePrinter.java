@@ -1,8 +1,10 @@
 package Static;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class FilePrinter
 
 	public static void printToFile( File file, String s )
 	{
-		
+
 		//System.out.println(s);
         try 
         {
@@ -39,6 +41,28 @@ public class FilePrinter
         }
         
 	}
+	
+	public static void printFileToTerminal( File file )
+	{
+		
+		try 
+		{
+			
+			BufferedInputStream in = new BufferedInputStream( new FileInputStream(file) );
+
+            byte[] byteArray = new byte[ (int)file.length() ];
+			
+            in.read( byteArray );
+            
+            System.out.println( new String( byteArray ) );
+            
+	    }
+	    catch (IOException e)
+	    {
+	    	
+	    }
+	}
+	
 	
 	public static void appendToFile( File file, String s )
 	{

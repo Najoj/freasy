@@ -27,14 +27,14 @@ import java.util.Properties;
 
 	    }
 	    
-	    public static ArrayList<HashMap<String,String>> SendQuery( String query, int expectedLength ) 
+	    public static ArrayList<HashMap<String,String>> SendQuery( String query, int expectedLength ) throws SQLException
 	    {
 
 	    	
-	    	try 
-	    	{
+	    	//try 
+	    	//{
 	    		
-	    			System.out.println("Skickar följande SQL-sats:\n\n"+query);
+	    			//System.out.println("Skickar följande SQL-sats:  "+query);
 
 	    			ResultSet rs = db.createStatement().executeQuery(query);
 
@@ -60,7 +60,8 @@ import java.util.Properties;
 
 					return PAD_table;
 		
-	    	} 
+	    	//} 
+					/*
 	    	catch(SQLException e) 
 	    	{
 	    		System.err.println("error!");
@@ -68,6 +69,7 @@ import java.util.Properties;
 	    		e.printStackTrace();
 	    		return null;
 	    	}
+	    	*/
 	    	/*catch( Exception e)
 	    	{
 	    		System.err.println("Något är allvarligt fel!");

@@ -35,32 +35,18 @@ public class snor {
      *  XXX  Kom ihåg att ändra denna!  XXX
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
      */
-    private static final int PORT = 8989;
-    private static final Random random = new Random();
-    //private static Date date = new Date();
+    private final static int PORT = 8989;
+    private final static Random random = new Random();
+
     private static ServerSocket serverSocket;
     /**
      * @author  Johan Öhlin <johanohl@kth.se>
      * @brief   Startar avlyssningen.
      */
-    public static void main(String args[]) {
-        /**
-         * Längden av indata ska vara noll, annars antar vi att något är fel.
-         */
-        if(args.length != 0) {
-            System.err.println(new Date() + ": För många argument (" +
-                args.length + " stycken) så jag antar att något är fel.");
-            /**
-             * Eventuellt något onödigt, men kan vara intressant. Får anta att
-             * vi inte hamnar här så värst ofta.
-             */ 
-            for(int i = 0; i < args.length; i++)
-                System.err.print(args[i] + " ");
-            System.err.println("");
-            System.exit(-1);
-        }
-        
-        /**		
+    public static void main(String args[]) 
+    {
+
+    	/**		
         * Initializes the Static classes.		
         * @author Olle Hassel		
         */		
@@ -69,26 +55,29 @@ public class snor {
         /**
          * Försöker att skapa en ServerSocket.
          */
-        try {
+        try 
+        {
             serverSocket = new ServerSocket(PORT);
-        } catch(IOException e) {
+        } 
+        catch(IOException e) 
+        {
             System.err.println(new Date() + ": Fel vid försök av att skapa en" + 
                 " ServerSocket: " + e);
             System.exit(-1);
         }
         
-
         /**
          * Accepterar klienter som kommer.
          */
         while(true) {
             try {
                 System.out.print(new Date() + ": Väntar... ");
-                new snortHead(serverSocket.accept(),
-                              new Date().getTime(),
-                              random.nextInt() ).start();
+                
+                new snortHead(serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
                 System.out.println("Tråd skapad.");
-            } catch(IOException e) {
+            } 
+            catch(IOException e) 
+            {
                 System.err.println(new Date() + ": " + e);
             }
         }

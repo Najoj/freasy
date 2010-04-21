@@ -502,7 +502,7 @@ public class Request // implements InterfaceRequest
 		sb.append("   number_of_objects: " + NumberOfObjects );
 		sb.append("\n");
 		
-		sb.append("-PAD_reference_object");
+		sb.append("-pad_reference_object");
 		sb.append("\n");
 		
 		Iterator<String> PADiter = ReferenceObject.iterator();

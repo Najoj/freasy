@@ -31,11 +31,12 @@ import java.net.SocketException;
 
 import xmlParser.FileToParse;
 import Files.RequestFile;
+import Static.FilePrinter;
 
 
 class snortHead extends Thread {
 
-    private Socket clientSocket       = null;
+    private Socket clientSocket;
     RequestFile request;
     
     /**
@@ -50,8 +51,7 @@ class snortHead extends Thread {
          * hexadecimalt värde)_(received eller send).xml".
          */
         String fileName = time + "_" + Integer.toHexString(random);
-        request = new RequestFile( new File( fileName + "_request.xml" ),
-    			new File( fileName + "_answer.xml" ) );
+        request = new RequestFile( new File( fileName + "_request.xml" ), new File( fileName + "_answer.xml" ) , fileName);
     }
     
     /**
@@ -65,43 +65,51 @@ class snortHead extends Thread {
             /*******************************************************************
              * Tar emot filen.
              */
-            // Uppskattad maximal filstorlek, 1 MB. Det är generöst.
-            int fileLength = 1024*1024;
-            byte[] byteArray = new byte[fileLength];
+            // Uppskattad maximal filstorlek, 5 KB.
+        	
             
             try
             {
-            	InputStream is = clientSocket.getInputStream();
-            	int readBytes = is.read(byteArray);
-            
+            	InputStream is = clientSocket.getInputStream();              	
+
+            	int maxFileLength = 5*1024;
+                byte[] byteArray = new byte[ maxFileLength ];
+                
+                int requestFileLength = is.read(byteArray);
+   
             	BufferedOutputStream bos = new BufferedOutputStream( new FileOutputStream( request.getRequest() ) );
-            	bos.write(byteArray, 0, readBytes);
+            	bos.write(byteArray, 0, requestFileLength);
             	bos.flush();
+            	
+            	FilePrinter.printFileToTerminal( request.getRequest() ); // Debug
+	
+            	/*******************************************************************
+             	* Anropar parser.
+             	*/
+            	new FileToParse().parseFile( request );
+            
+             	/*******************************************************************
+             	* Skickar filen.
+             	*/
+             	int answerFileLength = (int)request.getAnswer().length();
+            	byteArray = new byte[answerFileLength];
+            
+            	BufferedInputStream bis = new BufferedInputStream( new FileInputStream( request.getAnswer() ) );
+            	bis.read(byteArray, 0, answerFileLength);
+            
+            	OutputStream os = clientSocket.getOutputStream();
+            	os.write(byteArray, 0, answerFileLength);
+           		os.flush();
+          		
+            	clientSocket.close();
+            
             }
             catch ( SocketException e )
             {
             	System.out.println( e.getMessage() );
             }
-            
-            /*******************************************************************
-             * Anropar parser.
-             */
-             new FileToParse().parseFile( request );
-            
-            /*******************************************************************
-             * Skickar filen.
-             */
-            fileLength = (int)request.getAnswer().length();
-            byteArray = new byte[fileLength];
-            
-            BufferedInputStream bis = new BufferedInputStream( new FileInputStream( request.getAnswer() ) );
-            bis.read(byteArray, 0, fileLength);
-            
-            OutputStream os = clientSocket.getOutputStream();
-            os.write(byteArray, 0, fileLength);
-            os.flush();
 
-            clientSocket.close();
+            
         } catch(IOException e) {
             System.err.println(e);
             

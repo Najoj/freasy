@@ -10,18 +10,18 @@ public class RequestFile
 
 	private File Request;
 	private File Answer;
-	
+
 	private StringBuilder log;
 	
 	private boolean Save;
 	
-	public RequestFile( File Request, File Answer)
+	public RequestFile( File Request, File Answer, String FileName)
 	{
 		this.Request = Request;
 		this.Answer = Answer;
 		Save = false;
 		log = new StringBuilder();
-		log.append( new Date().toString() + " : " );
+		log.append( new Date().toString() + " : " + FileName + " : " );
 	}
 	
 	public void appendToLog( String s )
@@ -61,6 +61,8 @@ public class RequestFile
 		else
 		{
 			appendToLog( Request.getName() + " - " + Answer.getName() );
+			
+			Answer.delete();
 		}
 	}
 	

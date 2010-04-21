@@ -1,6 +1,8 @@
 
 package xmlParser;
 import java.io.File;
+import java.sql.SQLException;
+
 import org.xml.sax.SAXParseException;
 import Database.PADSQL;
 import Files.RequestFile;
@@ -35,7 +37,7 @@ public class FileToParse
 			request.parseXML();
 
 			//System.out.println(request.toString());
-						
+				
 			Answer answer = new Answer( PADSQL.SendQuery(request.toSQL(), request.getNumberOfObjects()),
 					request.getOffset() );
 
@@ -66,6 +68,12 @@ public class FileToParse
 			files.appendToLog( "Requesten har genrererat ett SAXParseException." );
 			
 			files.setSave(true);
+		}
+		catch(SQLException e) 
+		{
+    		System.err.println("error!");
+    		System.err.println("Exception: "+e.getMessage());
+    		e.printStackTrace();
 		}
 		catch ( Exception e )
 		{

@@ -22,27 +22,27 @@ public class ParserConstants
 		AllowedOperators = new HashSet<String>();
 		
 	
-		AllowedAttributes.add("appName");  // the name of the application.
-		AllowedAttributes.add("appId");  // a unique identifier for this specific application.
+		AllowedAttributes.add("app_name");  // the name of the application.
+		AllowedAttributes.add("app_id");  // a unique identifier for this specific application.
 		AllowedAttributes.add("versions");  // version number of the application.
-		AllowedAttributes.add("relaseDate");  // could either be date when it was added to	the server of first released.
+		AllowedAttributes.add("release_date");  // could either be date when it was added to	the server of first released.
 		AllowedAttributes.add("size");  // the size of the actual application (the “binary” file).
 		AllowedAttributes.add("category");  // specifies which category the application should be stored in.
-		AllowedAttributes.add("shortDescription");  // a string giving a description of the application.
-		//AllowedAttributes.add("applicationInfoUrl");  // a string that contains an URL with more information about the application..
-		AllowedAttributes.add("Screenshot");  // a string specifying an URL that points to	where a screenshot of the application can be found.
+		AllowedAttributes.add("short_description");  // a string giving a description of the application.
+		AllowedAttributes.add("long_description");  // a string that contains an URL with more information about the application..
+		AllowedAttributes.add("screenshot");  // a string specifying an URL that points to	where a screenshot of the application can be found.
 		AllowedAttributes.add("icon");  // a string specifying an URL that points to where an icon representing the application can be found.
-		AllowedAttributes.add("primaryDownloadURL");  // URL that points towards the primary download location.
-		AllowedAttributes.add("secondaryDownloadURL");  // URL that points towards the secondary download location.
-		AllowedAttributes.add("downloadOtherURL1");  // URL that points towards the primary mirror download location.
-		AllowedAttributes.add("downloadOtherURL2");  // URL that points towards the secondary	mirror download location.
-		AllowedAttributes.add("companyName");  // name of the company that made the application.
-		AllowedAttributes.add("companyAddress");  // address of that company.
-		AllowedAttributes.add("companyURL");  // URL to the company’s website.
-		AllowedAttributes.add("authorFirstName");  // First name of the author.
-		AllowedAttributes.add("authorLastName");  // Last name of the author.
-		AllowedAttributes.add("authorEmail");  // Email-adress to the author.
-		AllowedAttributes.add("applicationHash");  // a calculated checksum of the actual application (i.e. the binary file).
+		AllowedAttributes.add("primary_download_url");  // URL that points towards the primary download location.
+		AllowedAttributes.add("secondary_download_url");  // URL that points towards the secondary download location.
+		AllowedAttributes.add("download_other_url1");  // URL that points towards the primary mirror download location.
+		AllowedAttributes.add("download_other_url2");  // URL that points towards the secondary	mirror download location.
+		AllowedAttributes.add("company_name");  // name of the company that made the application.
+		AllowedAttributes.add("company_address");  // address of that company.
+		AllowedAttributes.add("company_url");  // URL to the company’s website.
+		AllowedAttributes.add("author_first_name");  // First name of the author.
+		AllowedAttributes.add("author_last_name");  // Last name of the author.
+		AllowedAttributes.add("author_email");  // Email-adress to the author.
+		AllowedAttributes.add("application_hash");  // a calculated checksum of the actual application (i.e. the binary file).
 		
 		
 		AllowedOperators.add("="); // The operators allowed in the match_by tag
