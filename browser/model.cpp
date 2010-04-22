@@ -1,43 +1,31 @@
 #include "model.h"
 
-model::model () {
 
+model::model () : connection (this) {
+
+	int result = connection.connect ("socket://home.ohassel.se:8989");
+	if (result < 0) maPanic (result, "connection failed");
 }
 
 model::~ model () {
-
+	connection.close ();
 }
+
 
 /*********************************************************************
  * GET FUNCTIONS
  *********************************************************************/
 
-application ** model::get_applications (String * filter) {
-	return NULL;
+application * model::get_applications (char * filter) {
+	return applications;
 }
 
-String * model::get_icon (String * app_name) {
+application * model::get_info (const char * app_name) {
+	for (int i = 0; i < count; i ++) {
+		if (strcmp (applications [i].name, app_name) == 0)
+			return & applications [i];
+	}
 	return NULL;
-}
-
-String * model::get_description (String * app_name) {
-	return NULL;
-}
-
-String * model::get_screenshot (String * app_name) {
-	return NULL;
-}
-
-String * model::get_author (String * app_name) {
-	return NULL;
-}
-
-String ** model::get_comments (String * app_name) {
-	return NULL;
-}
-
-int model::get_grade (String * app_name) {
-	return -1;
 }
 
 
@@ -59,16 +47,64 @@ int model::add_runtime_statistics (String * app_name, bool success) {
 
 
 /*********************************************************************
- * UTILITY FUNCTIONS
+ * ConnectionListner functions
  *********************************************************************/
 
-application * model::download_app (String * app_name) {
+void model::connReadFinished (Connection * connection, int result) {
 
 }
 
-extern "C" int MAMain () {
-	model model;
-	model.parser.feed (
-			"<?xml version=\"1.0\" encoding=\"utf-8\"?><test><name>yarr</name><description>we are testing to parse!</description></test>");
+void model::connWriteFinished (Connection * connection, int result) {
+	if (result < 0) printf ("failed to write!\n");
+	else receive_answer ();
+}
+
+void model::connRecvFinished (Connection * connection, int result) {
+	if (result < 0) printf ("failed to receive answer!\n");
+	else {
+		//printf ("%s\n", buffer);
+		parse (buffer);
+	}
+}
+
+void model::connectFinished (Connection * connection, int result) {
+	if (result >= 0) {
+		printf ("finnished connecting!\n");
+		send_request ();
+	}
+	else maPanic (result, "failed to connect!");
+}
+
+
+/*********************************************************************
+ * UTILITY FUNCTIONS
+ *********************************************************************/
+
+void model::parse (char * data) {
+	printf ("parsing...\n");
+	parser.process (data);
+	count = parser.parse (data);
+	printf ("done parsing, %d elements\n", count);
+	applications = parser.get_applications ();
+
+	for (int i = 0; i < count; i ++) {
+		printf (" ******** APPLICATION %d ********** \n", i);
+		printf ("name : %s\n", applications [i].name);
+		printf ("id : %d\n", applications [i].id);
+		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
+		printf ("description : %s\n", applications [i].description);
+		printf ("category : %s\n", applications [i].category);
+		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
+	}
+}
+
+int model::send_request () {
+	String req = String ("<request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>5</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
+	connection.write (req.c_str (), req.length());
+	return 0;
+}
+
+int model::receive_answer () {
+	this->connection.recv (buffer, 1024);
 	return 0;
 }
