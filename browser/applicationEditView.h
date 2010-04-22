@@ -21,6 +21,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <MAUI/Screen.h>
 #include <MAUI/ListBox.h>
 #include <MAUI/Layout.h>
+#include "viewInterface.h"
 
 using namespace MAUI;
 
@@ -28,7 +29,7 @@ using namespace MAUI;
  *  The screen class used for demonstrating how to
  *  use \a EditBoxes and their different modes.
  */
-class AppEditView : public Screen, WidgetListener {
+class AppEditView : public MainScreen {
 public:
 	/**
 	 * Constructor
@@ -45,7 +46,7 @@ public:
 	 * Recieves key presses and performs appropriate interaction
 	 * with the UI.
 	 */
-	void keyPressEvent(int keyCode, int nativeCode);
+	//void keyPressEvent(int keyCode, int nativeCode);
 	/**
 	 * Implementation of a \a WidgetListener callback, which
 	 * is notified whenever the selection state of a \a widget

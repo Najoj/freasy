@@ -15,22 +15,16 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA.
 */
 
-#include "viewInterface.h"
 #include "browserView.h"
 
-#include "applicationInfoView.h"
-//#include "ImageScreen.h"
-#include "LayoutScreen.h"
-//#include "EditBoxScreen.h"
-//#include "CustomScreen.h"
 
-#include <conprint.h>
 
-MyMoblet *moblet;
-Vector<char*> appNames;
-AppScreen *currentScreen;
+browserView::browserView() {
 
-MainScreen::MainScreen() {
+	MAExtent screenSize = maGetScrSize();
+	scrWidth = EXTENT_X(screenSize);
+	scrHeight = EXTENT_Y(screenSize);
+
 	//currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
 	screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
 //	screens.add(new AppScreen(this, "Tetris", "Pwn da blocks!"));
@@ -44,7 +38,7 @@ MainScreen::MainScreen() {
 
 	int i;
 	char *str = "MMORPTetris";
-	for(i = 0; i < 10; i++){ //testing
+	for(i = 0; i < 1; i++){ //testing
 		appNames.add(str);
 		//screens.add(new AppScreen(this, str, "Pwn da blocks!"));
 	}
@@ -59,21 +53,26 @@ MainScreen::MainScreen() {
 	this->setMain(layout);
 }
 
-MainScreen::~MainScreen() {
+browserView::~browserView () {
 	delete layout;
 	for(int i = 0; i < screens.size(); i++) delete screens[i];
 }
 
-void putApp(char* name){
+void browserView::putApp(char* name){
 	appNames.add(name);
 }
 
-char* getAppName(int index) {
+char* browserView::getAppName(int index) {
 	if(appNames.size() < index-1)
 		return NULL;
 	return appNames[index];
 }
 
+
+
+
+
+/*
 void MainScreen::keyPressEvent(int keyCode, int nativeCode) {
 	switch(keyCode) {
 	case MAK_UP:
@@ -119,6 +118,7 @@ void MyMoblet::closeEvent() {
 	delete mainScreen;
 }
 
+
 MyMoblet::MyMoblet() {
 	gFont = new MAUI::Font(RES_FONT);
 	gSkin = new WidgetSkin(RES_SELECTED, RES_UNSELECTED, 16, 32, 16, 32, true, true);
@@ -134,8 +134,4 @@ MyMoblet::MyMoblet() {
 
 }
 
-extern "C" int MAMain() {
-	moblet = new MyMoblet();
-	MyMoblet::run(moblet);
-	return 0;
-}
+*/

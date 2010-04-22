@@ -67,7 +67,7 @@ void AppEditView::hide() {
 	listBox->getChildren()[listBox->getSelectedIndex()]->setSelected(false);
 	Screen::hide();
 }
-
+/*
 void AppEditView::keyPressEvent(int keyCode, int nativeCode) {
 	switch(keyCode) {
 			case MAK_UP:
@@ -81,3 +81,4 @@ void AppEditView::keyPressEvent(int keyCode, int nativeCode) {
 				break;
 	}
 }
+*/

@@ -13,7 +13,7 @@
 #include <mastdlib.h>
 #include <MAUtil/Connection.h>
 #include <MAUtil/Downloader.h>
-#include <MAUtil/Moblet.h>
+//#include <MAUtil/Moblet.h>
 
 #ifndef MODEL_H_
 #define MODEL_H_
@@ -139,7 +139,7 @@ class resource_downloader : public ImageDownloader, DownloadListener {
  * providing information about applications to other classes
  * extends ConnectionListener
  *****************************************************************************/
-class model : public Moblet, ConnectionListener {
+class model : public ConnectionListener {
 
 	public :
 		model   () ;

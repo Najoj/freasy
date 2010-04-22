@@ -40,40 +40,45 @@ using namespace MAUtil;
 /* FUNCTION AND VAR DEFINITIONS */
 #define PADDING 5
 
-void setLabelPadding(Widget *w);
-Label* createLabel(const char *str, int height=32);
-Widget* createSoftKeyBar(int height, const char *left, const char *right);
-Layout* createMainLayout(const char *left, const char *right);
-
-extern Font *gFont;
-extern WidgetSkin *gSkin;
-extern int scrWidth;
-extern int scrHeight;
-
-Widget* createSoftKeyBar(int height, char *left, char *right);
 
 /* CLASS DEFINITIONS */
-class MainScreen : public Screen {
+class MainScreen : public Screen, public WidgetListener {
 public:
-	MainScreen();
-	~MainScreen();
-	void keyPressEvent(int keyCode, int nativeCode);
-private:
+	//MainScreen();
+	//~MainScreen();
+
+	void setLabelPadding(Widget *w);
+	Label* createLabel(const char *str, int height=32);
+	Widget* createSoftKeyBar(int height, const char *left, const char *right);
+	Layout* createMainLayout(const char *left, const char *right);
+
+	Font *gFont;
+	WidgetSkin *gSkin;
+	int scrWidth;
+	int scrHeight;
+	//void keyPressEvent(int keyCode, int nativeCode);
 	Vector<Screen*> screens;
 	ListBox* listBox;
 	Layout* layout;
-};
 
-class MyMoblet : public Moblet  {
-public:
-	MyMoblet();
-	void keyPressEvent(int keyCode, int nativeCode);
-	void keyReleaseEvent(int keyCode, int nativeCode);
-
-	void closeEvent();
 
 private:
-	Screen *mainScreen;
+
+
+	Widget* createSoftKeyBar(int height, char *left, char *right);
+
 };
+
+//class MyMoblet : public Moblet  {
+//public:
+//	MyMoblet();
+//	void keyPressEvent(int keyCode, int nativeCode);
+//	void keyReleaseEvent(int keyCode, int nativeCode);
+//
+//	void closeEvent();
+//
+//private:
+//	Screen *mainScreen;
+//};
 
 #endif /* _VIEWINTERFACE_H_ */

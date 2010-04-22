@@ -71,6 +71,7 @@ AppScreen::~AppScreen() {
 	delete mainLayout;
 }
 
+/*
 void AppScreen::keyPressEvent(int keyCode, int nativeCode) {
 	switch(keyCode) {
 			case MAK_SOFTRIGHT:
@@ -91,3 +92,4 @@ void AppScreen::keyPressEvent(int keyCode, int nativeCode) {
 
 }
 
+*/

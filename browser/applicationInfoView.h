@@ -18,11 +18,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #ifndef _LABELSCREEN_H_
 #define _LABELSCREEN_H_
 
-class AppScreen : public Screen {
+class AppScreen : public MainScreen {
 public:
 	AppScreen(Screen *previous, char *title, char *desc);
 	~AppScreen();
-	void keyPressEvent(int keyCode, int nativeCode);
+	//void keyPressEvent(int keyCode, int nativeCode);
 	int addInfo(char*);
 private:
 	Screen *previous;

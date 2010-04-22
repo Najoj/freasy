@@ -19,20 +19,20 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <MAUI/Layout.h>
 #include <MAUI/ListBox.h>
 #include "viewInterface.h"
-
+/*
 Font *gFont;
 WidgetSkin *gSkin;
 int scrWidth;
 int scrHeight;
-
-void setLabelPadding(Widget *w) {
+*/
+void MainScreen::setLabelPadding(Widget *w) {
 	w->setPaddingLeft(PADDING);
 	w->setPaddingBottom(PADDING);
 	w->setPaddingRight(PADDING);
 	w->setPaddingTop(PADDING);
 }
 
-Label* createLabel(const char *str, int height) {
+Label* MainScreen::createLabel(const char *str, int height) {
 	Label *label;
 	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
 	label->setSkin(gSkin);
@@ -40,7 +40,7 @@ Label* createLabel(const char *str, int height) {
 	return label;
 }
 
-Widget* createSoftKeyBar(int height, const char *left, const char *right) {
+Widget* MainScreen::createSoftKeyBar(int height, const char *left, const char *right) {
 	Layout *layout = new Layout(0, 0, scrWidth, height, NULL, 2, 1);
 	Label *label;
 
@@ -58,7 +58,13 @@ Widget* createSoftKeyBar(int height, const char *left, const char *right) {
 }
 
 // first child is listbox
-Layout* createMainLayout(const char *left, const char *right) {
+Layout* MainScreen::createMainLayout(const char *left, const char *right) {
+	gFont = new MAUI::Font(RES_FONT);
+	gSkin = new WidgetSkin(RES_SELECTED, RES_UNSELECTED, 16, 32, 16, 32, true, true);
+	Engine& engine = Engine::getSingleton();
+	engine.setDefaultFont(gFont);
+	engine.setDefaultSkin(gSkin);
+
 	Layout *mainLayout = new Layout(0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
 	Widget *softKeys = createSoftKeyBar(30, left, right);
