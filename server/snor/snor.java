@@ -2,82 +2,88 @@
  *  
  *  Send aNd Only Recive    (SNOR)
  *
- *  Skriven av Johan Öhlin
- *             johanohl@kth.se
+ *  Writtend by Johan Öhlin     and Olle Hassel
+ *              johanohl@kth.se     ohassel@kth.se
  *
- *  Licens:   GNU General Public License, version 2
+ *  License:  GNU General Public License, version 2
  *
- *  Version:  2010.04.17
+ *  Version:  2010.04.23
  *  
- *  Beskrivning:  Server. Lyssnar på socket som server och startar ny tråd som
- *                        tar hand om resten.
+ *  Description:  Server. Listens to a socket for a connection to come which
+ *                then is passed on to snortHead.java. See Java's API on Socket
+ *                and ServerSocket for more understanding.
  *  
 \******************************************************************************/
 
 package snor;
 
+/*******************************************************************************
+ *  Java library imports.
+ */
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Random;
 
+/*******************************************************************************
+ *  Other imports.
+ */
 import Static.Initializer;
 
-/**
- * Använder Javas ServerSocket-klass som lyssnas för att kunna ta emot en
- * förfrågan som sedan vidarebefodras till trådklassen snortHead.java.
+/*******************************************************************************
+ * Listens to a socket for a connection to come which then is passed on to
+ * snortHead.java class. See Java's API on Socket and ServerSocket for in-depth
+ * understanding.
+ * @brief   Server
  * @author  Johan Öhlin <johanohl@kth.se>
- * @note    Byt port om du behöver.
+ * @author  Olle Hassel <ohassel@kth.se>
+ * @note    Remember to change \c PORT.
  */
 public class snor {
-    /*
-     *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
-     *  XXX  Kom ihåg att ändra denna!  XXX
-     *  XXX XXX XXX XXX XXX XXX XXX XXX XXX
+    /***************************************************************************
+     *  XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+     *  XXX Remember to change for you own purpose! XXX
+     *  XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
      */
     private final static int PORT = 8989;
     private final static Random random = new Random();
 
     private static ServerSocket serverSocket;
-    /**
+    /***************************************************************************
      * @author  Johan Öhlin <johanohl@kth.se>
-     * @brief   Startar avlyssningen.
+     * @author  Olle Hassel <ohassel@kth.se>
+     * @brief   Waits for a handshake.
+     * @arg     No arguments what so ever.
      */
-    public static void main(String args[]) 
-    {
-
-    	/**		
-        * Initializes the Static classes.		
-        * @author Olle Hassel		
-        */		
+    public static void main(String args[]) {
+        /***********************************************************************
+         * Initializes the Static classes.
+         */		
         Initializer.initialize();
                 
-        /**
-         * Försöker att skapa en ServerSocket.
+        /***********************************************************************
+         * Attempts to create a ServerSocket on given port.
          */
-        try 
-        {
+        try {
             serverSocket = new ServerSocket(PORT);
-        } 
-        catch(IOException e) 
-        {
+        } catch(IOException e) {
             System.err.println(new Date() + ": Fel vid försök av att skapa en" + 
                 " ServerSocket: " + e);
             System.exit(-1);
         }
         
-        /**
-         * Accepterar klienter som kommer.
+        /***********************************************************************
+         * Accepts all clients comming, unless something bad happens.
          */
         while(true) {
             try {
                 System.out.print(new Date() + ": Väntar... ");
-                
-                new snortHead(serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
-                System.out.println("Tråd skapad.");
-            } 
-            catch(IOException e) 
-            {
+                new snortHead( serverSocket.accept(),
+                               new Date().getTime(),
+                               random.nextInt()
+                               ).start();
+                System.out.println(" Tråd skapad.");
+            } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);
             }
         }
