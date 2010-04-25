@@ -7,7 +7,7 @@
 
 #include "freasy.h"
 
-Freasy::Freasy(){
+Freasy::Freasy () {
 //	settings = fopen(settings_file_name, "r");
 //	favorites = fopen(favorites_file_name, "r");
 //	fclose(settings);
@@ -15,12 +15,14 @@ Freasy::Freasy(){
 
 	//printf ("tjena!\n");
 
-	/*
+
+
+	new InputControllerX (this);
+
 	view = new browserView ();
 	view->show();
-	*/
 
-	this->addKeyListener(& controller);
+
 }
 
 Freasy::~Freasy(){

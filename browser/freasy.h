@@ -9,17 +9,20 @@
 #define FREASY_H_
 
 #include <MAFS/File.h>
+#include <MAUtil/Environment.h>
+#include <MAUtil/Moblet.h>
+
 #include "model.h"
 #include "browserView.h"
 #include "applicationEditView.h"
 #include "applicationInfoView.h"
-#include "InputController2.h"
-#include <MAUtil/Moblet.h>
+
+
 
 /*
  * CLASS DEFINITIONS
  */
-class Freasy : public Moblet{
+class Freasy : public Moblet {
 public:
 	Freasy ();
 	~Freasy();
@@ -48,7 +51,6 @@ private :
 	const char* favorites_file_name;
 	//Screen *currentScreen; //The active screen, named View in the ADD 1.2
 
-	InputControllerX controller;
 	/*
 	 * SETTERS
 	 */
@@ -64,6 +66,41 @@ private :
 	int loadFavorites	(char* filePath);
 
 };
+
+
+
+/**
+ * INPUTCONTROLLERX CLASS
+ * new input controller for handling input from user
+ * extends : KeyListener, PointerListener
+ */
+class InputControllerX : public KeyListener, public PointerListener {
+
+	public:
+
+        InputControllerX   (Freasy * freasy);
+		~ InputControllerX ();
+
+	private :
+
+		/**************************************************************
+		 * KeyListener Functions
+		 **************************************************************/
+		void keyPressEvent   (int keyCode, int nativeCode);
+		void keyReleaseEvent (int keyCode, int nativeCode);
+
+		/**************************************************************
+		 * PointerListener Functions
+		 **************************************************************/
+		void pointerPressEvent   (MAPoint2d point) ;
+		void pointerMoveEvent    (MAPoint2d point) ;
+		void pointerReleaseEvent (MAPoint2d point) ;
+
+		Freasy * freasy;
+
+};
+
+
 
 
 

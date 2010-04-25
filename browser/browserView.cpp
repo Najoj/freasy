@@ -38,7 +38,7 @@ browserView::browserView() {
 
 	int i;
 	char *str = "MMORPTetris";
-	for(i = 0; i < 5; i++){ //testing
+	for(i = 0; i < 10; i++){ //testing
 		appNames.add(str);
 		//screens.add(new AppScreen(this, str, "Pwn da blocks!"));
 	}

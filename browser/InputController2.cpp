@@ -5,11 +5,11 @@
  *      Author: Ximon
  */
 
-#include "InputController2.h"
+#include "freasy.h"
 
-InputControllerX::InputControllerX() {
-
-
+InputControllerX::InputControllerX (Freasy * freasy) {
+	this->freasy = freasy;
+	this->freasy->addKeyListener (this);
 }
 
 InputControllerX::~InputControllerX () {
