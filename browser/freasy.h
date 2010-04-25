@@ -13,7 +13,7 @@
 #include "browserView.h"
 #include "applicationEditView.h"
 #include "applicationInfoView.h"
-#include "InputController.cpp"
+#include "InputController2.h"
 #include <MAUtil/Moblet.h>
 
 /*
@@ -48,6 +48,7 @@ private :
 	const char* favorites_file_name;
 	//Screen *currentScreen; //The active screen, named View in the ADD 1.2
 
+	InputControllerX controller;
 	/*
 	 * SETTERS
 	 */

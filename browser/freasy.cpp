@@ -14,8 +14,13 @@ Freasy::Freasy(){
 //	fclose(favorites);
 
 	//printf ("tjena!\n");
+
+	/*
 	view = new browserView ();
 	view->show();
+	*/
+
+	this->addKeyListener(& controller);
 }
 
 Freasy::~Freasy(){

@@ -12,18 +12,18 @@ using namespace MAUI;
 class InputController : public InputManager {
 
 	public:
-        	InputController();
-		~InputController();
 
+        InputController   ();
+		~ InputController ();
 
 		//Key funcions
-		void keyPress		(int keyCode);
-		void keyRelease		(int keyCode);
+		void keyPressed		(int keyCode);
+		void keyReleased	(int keyCode);
 
 		//Pointer functions (For phones with stylus/touchscreen)
-		void pointerPress	(int x, int y);
-		void pointerMove	(int x, int y);
-		void pointerRelease	(int x, int y);
+		void pointerPressed	 (int x, int y);
+		void pointerMoved	 (int x, int y);
+		void pointerReleased (int x, int y);
 
 
 };
