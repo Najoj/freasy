@@ -36,20 +36,6 @@ browserView::browserView() {
 	layout = createMainLayout("select", "exit");
 	listBox = (ListBox*) layout->getChildren()[0];
 
-	int i;
-	char *str = "MMORPTetris";
-//	for(i = 0; i < 1; i++){ //testing
-//		appNames.add(str);
-////		screens.add(new AppScreen(this, str, "Pwn da blocks!"));
-//	}
-
-	i = 0;
-	while(getAppName(i) != NULL){
-		//screens.add(new AppScreen(this));
-		listBox->add(createLabel(getAppName(i)));
-		i++;
-	}
-
 	this->setMain(layout);
 }
 

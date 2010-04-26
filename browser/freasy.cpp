@@ -22,7 +22,6 @@ Freasy::Freasy () {
 	int i;
 	for(i = 0; i < 1; i++){
 		browser_view->putApp("dummy app");
-		app_info_view = new AppScreen(browser_view, "dummy app", "dummy desc");
 	}
 
 	view = browser_view;
@@ -70,7 +69,9 @@ void Freasy::handle_key_softleft () {
 	switch (current_view) { /* Behave according to our current view */
 
 		case BROWSER_VIEW :
+
 			current_view  = APPLICATION_INFO_VIEW;
+			app_info_view = new AppScreen(browser_view, "dummy app", "dummy desc");
 			view = app_info_view;
 			view->show ();
 			break;
@@ -84,6 +85,7 @@ void Freasy::handle_key_softright () {
 	switch (current_view) { /* Behave according to our current view */
 
 		case BROWSER_VIEW :
+		case APPLICATION_INFO_VIEW :
 			this->closeEvent();
 			this->close();
 			break;
