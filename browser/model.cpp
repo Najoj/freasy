@@ -4,7 +4,7 @@
 model::model () : connection (this) {
 
 	int result = connection.connect ("socket://home.ohassel.se:8989");
-	if (result < 0) maPanic (result, "connection failed");
+	if (result < 0) printf ("connection failed\n");
 }
 
 model::~ model () {
@@ -16,7 +16,7 @@ model::~ model () {
  * GET FUNCTIONS
  *********************************************************************/
 
-application * model::get_applications (char * filter) {
+application * model::get_applications () {
 	return applications;
 }
 
@@ -72,7 +72,7 @@ void model::connectFinished (Connection * connection, int result) {
 		printf ("finnished connecting!\n");
 		send_request ();
 	}
-	else maPanic (result, "failed to connect!");
+	else printf ("%d, Failed to connect\n");
 }
 
 

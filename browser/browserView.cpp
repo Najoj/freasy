@@ -22,12 +22,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 browserView::browserView() {
 
 	MAExtent screenSize = maGetScrSize();
-	scrWidth = EXTENT_X(screenSize);
+	scrWidth  = EXTENT_X(screenSize);
 	scrHeight = EXTENT_Y(screenSize);
 
-	//currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
-//	screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
-//	screens.add(new AppScreen(this, "Tetris", "Pwn da blocks!"));
+//	currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
+	//screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
+	//screens.add(new AppScreen(this, "Tetris", "Pwn da blocks!"));
 //	screens.add(new ImageScreen(this));
 //	screens.add(new EditBoxScreen(this));
 //	screens.add(new LayoutScreen(this));
@@ -55,7 +55,7 @@ browserView::browserView() {
 
 browserView::~browserView () {
 	delete layout;
-	for(int i = 0; i < screens.size(); i++) delete screens[i];
+	for (int i = 0; i < screens.size(); i++) delete screens[i];
 }
 
 void browserView::putApp(char* name){

@@ -36,7 +36,7 @@ public :
 
 private :
 	Vector<char*> appNames;
-	AppScreen *currentScreen;
+	//AppScreen *currentScreen;
 };
 
 #endif /* BROWSERVIEW_H_ */

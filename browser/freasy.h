@@ -30,16 +30,20 @@ public:
 	/*
 	 * HUMAN INTERFACE
 	 */
-	void handleKeyPressed		(int keyCode);
-	void handleKeyReleased		(int keyCode);
-	void handlePointerPressed	(MAPoint2d keyCode);
-	void handlePointerReleased	(MAPoint2d keyCode);
-	void handlePointerMoved		(MAPoint2d keyCode);
+
+	void handle_key_down  ();
+	void handle_key_right ();
+	void handle_key_left  ();
+	void handle_key_up    ();
 
 
 private :
 
-	browserView * view;
+	MainScreen * view;
+
+	browserView * browser_view;
+	AppEditView * app_edit_view;
+	AppScreen   * app_info_view;
 
 	/*
 	 * DATA
@@ -65,6 +69,11 @@ private :
 	int loadSettings	(char* filePath);
 	int loadFavorites	(char* filePath);
 
+	static const int BROWSER_VIEW 		   = 0;
+	static const int APPLICATION_EDIT_VIEW = 1;
+	static const int APPLICATION_INFO_VIEW = 2;
+
+	int current_view;
 };
 
 

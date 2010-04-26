@@ -13,7 +13,6 @@
 #include <mastdlib.h>
 #include <MAUtil/Connection.h>
 #include <MAUtil/Downloader.h>
-//#include <MAUtil/Moblet.h>
 
 #ifndef MODEL_H_
 #define MODEL_H_
@@ -148,19 +147,8 @@ class model : public ConnectionListener {
 		/**************************************************
 		 * GET FUNCTIONS
 		 **************************************************/
-		application * get_applications (char * filter) ;
+		application * get_applications () ;
 		application * get_info		   (const char * app_name) ;
-
-		/*
-		const char  * get_icon 		   (const char * app_name) ;
-		const char  * get_description  (const char * app_name) ;
-		const char  * get_screenshot   (const char * app_name) ;
-		const char  * get_author 	   (const char * app_name) ;
-		const char ** get_comments     (const char * app_name) ;
-		int 		  get_id 		   (const char * app_name) ;
-		int       	  get_grade		   (const char * app_name) ;
-		int 		  get_app_count    ();
-		 */
 
 		/**************************************************
 		 * SET FUNCTIONS
@@ -172,7 +160,7 @@ class model : public ConnectionListener {
 		/**************************************************
 		 * UTILITY FUNCTIONS
 		 **************************************************/
-
+		int	count; /* number of apps */
 
 	private :
 		/**************************************************
@@ -198,7 +186,7 @@ class model : public ConnectionListener {
 		Connection 	  		connection;
 		Downloader 	  		downloader;
 		application * 		applications;
-		int			  		count;
+
 		char 		  		buffer [1024];
 
 		/* home.ohassel.se:8989 */
