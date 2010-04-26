@@ -19,10 +19,12 @@ Freasy::Freasy () {
 	current_view  = BROWSER_VIEW;
 	browser_view  = new browserView ();
 	//browser_view->putApp(dataModel.get_applications()->name);
+
+	app_info_view = new AppScreen(browser_view, "dummy app", "dummy desc");
+
 	int i;
-	for(i = 0; i < 1; i++){
+	for(i = 0; i < 2; i++){
 		browser_view->putApp("dummy app");
-		app_info_view = new AppScreen(browser_view, "dummy app", "dummy desc");
 	}
 
 	view = browser_view;
