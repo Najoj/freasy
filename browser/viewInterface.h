@@ -84,12 +84,24 @@ public :
 	/**************************************************
 	 * SET FUNCTIONS
 	 **************************************************/
-	void putApp(char*); //The freasy class can add apps to the list via this function
-	void putInfoScreen(Screen*); //Add info-screens to the view TODO
+	void putApp(const char*); //The freasy class can add apps to the list via this function
+	void putInfoScreen(const char* name, const char* desc); //Add info-screens to the view TODO
 
 private :
 	Vector<char*> appNames;
 	//AppScreen *currentScreen;
+};
+
+class AppScreen : public MainScreen {
+public:
+	AppScreen(Screen *previous, const char *title, const char *desc);
+	~AppScreen();
+	//void keyPressEvent(int keyCode, int nativeCode);
+	int addInfo(char*);
+private:
+	Screen *previous;
+	ListBox *listBox;
+	Layout *mainLayout;
 };
 
 //class MyMoblet : public Moblet  {

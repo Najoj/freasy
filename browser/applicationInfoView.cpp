@@ -16,9 +16,9 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 */
 
 #include "viewInterface.h"
-#include "applicationInfoView.h"
+//#include "applicationInfoView.h"
 
-AppScreen::AppScreen(Screen *previous, char *title, char *descr) : previous(previous) {
+AppScreen::AppScreen(Screen *previous, const char *title, const char *descr) : previous(previous) {
 	mainLayout = createMainLayout("see comments", "run");
 	listBox = (ListBox*) mainLayout->getChildren()[0];
 

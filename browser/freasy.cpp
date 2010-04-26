@@ -18,7 +18,12 @@ Freasy::Freasy () {
 	/* Initiate browser view at start up */
 	current_view  = BROWSER_VIEW;
 	browser_view  = new browserView ();
-	browser_view->putApp("kebab");
+	//browser_view->putApp(dataModel.get_applications()->name);
+	int i;
+	for(i = 0; i < 1; i++){
+		browser_view->putApp("dummy app");
+		browser_view->putInfoScreen("dummy app", "kebab");
+	}
 
 	view = browser_view;
 	view->show ();

@@ -14,20 +14,20 @@ along with this program; see the file COPYING.  If not, write to the Free
 Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA.
 */
-
-#ifndef _LABELSCREEN_H_
-#define _LABELSCREEN_H_
-
-class AppScreen : public MainScreen {
-public:
-	AppScreen(Screen *previous, char *title, char *desc);
-	~AppScreen();
-	//void keyPressEvent(int keyCode, int nativeCode);
-	int addInfo(char*);
-private:
-	Screen *previous;
-	ListBox *listBox;
-	Layout *mainLayout;
-};
-
-#endif	//_LABELSCREEN_H_
+//
+//#ifndef _LABELSCREEN_H_
+//#define _LABELSCREEN_H_
+//
+//class AppScreen : public MainScreen {
+//public:
+//	AppScreen(Screen *previous, char *title, char *desc);
+//	~AppScreen();
+//	//void keyPressEvent(int keyCode, int nativeCode);
+//	int addInfo(char*);
+//private:
+//	Screen *previous;
+//	ListBox *listBox;
+//	Layout *mainLayout;
+//};
+//
+//#endif	//_LABELSCREEN_H_

@@ -58,8 +58,12 @@ browserView::~browserView () {
 	for (int i = 0; i < screens.size(); i++) delete screens[i];
 }
 
-void browserView::putApp(char* name){
+void browserView::putApp(const char* name){
 	listBox->add(createLabel(name));
+}
+
+void browserView::putInfoScreen(const char* name, const char* desc){
+	screens.add(new AppScreen(this, name, desc));
 }
 
 char* browserView::getAppName(int index) {
