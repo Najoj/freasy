@@ -62,10 +62,6 @@ void browserView::putApp(const char* name){
 	listBox->add(createLabel(name));
 }
 
-void browserView::putInfoScreen(const char* name, const char* desc){
-	screens.add(new AppScreen(this, name, desc));
-}
-
 char* browserView::getAppName(int index) {
 	if(appNames.size() < index-1)
 		return NULL;

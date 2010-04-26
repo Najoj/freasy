@@ -85,7 +85,6 @@ public :
 	 * SET FUNCTIONS
 	 **************************************************/
 	void putApp(const char*); //The freasy class can add apps to the list via this function
-	void putInfoScreen(const char* name, const char* desc); //Add info-screens to the view TODO
 
 private :
 	Vector<char*> appNames;

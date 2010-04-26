@@ -14,7 +14,7 @@
 
 #include "model.h"
 #include "viewInterface.h"
-#include "applicationEditView.h"
+
 
 
 

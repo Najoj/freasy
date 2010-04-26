@@ -59,7 +59,7 @@ Widget* MainScreen::createSoftKeyBar(int height, const char *left, const char *r
 
 // first child is listbox
 Layout* MainScreen::createMainLayout(const char *left, const char *right) {
-	gFont = new MAUI::Font(RES_FONT);
+	//gFont = new MAUI::Font(RES_FONT);
 	gSkin = new WidgetSkin(RES_SELECTED, RES_UNSELECTED, 16, 32, 16, 32, true, true);
 	Engine& engine = Engine::getSingleton();
 	engine.setDefaultFont(gFont);
