@@ -39,6 +39,16 @@ void InputControllerX::keyPressEvent (int key_code, int native_code) {
 		case MAK_RIGHT :
 			freasy->handle_key_right ();
 			break;
+
+		case MAK_SOFTLEFT :
+			freasy->handle_key_softleft();
+			break;
+
+		case MAK_SOFTRIGHT :
+			freasy->handle_key_softright();
+			break;
+
+
 	}
 
 

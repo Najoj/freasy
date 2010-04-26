@@ -15,7 +15,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 02111-1307, USA.
 */
 
-#include "browserView.h"
+#include "viewInterface.h"
 
 
 
@@ -26,8 +26,8 @@ browserView::browserView() {
 	scrHeight = EXTENT_Y(screenSize);
 
 //	currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
-	//screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
-	//screens.add(new AppScreen(this, "Tetris", "Pwn da blocks!"));
+//	screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
+//	screens.add(new AppScreen(this, "Tetris", "Pwn da blocks!"));
 //	screens.add(new ImageScreen(this));
 //	screens.add(new EditBoxScreen(this));
 //	screens.add(new LayoutScreen(this));
@@ -38,10 +38,10 @@ browserView::browserView() {
 
 	int i;
 	char *str = "MMORPTetris";
-	for(i = 0; i < 10; i++){ //testing
-		appNames.add(str);
-		//screens.add(new AppScreen(this, str, "Pwn da blocks!"));
-	}
+//	for(i = 0; i < 1; i++){ //testing
+//		appNames.add(str);
+////		screens.add(new AppScreen(this, str, "Pwn da blocks!"));
+//	}
 
 	i = 0;
 	while(getAppName(i) != NULL){
@@ -59,7 +59,7 @@ browserView::~browserView () {
 }
 
 void browserView::putApp(char* name){
-	appNames.add(name);
+	listBox->add(createLabel(name));
 }
 
 char* browserView::getAppName(int index) {

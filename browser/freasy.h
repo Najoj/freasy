@@ -31,10 +31,12 @@ public:
 	 * HUMAN INTERFACE
 	 */
 
-	void handle_key_down  ();
-	void handle_key_right ();
-	void handle_key_left  ();
-	void handle_key_up    ();
+	void handle_key_down  	 ();
+	void handle_key_right 	 ();
+	void handle_key_left  	 ();
+	void handle_key_up    	 ();
+	void handle_key_softleft ();
+	void handle_key_softright();
 
 
 private :
@@ -50,7 +52,7 @@ private :
 	 */
 	FILE *settings;
 	FILE *favorites;
-	//model dataModel;
+	model dataModel;
 	const char* settings_file_name;
 	const char* favorites_file_name;
 	//Screen *currentScreen; //The active screen, named View in the ADD 1.2

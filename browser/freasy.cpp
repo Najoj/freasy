@@ -1,5 +1,5 @@
 /*
- * freasy.cpp
+ *  freasy.cpp
  *
  *  Created on: Apr 22, 2010
  *      Author: alx
@@ -9,15 +9,19 @@
 
 Freasy::Freasy () {
 
-	/* Initiate broswer view at start up */
+	/* Initiate input controller to listen for user input */
+	new InputControllerX (this);
+
+	/* Initiate model to communicate with servers */
+	new model (dataModel);
+
+	/* Initiate browser view at start up */
 	current_view  = BROWSER_VIEW;
 	browser_view  = new browserView ();
+	browser_view->putApp("kebab");
 
 	view = browser_view;
 	view->show ();
-
-	/* Initiate input controller to listen for user input */
-	new InputControllerX (this);
 
 }
 
@@ -54,6 +58,22 @@ void Freasy::handle_key_right () {
 
 void Freasy::handle_key_left () {
 
+}
+
+void Freasy::handle_key_softleft () {
+
+}
+
+void Freasy::handle_key_softright () {
+
+	switch (current_view) { /* Behave according to our current view */
+
+		case BROWSER_VIEW :
+			this->closeEvent();
+			this->close();
+			break;
+
+	}
 
 }
 
