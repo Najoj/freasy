@@ -22,7 +22,7 @@ Freasy::Freasy () {
 	int i;
 	for(i = 0; i < 1; i++){
 		browser_view->putApp("dummy app");
-		browser_view->putInfoScreen("dummy app", "kebab");
+//		browser_view->putInfoScreen("dummy app", "kebab");
 	}
 
 	view = browser_view;

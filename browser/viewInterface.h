@@ -104,6 +104,49 @@ private:
 	Layout *mainLayout;
 };
 
+/**
+ *  The screen class used for demonstrating how to
+ *  use \a EditBoxes and their different modes.
+ */
+class AppEditView : public MainScreen {
+public:
+	/**
+	 * Constructor
+	 * Sets up the UI hierarchy for this screen, filling
+	 * it with a number of \a EditBoxes.
+	 * @param previous a pointer to the screen to return to
+	 */
+	AppEditView(Screen *previous);
+	/**
+	 * Destructor
+	 */
+	~AppEditView();
+	/**
+	 * Recieves key presses and performs appropriate interaction
+	 * with the UI.
+	 */
+	//void keyPressEvent(int keyCode, int nativeCode);
+	/**
+	 * Implementation of a \a WidgetListener callback, which
+	 * is notified whenever the selection state of a \a widget
+	 * it's listeting to changes. I our case, we make sure that
+	 * whenever a widget is selected, we make its first child
+	 * selected instead.
+	 */
+	void selectionChanged(Widget *widget, bool selected);
+	/**
+	 * Overload of MAUI::Screen::show().
+	 */
+	void show();
+
+private:
+	void hide();
+
+	Screen *previous;
+	ListBox* listBox;
+	Layout* mainLayout;
+};
+
 //class MyMoblet : public Moblet  {
 //public:
 //	MyMoblet();

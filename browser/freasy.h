@@ -13,9 +13,8 @@
 #include <MAUtil/Moblet.h>
 
 #include "model.h"
-#include "browserView.h"
+#include "viewInterface.h"
 #include "applicationEditView.h"
-#include "applicationInfoView.h"
 
 
 
