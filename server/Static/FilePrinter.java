@@ -63,6 +63,27 @@ public class FilePrinter
 	    }
 	}
 	
+	public static String printFileToString( File file )
+	{
+
+		try 
+		{
+			
+			BufferedInputStream in = new BufferedInputStream( new FileInputStream(file) );
+
+            byte[] byteArray = new byte[ (int)file.length() ];
+			
+            in.read( byteArray );
+            
+            return new String( byteArray );
+            
+	    }
+	    catch (IOException e)
+	    {
+	    	return null;
+	    }
+	}
+	
 	
 	public static void appendToFile( File file, String s )
 	{

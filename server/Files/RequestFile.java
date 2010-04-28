@@ -39,6 +39,11 @@ public class RequestFile
 		return Request;
 	}
 	
+	public void setRequest( File Request ) // Fulhack för att testa om fel i snortHread
+	{
+		this.Request = Request;
+	}
+	
 	public File getAnswer()
 	{
 		return Answer;

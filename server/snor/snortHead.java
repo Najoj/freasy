@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Date;
+import java.util.Random;
 
 /*******************************************************************************
  *  Other imports.
@@ -101,6 +103,12 @@ class snortHead extends Thread {
             	
             	// Debug thing
             	FilePrinter.printFileToTerminal( request.getRequest() ); 
+            	
+            	File fulhack = new File(new Date().getTime()+" - "+ Integer.toHexString(new Random().nextInt() ));
+            	
+            	FilePrinter.printToFile( fulhack, FilePrinter.printFileToString( request.getRequest() ) );
+            	
+            	request.setRequest(fulhack);
 	
             	/***************************************************************
              	* Call parser.
