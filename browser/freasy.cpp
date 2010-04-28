@@ -110,7 +110,7 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 
 		browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
 
-		app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
+//		app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
 
 		view = browser_view;
 		view->show ();

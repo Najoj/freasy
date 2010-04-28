@@ -38,7 +38,6 @@ browserView::browserView(application *application, int num_apps) {
 	int i;
 	for(i = 0; i < num_apps; i++){
 		this->putApp (application[i].name);
-		printf ("hej\n");
 	}
 
 //	currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
