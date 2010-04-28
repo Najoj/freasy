@@ -136,7 +136,7 @@ class resource_downloader : public DownloadListener {
 class model {
 
 	public :
-		model   (ConnectionListener * listener) ;
+		model   (ConnectionListener * con_listener, DownloadListener * dl_listener) ;
 		~ model () ;
 
 		/**************************************************
@@ -163,26 +163,12 @@ class model {
 
 	private :
 		/**************************************************
-		 * UTILITY FUNCTIONS
-		 **************************************************/
-
-
-		/**************************************************
-		 * ConnectionListener functions
-		 **************************************************/
-//		void connectFinished   (Connection * connection, int result) ;
-//		void connRecvFinished  (Connection * connection, int result) ;
-//		void connWriteFinished (Connection * connection, int result) ;
-//		void connReadFinished  (Connection * connection, int result) ;
-
-		/**************************************************
 		 * VARIABLES
 		 **************************************************/
 		XMLParser	  		parser;
 		Connection 	  		connection;
-		ImageDownloader		downloader;
-		application * 		applications;
-
+		ImageDownloader *	downloader;
+		application     *	applications;
 		char 		  		buffer [1024];
 
 

@@ -16,8 +16,6 @@
 #include "viewInterface.h"
 
 
-
-
 /*
  * CLASS DEFINITIONS
  */
@@ -29,7 +27,6 @@ public:
 	/*
 	 * HUMAN INTERFACE
 	 */
-
 	void handle_key_down  	 ();
 	void handle_key_right 	 ();
 	void handle_key_left  	 ();
@@ -40,17 +37,17 @@ public:
 
 private :
 
-	/**************************************************
+	/****************************************************************
 	 * ConnectionListener functions
-	 **************************************************/
+	 ****************************************************************/
 	void connectFinished   (Connection * connection, int result) ;
 	void connRecvFinished  (Connection * connection, int result) ;
 	void connWriteFinished (Connection * connection, int result) ;
 	void connReadFinished  (Connection * connection, int result) ;
 
-	/**************************************************
-	 * ConnectionListener functions
-	 **************************************************/
+	/****************************************************************
+	 * DownloadListener functions
+	 ****************************************************************/
 	void notifyProgress		 (Downloader * downloader, int downloaded_bytes, int total_bytes) ;
 	bool outOfMemory		 (Downloader * downloader) ;
 	void finishedDownloading (Downloader * downloader, MAHandle data) ;

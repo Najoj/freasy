@@ -12,7 +12,7 @@ Freasy::Freasy () {
 	new InputControllerX (this);
 
 	/* Initiate model to communicate with servers */
-	dataModel = new model (this);
+	dataModel = new model (this, this);
 	dataModel->connect ();
 
 	/* Initiate browser view at start up */
@@ -23,6 +23,10 @@ Freasy::~Freasy(){
 
 }
 
+
+/************************************************************************
+ * Key event functions
+ ************************************************************************/
 
 void Freasy::handle_key_down () {
 

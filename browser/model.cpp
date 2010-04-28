@@ -1,8 +1,11 @@
 #include "model.h"
 
 
-model::model (ConnectionListener * listener) : connection (listener) {
-
+model::model (ConnectionListener * con_listener, DownloadListener * dl_listener) :
+	connection (con_listener)
+{
+	downloader = new ImageDownloader ();
+	downloader->addDownloadListener (dl_listener);
 }
 
 model::~ model () {
@@ -45,58 +48,13 @@ int model::add_runtime_statistics (String * app_name, bool success) {
 
 
 /*********************************************************************
- * ConnectionListner functions
- *********************************************************************/
-//
-//void model::connReadFinished (Connection * connection, int result) {
-//	if (result < 0) {
-//		printf ("failed to read answer!\n");
-//	}
-//	else {
-//		//printf ("%s\n", buffer);
-//		parse (buffer);
-//	}
-//}
-//
-//void model::connWriteFinished (Connection * connection, int result) {
-//	if (result < 0) {
-//		printf ("failed to write!\n");
-//	}
-//	else receive_answer ();
-//}
-//
-//void model::connRecvFinished (Connection * connection, int result) {
-//	if (result < 0) {
-////		printf ("failed to receive answer!\n");
-//	}
-//	else {
-//		//printf ("%s\n", buffer);
-//		parse (buffer);
-//	}
-//}
-//
-//void model::connectFinished (Connection * connection, int result) {
-//	if (result >= 0) {
-//		printf ("finnished connecting!\n");
-//		send_request ();
-//	}
-//	else {
-//		printf ("%d, Failed to connect\n");
-//	}
-//}
-
-
-/*********************************************************************
  * UTILITY FUNCTIONS
  *********************************************************************/
 
 void model::parse () {
-//	printf ("parsing...\n");
-
 	parser.process (buffer);
 	count = parser.parse (buffer);
 	applications = parser.get_applications ();
-	//printf ("count : %d\n", count);
 
 //	for (int i = 0; i < count; i ++) {
 //		printf (" ******** APPLICATION %d ********** \n", i);
@@ -107,7 +65,6 @@ void model::parse () {
 //		printf ("category : %s\n", applications [i].category);
 //		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
 //	}
-
 }
 
 
