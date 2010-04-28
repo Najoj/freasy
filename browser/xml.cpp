@@ -22,8 +22,8 @@ void XMLParser::stop () {
 }
 
 int XMLParser::parse (char * data) {
-	printf ("data\n%s\n", data);
-	printf ("\n\n\n\n");
+//	printf ("data\n%s\n", data);
+//	printf ("\n\n\n\n");
 	feed (data);
 	return count;
 }

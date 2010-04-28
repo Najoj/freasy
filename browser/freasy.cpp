@@ -13,19 +13,13 @@ Freasy::Freasy () {
 	new InputControllerX (this);
 
 	/* Initiate model to communicate with servers */
-	new model (dataModel);
 
 	/* Initiate browser view at start up */
 	current_view  = BROWSER_VIEW;
-	browser_view  = new browserView ();
-	//browser_view->putApp(dataModel.get_applications()->name);
+	printf("dataModel.count: %d", dataModel.count);
+	browser_view  = new browserView (dataModel.get_applications(), dataModel.count);
 
 	app_info_view = new AppScreen(browser_view, "dummy app", "dummy desc");
-
-	int i;
-	for(i = 0; i < 2; i++){
-		browser_view->putApp("dummy app");
-	}
 
 	view = browser_view;
 	view->show ();

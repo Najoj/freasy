@@ -19,11 +19,18 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 
-browserView::browserView() {
+browserView::browserView(application *application, int num_apps) {
 
 	MAExtent screenSize = maGetScrSize();
 	scrWidth  = EXTENT_X(screenSize);
 	scrHeight = EXTENT_Y(screenSize);
+
+	printf("num_apps: %d", num_apps);
+	int i;
+	for(i = 0; i < num_apps; i++){
+		this->putApp(application[i].name);
+		printf("hej\n");
+	}
 
 //	currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
 //	screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));

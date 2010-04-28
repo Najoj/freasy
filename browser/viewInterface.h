@@ -34,6 +34,8 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <MAUtil/Moblet.h>
 #include <MAUI/Widget.h>
 
+#include "model.h"
+
 using namespace MAUI;
 using namespace MAUtil;
 
@@ -73,7 +75,7 @@ class browserView : public MainScreen {
 
 public :
 
-	browserView ();
+	browserView (application *application, int num_apps);
 	~ browserView ();
 
 	/**************************************************

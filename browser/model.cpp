@@ -69,7 +69,7 @@ void model::connRecvFinished (Connection * connection, int result) {
 
 void model::connectFinished (Connection * connection, int result) {
 	if (result >= 0) {
-		printf ("finnished connecting!\n");
+//		printf ("finnished connecting!\n");
 		send_request ();
 	}
 	else printf ("%d, Failed to connect\n");
@@ -81,20 +81,20 @@ void model::connectFinished (Connection * connection, int result) {
  *********************************************************************/
 
 void model::parse (char * data) {
-	printf ("parsing...\n");
+//	printf ("parsing...\n");
 	parser.process (data);
 	count = parser.parse (data);
-	printf ("done parsing, %d elements\n", count);
+//	printf ("done parsing, %d elements\n", count);
 	applications = parser.get_applications ();
 
 	for (int i = 0; i < count; i ++) {
-		printf (" ******** APPLICATION %d ********** \n", i);
-		printf ("name : %s\n", applications [i].name);
-		printf ("id : %d\n", applications [i].id);
-		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
-		printf ("description : %s\n", applications [i].description);
-		printf ("category : %s\n", applications [i].category);
-		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
+//		printf (" ******** APPLICATION %d ********** \n", i);
+//		printf ("name : %s\n", applications [i].name);
+//		printf ("id : %d\n", applications [i].id);
+//		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
+//		printf ("description : %s\n", applications [i].description);
+//		printf ("category : %s\n", applications [i].category);
+//		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
 	}
 }
 
