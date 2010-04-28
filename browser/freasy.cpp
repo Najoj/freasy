@@ -72,7 +72,6 @@ void Freasy::handle_key_softleft () {
 			break;
 
 	}
-
 }
 
 void Freasy::handle_key_softright () {
@@ -91,7 +90,9 @@ void Freasy::handle_key_softright () {
 	}
 }
 
-
+/****************************************************************************
+ * Connection listnener functions
+ ****************************************************************************/
 
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) printf ("connection failed!\n");
@@ -110,7 +111,7 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 
 		browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
 
-//		app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
+		//app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
 
 		view = browser_view;
 		view->show ();
@@ -120,6 +121,40 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 void Freasy::connReadFinished (Connection * connection, int result) {
 	if (result < 0) printf ("reading data failed!\n");
 }
+
+
+/****************************************************************************
+ * Download listnener functions
+ ****************************************************************************/
+
+void Freasy::notifyProgress (Downloader * downloader, int downloaded_bytes, int total_bytes) {
+
+}
+
+bool Freasy::outOfMemory (Downloader * downloader) {
+
+}
+
+void Freasy::finishedDownloading (Downloader * downloader, MAHandle data) {
+
+}
+
+void Freasy::downloadCancelled (Downloader * downloader) {
+
+}
+
+void Freasy::error (Downloader * downloader, int error_code) {
+
+}
+
+
+
+
+
+
+
+
+
 
 
 extern "C" int MAMain() {

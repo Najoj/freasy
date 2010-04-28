@@ -15,7 +15,6 @@ model::~ model () {
  *********************************************************************/
 
 application * model::get_applications () {
-	printf ("application pointer address (model) %d\n", (int) applications);
 	return applications;
 }
 
@@ -99,15 +98,15 @@ void model::parse () {
 	applications = parser.get_applications ();
 	//printf ("count : %d\n", count);
 
-	for (int i = 0; i < count; i ++) {
+//	for (int i = 0; i < count; i ++) {
 //		printf (" ******** APPLICATION %d ********** \n", i);
-		printf ("name : %s\n", applications [i].name);
+//		printf ("name : %s\n", applications [i].name);
 //		printf ("id : %d\n", applications [i].id);
 //		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
 //		printf ("description : %s\n", applications [i].description);
 //		printf ("category : %s\n", applications [i].category);
 //		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
-	}
+//	}
 
 }
 

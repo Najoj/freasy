@@ -89,13 +89,15 @@ class XMLParser : public XmlListener, MtxListener {
 
 };
 
+
+
 /*****************************************************************************
  * RESOURCE DOWNLOADER CLASS
  * Classed used for downloading different resources
  * such as icons, screenshots, etc.. for different applications
  * extends ImageDownloader, DownloadListener
  *****************************************************************************/
-class resource_downloader : public ImageDownloader, DownloadListener {
+class resource_downloader : public DownloadListener {
 
 	public :
 		resource_downloader   ();
@@ -104,14 +106,6 @@ class resource_downloader : public ImageDownloader, DownloadListener {
 		MAHandle * download_resource (const char * url) ;
 
 	private :
-
-		/****************************************************************
-		 * ImageDownloader functions
-		 ****************************************************************/
-		void connectFinished   (Connection * connection, int result) ;
-		void connWriteFinished (Connection * connection, int result) ;
-		void connReadFinished  (Connection * connection, int result) ;
-
 		/**************************************************
 		 * DownloadListener functions
 		 **************************************************/
@@ -124,8 +118,8 @@ class resource_downloader : public ImageDownloader, DownloadListener {
 		/***************************************************************
 		 * Variables
 		 ****************************************************************/
-		Downloader downloader;
-		MAHandle   data;
+		ImageDownloader downloader;
+		MAHandle   		data;
 
 };
 
@@ -185,9 +179,8 @@ class model {
 		 * VARIABLES
 		 **************************************************/
 		XMLParser	  		parser;
-		resource_downloader res_downloader;
 		Connection 	  		connection;
-		Downloader 	  		downloader;
+		ImageDownloader		downloader;
 		application * 		applications;
 
 		char 		  		buffer [1024];

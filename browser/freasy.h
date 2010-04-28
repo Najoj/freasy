@@ -21,7 +21,7 @@
 /*
  * CLASS DEFINITIONS
  */
-class Freasy : public Moblet, public ConnectionListener {
+class Freasy : public Moblet, public ConnectionListener, public DownloadListener {
 public:
 	Freasy ();
 	~Freasy();
@@ -47,6 +47,16 @@ private :
 	void connRecvFinished  (Connection * connection, int result) ;
 	void connWriteFinished (Connection * connection, int result) ;
 	void connReadFinished  (Connection * connection, int result) ;
+
+	/**************************************************
+	 * ConnectionListener functions
+	 **************************************************/
+	void notifyProgress		 (Downloader * downloader, int downloaded_bytes, int total_bytes) ;
+	bool outOfMemory		 (Downloader * downloader) ;
+	void finishedDownloading (Downloader * downloader, MAHandle data) ;
+	void downloadCancelled	 (Downloader * downloader) ;
+	void error 				 (Downloader * downloader, int error_code) ;
+
 
 	MainScreen * view;
 
