@@ -22,8 +22,6 @@ void XMLParser::stop () {
 }
 
 int XMLParser::parse (char * data) {
-//	printf ("data\n%s\n", data);
-//	printf ("\n\n\n\n");
 	feed (data);
 	return count;
 }
@@ -43,7 +41,7 @@ void XMLParser::mtxEncoding (const char * value) {
 void XMLParser::mtxTagStart (const char * name, int len) {
 	current_tag = name;
 	//printf ("current tag : %s\n", current_tag);
-	if (strcmp (name, "exception") == 0) stop ();
+	if (strcmp (name, "exception") == 0) { printf ("exception in answer!\n"); stop (); }
 }
 
 void XMLParser::mtxTagAttr (const char * attribute_name, const char * attribute_value) {

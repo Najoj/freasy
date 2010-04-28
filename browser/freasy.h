@@ -21,7 +21,7 @@
 /*
  * CLASS DEFINITIONS
  */
-class Freasy : public Moblet {
+class Freasy : public Moblet, public ConnectionListener {
 public:
 	Freasy ();
 	~Freasy();
@@ -40,6 +40,14 @@ public:
 
 private :
 
+	/**************************************************
+	 * ConnectionListener functions
+	 **************************************************/
+	void connectFinished   (Connection * connection, int result) ;
+	void connRecvFinished  (Connection * connection, int result) ;
+	void connWriteFinished (Connection * connection, int result) ;
+	void connReadFinished  (Connection * connection, int result) ;
+
 	MainScreen * view;
 
 	browserView * browser_view;
@@ -51,7 +59,7 @@ private :
 	 */
 	FILE *settings;
 	FILE *favorites;
-	model dataModel;
+	model * dataModel;
 	const char* settings_file_name;
 	const char* favorites_file_name;
 	//Screen *currentScreen; //The active screen, named View in the ADD 1.2

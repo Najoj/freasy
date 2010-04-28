@@ -1,10 +1,8 @@
 #include "model.h"
 
 
-model::model () : connection (this) {
+model::model (ConnectionListener * listener) : connection (listener) {
 
-	int result = connection.connect ("socket://home.ohassel.se:8989");
-	if (result < 0) printf ("connection failed\n");
 }
 
 model::~ model () {
@@ -17,6 +15,7 @@ model::~ model () {
  *********************************************************************/
 
 application * model::get_applications () {
+	printf ("application pointer address (model) %d\n", (int) applications);
 	return applications;
 }
 
@@ -49,62 +48,86 @@ int model::add_runtime_statistics (String * app_name, bool success) {
 /*********************************************************************
  * ConnectionListner functions
  *********************************************************************/
-
-void model::connReadFinished (Connection * connection, int result) {
-
-}
-
-void model::connWriteFinished (Connection * connection, int result) {
-	if (result < 0) printf ("failed to write!\n");
-	else receive_answer ();
-}
-
-void model::connRecvFinished (Connection * connection, int result) {
-	if (result < 0) printf ("failed to receive answer!\n");
-	else {
-		//printf ("%s\n", buffer);
-		parse (buffer);
-	}
-}
-
-void model::connectFinished (Connection * connection, int result) {
-	if (result >= 0) {
+//
+//void model::connReadFinished (Connection * connection, int result) {
+//	if (result < 0) {
+//		printf ("failed to read answer!\n");
+//	}
+//	else {
+//		//printf ("%s\n", buffer);
+//		parse (buffer);
+//	}
+//}
+//
+//void model::connWriteFinished (Connection * connection, int result) {
+//	if (result < 0) {
+//		printf ("failed to write!\n");
+//	}
+//	else receive_answer ();
+//}
+//
+//void model::connRecvFinished (Connection * connection, int result) {
+//	if (result < 0) {
+////		printf ("failed to receive answer!\n");
+//	}
+//	else {
+//		//printf ("%s\n", buffer);
+//		parse (buffer);
+//	}
+//}
+//
+//void model::connectFinished (Connection * connection, int result) {
+//	if (result >= 0) {
 //		printf ("finnished connecting!\n");
-		send_request ();
-	}
-	else printf ("%d, Failed to connect\n");
-}
+//		send_request ();
+//	}
+//	else {
+//		printf ("%d, Failed to connect\n");
+//	}
+//}
 
 
 /*********************************************************************
  * UTILITY FUNCTIONS
  *********************************************************************/
 
-void model::parse (char * data) {
+void model::parse () {
 //	printf ("parsing...\n");
-	parser.process (data);
-	count = parser.parse (data);
-//	printf ("done parsing, %d elements\n", count);
+
+	parser.process (buffer);
+	count = parser.parse (buffer);
 	applications = parser.get_applications ();
+	//printf ("count : %d\n", count);
 
 	for (int i = 0; i < count; i ++) {
 //		printf (" ******** APPLICATION %d ********** \n", i);
-//		printf ("name : %s\n", applications [i].name);
+		printf ("name : %s\n", applications [i].name);
 //		printf ("id : %d\n", applications [i].id);
 //		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
 //		printf ("description : %s\n", applications [i].description);
 //		printf ("category : %s\n", applications [i].category);
 //		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
 	}
+
 }
 
+
+int model::connect () {
+	//int result = connection.connect ("socket://home.ohassel.se:8989");
+	int result = connection.connect ("socket://83.176.229.151:8989");
+	if (result < 0) printf ("connecting failed\n");
+
+	return result;
+}
+
+
 int model::send_request () {
-	String req = String ("<request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>5</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
+	String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>5</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
 	connection.write (req.c_str (), req.length());
 	return 0;
 }
 
 int model::receive_answer () {
-	this->connection.recv (buffer, 1024);
+	connection.recv (buffer, 1024);
 	return 0;
 }

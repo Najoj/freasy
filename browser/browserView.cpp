@@ -21,15 +21,24 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 browserView::browserView(application *application, int num_apps) {
 
+	printf ("application pointer (browserview) : %d\n", (int) application);
+
+	//printf ("%s\n", application[0].name);
+
 	MAExtent screenSize = maGetScrSize();
 	scrWidth  = EXTENT_X(screenSize);
 	scrHeight = EXTENT_Y(screenSize);
 
-	printf("num_apps: %d", num_apps);
+	layout = createMainLayout("select", "exit");
+	this->setMain(layout);
+	listBox = (ListBox*) layout->getChildren()[0];
+
+
+	printf("num_apps: %d\n", num_apps);
 	int i;
 	for(i = 0; i < num_apps; i++){
-		this->putApp(application[i].name);
-		printf("hej\n");
+		this->putApp (application[i].name);
+		printf ("hej\n");
 	}
 
 //	currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
@@ -40,10 +49,7 @@ browserView::browserView(application *application, int num_apps) {
 //	screens.add(new LayoutScreen(this));
 //	screens.add(new CustomScreen(this));
 
-	layout = createMainLayout("select", "exit");
-	listBox = (ListBox*) layout->getChildren()[0];
 
-	this->setMain(layout);
 }
 
 browserView::~browserView () {
@@ -52,6 +58,7 @@ browserView::~browserView () {
 }
 
 void browserView::putApp(const char* name){
+	printf ("%s\n", name);
 	listBox->add(createLabel(name));
 }
 

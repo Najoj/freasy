@@ -8,22 +8,15 @@
 #include "freasy.h"
 
 Freasy::Freasy () {
-
 	/* Initiate input controller to listen for user input */
 	new InputControllerX (this);
 
 	/* Initiate model to communicate with servers */
+	dataModel = new model (this);
+	dataModel->connect ();
 
 	/* Initiate browser view at start up */
 	current_view  = BROWSER_VIEW;
-	printf("dataModel.count: %d", dataModel.count);
-	browser_view  = new browserView (dataModel.get_applications(), dataModel.count);
-
-	app_info_view = new AppScreen(browser_view, "dummy app", "dummy desc");
-
-	view = browser_view;
-	view->show ();
-
 }
 
 Freasy::~Freasy(){
@@ -96,12 +89,40 @@ void Freasy::handle_key_softright () {
 			break;
 
 	}
+}
 
+
+
+void Freasy::connectFinished (Connection * connection, int result) {
+	if (result < 0) printf ("connection failed!\n");
+	else dataModel->send_request ();
+}
+
+void Freasy::connWriteFinished (Connection * connection, int result) {
+	if (result < 0) printf ("writing failed!\n");
+	else dataModel->receive_answer ();
+}
+
+void Freasy::connRecvFinished (Connection * connection, int result) {
+	if (result < 0) printf ("receiving data failed!\n");
+	else {
+		dataModel->parse ();
+
+		browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
+
+		app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
+
+		view = browser_view;
+		view->show ();
+	}
+}
+
+void Freasy::connReadFinished (Connection * connection, int result) {
+	if (result < 0) printf ("reading data failed!\n");
 }
 
 
 extern "C" int MAMain() {
-//	Freasy freasy = new Freasy();
-	Moblet::run(new Freasy());
+	Moblet::run (new Freasy());
 	return 0;
 }

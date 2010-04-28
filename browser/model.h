@@ -138,10 +138,11 @@ class resource_downloader : public ImageDownloader, DownloadListener {
  * providing information about applications to other classes
  * extends ConnectionListener
  *****************************************************************************/
-class model : public ConnectionListener {
+//class model : public ConnectionListener {
+class model {
 
 	public :
-		model   () ;
+		model   (ConnectionListener * listener) ;
 		~ model () ;
 
 		/**************************************************
@@ -160,23 +161,25 @@ class model : public ConnectionListener {
 		/**************************************************
 		 * UTILITY FUNCTIONS
 		 **************************************************/
-		int	count; /* number of apps */
+		int	 count; 			 /* number of apps */
+		int  connect 		() ;
+		void parse 			() ;
+		int  send_request   () ;
+		int  receive_answer () ;
 
 	private :
 		/**************************************************
 		 * UTILITY FUNCTIONS
 		 **************************************************/
-		int send_request   () ;
-		int receive_answer () ;
-		void parse (char * data) ;
+
 
 		/**************************************************
 		 * ConnectionListener functions
 		 **************************************************/
-		void connectFinished   (Connection * connection, int result) ;
-		void connRecvFinished  (Connection * connection, int result) ;
-		void connWriteFinished (Connection * connection, int result) ;
-		void connReadFinished  (Connection * connection, int result) ;
+//		void connectFinished   (Connection * connection, int result) ;
+//		void connRecvFinished  (Connection * connection, int result) ;
+//		void connWriteFinished (Connection * connection, int result) ;
+//		void connReadFinished  (Connection * connection, int result) ;
 
 		/**************************************************
 		 * VARIABLES
@@ -188,6 +191,7 @@ class model : public ConnectionListener {
 		application * 		applications;
 
 		char 		  		buffer [1024];
+
 
 		/* home.ohassel.se:8989 */
 };
