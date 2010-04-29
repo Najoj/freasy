@@ -7,7 +7,7 @@ model::model (ConnectionListener * con_listener, DownloadListener * dl_listener)
 	downloader = new ImageDownloader ();
 	downloader->addDownloadListener (dl_listener);
 
-	parser = new XMLParser (& this->count, & this->offset, & this->applications [0]);
+	parser = new XMLParser (& this->count, & this->offset, & this->applications [0], & this->done_parsing, & this->buffer [0]);
 }
 
 model::~ model () {
@@ -53,9 +53,9 @@ int model::add_runtime_statistics (String * app_name, bool success) {
  * UTILITY FUNCTIONS
  *********************************************************************/
 
-void model::parse () {
-	parser->process (buffer);
-	parser->parse   (buffer);
+bool model::parse () {
+	parser->process 	 (buffer);
+	return parser->parse (buffer);
 
 //	for (int i = 0; i < count; i ++) {
 //		printf (" ******** APPLICATION %d ********** \n", i);
@@ -85,6 +85,6 @@ int model::send_request () {
 }
 
 int model::receive_answer () {
-	connection.recv (buffer, 1024);
+	connection.recv (buffer, sizeof (buffer));
 	return 0;
 }

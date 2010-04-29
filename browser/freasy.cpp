@@ -111,14 +111,16 @@ void Freasy::connWriteFinished (Connection * connection, int result) {
 void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) printf ("receiving data failed!\n");
 	else {
-		dataModel->parse ();
+		if (dataModel->parse ()) { printf ("stopped parsing\n"); return; }
 
-		browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
+		if (dataModel->done_parsing) {
+			browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
+			view = browser_view;
+			view->show ();
+		}
+		else dataModel->receive_answer ();
 
 		//app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
-
-		view = browser_view;
-		view->show ();
 	}
 }
 

@@ -1,11 +1,15 @@
 #include "model.h"
 
-XMLParser::XMLParser (int * count, int * offset, application * applications) {
+XMLParser::XMLParser (int * count, int * offset, application * applications, bool * done, char * buffer) {
 	context.init (this, this);
 
-	this->offset 	   = offset;
-	this->count  	   = count;
-	this->applications = applications;
+	this->offset 	   	 = offset;
+	this->count  	     = count;
+	this->applications   = applications;
+	this->done			 = done;
+	this->buffer		 = buffer;
+
+	* done 				 = false;
 }
 
 XMLParser::~ XMLParser () {
@@ -24,8 +28,9 @@ void XMLParser::stop () {
 	context.stop ();
 }
 
-void XMLParser::parse (char * data) {
-	feed (data);
+bool XMLParser::parse (char * data) {
+	* done = false;
+	return feed (data);
 }
 
 
@@ -106,7 +111,7 @@ void XMLParser::mtxTagData (const char * data, int len) {
 }
 
 void XMLParser::mtxTagEnd (const char * name, int len) {
-
+	if (strcmp (name, "answer") == 0) * done = true;
 }
 
 void XMLParser::mtxParseError () {

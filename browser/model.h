@@ -41,18 +41,18 @@ struct application {
 
 /*****************************************************************************
  * XML PARSER CLASS
- * used for parsing xml data
+ * used for parsing xml data received from server
  * extends XmlListener and MtxListener
  *****************************************************************************/
-class XMLParser : public XmlListener, MtxListener {
+class XMLParser : public XmlListener, public MtxListener {
 
 	public :
-		XMLParser   (int * count, int * offset, application * applications) ;
+		XMLParser   (int * count, int * offset, application * applications, bool * done, char * buffer) ;
 		~ XMLParser () ;
 
 		int  process (char * data) ;
 		void stop  	 ();
-		void parse   (char * data) ;
+		bool parse   (char * data) ;
 
 	private :
 		/**************************************************
@@ -78,13 +78,14 @@ class XMLParser : public XmlListener, MtxListener {
 		 * Variables
 		 **************************************************/
 		Context 	  context;
-		char 	      buffer 	  [1024];
+		char 	    * buffer;
 		char 	    * buffer_pointer;
 		application * applications;
 		const char  * current_tag;
 		int 		  current_application;
 		int 	    * count;
 		int 		* offset;
+		bool 		* done;
 
 };
 
@@ -129,9 +130,7 @@ class resource_downloader : public DownloadListener {
  * MODEL CLASS
  * main class taking care of interaction with server
  * providing information about applications to other classes
- * extends ConnectionListener
  *****************************************************************************/
-//class model : public ConnectionListener {
 class model {
 
 	public :
@@ -154,11 +153,13 @@ class model {
 		/**************************************************
 		 * UTILITY FUNCTIONS
 		 **************************************************/
-		int	 count; 			 /* number of apps */
 		int  connect 		() ;
-		void parse 			() ;
+		bool parse 			() ;
 		int  send_request   () ;
 		int  receive_answer () ;
+
+		int	 count; 			 /* number of apps */
+		bool done_parsing;
 
 	private :
 		/**************************************************
@@ -170,8 +171,6 @@ class model {
 		int 				offset;
 		application     	applications [10];
 		char 		  		buffer 		 [1024];
-
-
 
 		/* home.ohassel.se:8989 */
 };
