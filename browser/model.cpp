@@ -6,6 +6,8 @@ model::model (ConnectionListener * con_listener, DownloadListener * dl_listener)
 {
 	downloader = new ImageDownloader ();
 	downloader->addDownloadListener (dl_listener);
+
+	parser = new XMLParser (& this->count, & this->offset, & this->applications [0]);
 }
 
 model::~ model () {
@@ -52,9 +54,8 @@ int model::add_runtime_statistics (String * app_name, bool success) {
  *********************************************************************/
 
 void model::parse () {
-	parser.process (buffer);
-	count = parser.parse (buffer);
-	applications = parser.get_applications ();
+	parser->process (buffer);
+	parser->parse   (buffer);
 
 //	for (int i = 0; i < count; i ++) {
 //		printf (" ******** APPLICATION %d ********** \n", i);

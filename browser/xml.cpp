@@ -1,8 +1,11 @@
 #include "model.h"
 
-XMLParser::XMLParser () {
+XMLParser::XMLParser (int * count, int * offset, application * applications) {
 	context.init (this, this);
-	offset = 0;
+
+	this->offset 	   = offset;
+	this->count  	   = count;
+	this->applications = applications;
 }
 
 XMLParser::~ XMLParser () {
@@ -21,13 +24,8 @@ void XMLParser::stop () {
 	context.stop ();
 }
 
-int XMLParser::parse (char * data) {
+void XMLParser::parse (char * data) {
 	feed (data);
-	return count;
-}
-
-application * XMLParser::get_applications () {
-	return applications;
 }
 
 
@@ -59,11 +57,11 @@ void XMLParser::mtxTagData (const char * data, int len) {
 
 	if (strcmp (current_tag, "number_of_objects") == 0)
 		//printf ("data : %s\n", data);
-		count = atoi (data);
+		* count = atoi (data);
 
 	else if (strcmp (current_tag, "offset") == 0) {
 		//printf ("data : %s\n", data);
-		offset = atoi (data);
+		* offset = atoi (data);
 	}
 
 	else if (strcmp (current_tag, "app_id") == 0) {

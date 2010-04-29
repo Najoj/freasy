@@ -47,15 +47,12 @@ struct application {
 class XMLParser : public XmlListener, MtxListener {
 
 	public :
-		XMLParser   () ;
+		XMLParser   (int * count, int * offset, application * applications) ;
 		~ XMLParser () ;
 
 		int  process (char * data) ;
 		void stop  	 ();
-		int parse    (char * data) ;
-		application * get_applications ();
-
-		int offset;
+		void parse   (char * data) ;
 
 	private :
 		/**************************************************
@@ -80,12 +77,14 @@ class XMLParser : public XmlListener, MtxListener {
 		/**************************************************
 		 * Variables
 		 **************************************************/
-		Context 	 context;
-		char 	     buffer 	  [1024];
-		application  applications [10];
-		const char * current_tag;
-		int 		 current_application;
-		int 		 count;
+		Context 	  context;
+		char 	      buffer 	  [1024];
+		char 	    * buffer_pointer;
+		application * applications;
+		const char  * current_tag;
+		int 		  current_application;
+		int 	    * count;
+		int 		* offset;
 
 };
 
@@ -165,11 +164,13 @@ class model {
 		/**************************************************
 		 * VARIABLES
 		 **************************************************/
-		XMLParser	  		parser;
+		XMLParser	  	  *	parser;
 		Connection 	  		connection;
-		ImageDownloader *	downloader;
-		application     *	applications;
-		char 		  		buffer [1024];
+		ImageDownloader   *	downloader;
+		int 				offset;
+		application     	applications [10];
+		char 		  		buffer 		 [1024];
+
 
 
 		/* home.ohassel.se:8989 */
