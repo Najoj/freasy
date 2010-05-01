@@ -17,6 +17,8 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
+#define BUFFERSIZE 1024
+
 using namespace MAUtil;
 using namespace Mtx;
 
@@ -25,19 +27,20 @@ using namespace Mtx;
  * used as a container of information about an application
  *****************************************************************************/
 struct application {
-	const char  * name; 			 /* name of application  					*/
-	const char  * author_first_name; /* author of application (first name)	  	*/
-	const char  * author_last_name;  /* author of application (last name)       */
-	const char  * description;       /* description of the application			*/
-	const char  * icon_file_path;    /* file path to icon of the app 		 	*/
-	const char  * screen_file_path;  /* file path to screenshot of the app 	  	*/
-	const char  * category; 		 /* application category					*/
-	const char  * primary_dl_url; 	 /* primary download URL					*/
-	const char  * secondary_dl_url;	 /* secondary download URL					*/
-	const char ** comments; 		 /* list of comments for the application    */
+	char  * name; 			 /* name of application  					*/
+	char  * author_first_name; /* author of application (first name)	  	*/
+	char  * author_last_name;  /* author of application (last name)       */
+	char  * description;       /* description of the application			*/
+	//char  * icon_file_path;    /* file path to icon of the app 		 	*/
+	//char  * screen_file_path;  /* file path to screenshot of the app 	  	*/
+	char  * category; 		 /* application category					*/
+	char  * primary_dl_url; 	 /* primary download URL					*/
+	char  * secondary_dl_url;	 /* secondary download URL					*/
+	//const char ** comments; 		 /* list of comments for the application    */
 	int     	  grade; 			 /* application's average grade among users */
 	int 		  id; 			     /* unique id of application 				*/
 };
+
 
 /*****************************************************************************
  * XML PARSER CLASS
@@ -47,12 +50,14 @@ struct application {
 class XMLParser : public XmlListener, public MtxListener {
 
 	public :
-		XMLParser   (int * count, int * offset, application * applications, bool * done, char * buffer) ;
+		XMLParser   (int * count, int * offset, application * applications, bool * done, char ** buffer) ;
 		~ XMLParser () ;
 
-		int  process (char * data) ;
-		void stop  	 ();
-		bool parse   (char * data) ;
+		int  process () ;
+		void stop  	 () ;
+		bool parse   () ;
+
+		int remaining_data;
 
 	private :
 		/**************************************************
@@ -78,8 +83,8 @@ class XMLParser : public XmlListener, public MtxListener {
 		 * Variables
 		 **************************************************/
 		Context 	  context;
-		char 	    * buffer;
-		char 	    * buffer_pointer;
+		char 	      buffer [BUFFERSIZE];
+		char 	   ** buffer_pointer;
 		application * applications;
 		const char  * current_tag;
 		int 		  current_application;
@@ -88,7 +93,6 @@ class XMLParser : public XmlListener, public MtxListener {
 		bool 		* done;
 
 };
-
 
 
 /*****************************************************************************
@@ -106,24 +110,22 @@ class resource_downloader : public DownloadListener {
 		MAHandle * download_resource (const char * url) ;
 
 	private :
-		/**************************************************
+		/****************************************************************
 		 * DownloadListener functions
-		 **************************************************/
+		 ****************************************************************/
 		void notifyProgress		 (Downloader * downloader, int downloaded_bytes, int total_bytes) ;
 		bool outOfMemory		 (Downloader * downloader) ;
 		void finishedDownloading (Downloader * downloader, MAHandle data) ;
 		void downloadCancelled	 (Downloader * downloader) ;
 		void error 				 (Downloader * downloader, int error_code) ;
 
-		/***************************************************************
+		/****************************************************************
 		 * Variables
 		 ****************************************************************/
 		ImageDownloader downloader;
 		MAHandle   		data;
 
 };
-
-
 
 
 /*****************************************************************************
@@ -137,22 +139,22 @@ class model {
 		model   (ConnectionListener * con_listener, DownloadListener * dl_listener) ;
 		~ model () ;
 
-		/**************************************************
+		/********************************************************************
 		 * GET FUNCTIONS
-		 **************************************************/
+		 ********************************************************************/
 		application * get_applications () ;
 		application * get_info		   (const char * app_name) ;
 
-		/**************************************************
+		/********************************************************************
 		 * SET FUNCTIONS
-		 **************************************************/
+		 ********************************************************************/
 		int add_comment (String * app_name, String * comment) ;
 		int add_grade   (String * app_name, int grade) ;
 		int add_runtime_statistics (String * app_name, bool success) ;
 
-		/**************************************************
+		/********************************************************************
 		 * UTILITY FUNCTIONS
-		 **************************************************/
+		 ********************************************************************/
 		int  connect 		() ;
 		bool parse 			() ;
 		int  send_request   () ;
@@ -165,12 +167,12 @@ class model {
 		/**************************************************
 		 * VARIABLES
 		 **************************************************/
-		XMLParser	  	  *	parser;
-		Connection 	  		connection;
-		ImageDownloader   *	downloader;
-		int 				offset;
-		application     	applications [10];
-		char 		  		buffer 		 [1024];
+		XMLParser	  	* parser;
+		Connection 	  	  connection;
+		ImageDownloader * downloader;
+		int 			  offset;
+		application       applications [10];
+		char 		    * buffer;
 
 		/* home.ohassel.se:8989 */
 };

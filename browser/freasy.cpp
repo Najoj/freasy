@@ -13,6 +13,7 @@ Freasy::Freasy () {
 
 	/* Initiate model to communicate with servers */
 	dataModel = new model (this, this);
+
 	dataModel->connect ();
 
 	/* Initiate browser view at start up */
@@ -111,12 +112,13 @@ void Freasy::connWriteFinished (Connection * connection, int result) {
 void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) printf ("receiving data failed!\n");
 	else {
-		if (dataModel->parse ()) { printf ("stopped parsing\n"); return; }
-
-		if (dataModel->done_parsing) {
-			browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
-			view = browser_view;
-			view->show ();
+		if (dataModel->parse ()) {
+			if (dataModel->done_parsing) {
+				browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
+				view = browser_view;
+				view->show ();
+			}
+			else { printf ("stopped parsing\n"); return; }
 		}
 		else dataModel->receive_answer ();
 
@@ -152,13 +154,6 @@ void Freasy::downloadCancelled (Downloader * downloader) {
 void Freasy::error (Downloader * downloader, int error_code) {
 
 }
-
-
-
-
-
-
-
 
 
 

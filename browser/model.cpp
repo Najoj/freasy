@@ -5,9 +5,9 @@ model::model (ConnectionListener * con_listener, DownloadListener * dl_listener)
 	connection (con_listener)
 {
 	downloader = new ImageDownloader ();
-	downloader->addDownloadListener (dl_listener);
+	downloader->addDownloadListener  (dl_listener);
 
-	parser = new XMLParser (& this->count, & this->offset, & this->applications [0], & this->done_parsing, & this->buffer [0]);
+	parser = new XMLParser (& this->count, & this->offset, & this->applications [0], & this->done_parsing, & this->buffer);
 }
 
 model::~ model () {
@@ -54,18 +54,21 @@ int model::add_runtime_statistics (String * app_name, bool success) {
  *********************************************************************/
 
 bool model::parse () {
-	parser->process 	 (buffer);
-	return parser->parse (buffer);
+	parser->process 	 ();
+	return parser->parse ();
 
-//	for (int i = 0; i < count; i ++) {
-//		printf (" ******** APPLICATION %d ********** \n", i);
-//		printf ("name : %s\n", applications [i].name);
-//		printf ("id : %d\n", applications [i].id);
-//		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
-//		printf ("description : %s\n", applications [i].description);
-//		printf ("category : %s\n", applications [i].category);
-//		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
-//	}
+	/*
+	for (int i = 0; i < count; i ++) {
+		printf (" ******** APPLICATION %d ********** \n", i);
+		printf ("name : %s\n", applications [i].name);
+		printf ("id : %d\n", applications [i].id);
+		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
+		printf ("description : %s\n", applications [i].description);
+		printf ("category : %s\n", applications [i].category);
+		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
+	}
+	*/
+
 }
 
 
@@ -79,12 +82,12 @@ int model::connect () {
 
 
 int model::send_request () {
-	String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>5</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
+	String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
 	connection.write (req.c_str (), req.length());
 	return 0;
 }
 
 int model::receive_answer () {
-	connection.recv (buffer, sizeof (buffer));
+	connection.recv (buffer, BUFFERSIZE - parser->remaining_data - 1);
 	return 0;
 }
