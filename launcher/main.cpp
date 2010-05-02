@@ -5,6 +5,12 @@
 #include <MAUtil/String.h>
 #include <conprint.h>
 
+#include <MAUtil/Geometry.h>
+#include <maassert.h>
+#include <mastdlib.h>
+#include <maapi.h>
+#include "MAHeaders.h"
+
 using namespace MAUtil;
 
 static const char* browserURL = "http://www.csc.kth.se/~cjanson/default.comb";
@@ -20,18 +26,36 @@ private:
 	enum State {
 		DownBrowser, DownProgram, Ready, Idle
 	} state;
-	MAHandle browser;
-	MAHandle program;
-	Downloader download;
-	HttpConnection http;
-	String browserVersion;
-	String programURLs;
-	String urls[4];
-	int urlIterator;
+	MAHandle browser;//browser to run (comb file)
+	MAHandle program;//program to run (comb file)
+	Downloader download;//downloader
+	HttpConnection http;//http connection
+	String browserVersion;//version of browser on server
+	String programURLs;//used to temporary store the urls
+	String urls[4];//here the urls are stored
+	int urlIterator;//used to iterate over the urls
 public:
 	Launcher() :
 		http(this) {
 		http.close();
+		MAExtent e = maGetScrSize();
+		int w = EXTENT_X(e);
+		int h = EXTENT_Y(e);
+		maSetColor(0xffffff); //white
+		maFillRect(0, 0, w, h);
+		maSetColor(0xff0f0f); //white
+		MAExtent logoExtents = maGetImageSize(LOG);
+		if ((h / 2.5 - EXTENT_Y(logoExtents) / 2) > 0) {
+			maDrawImage(LOG, (w >> 1) - (EXTENT_X(logoExtents) >> 1), h / 2.5
+					- EXTENT_Y(logoExtents) / 2);
+			//prog =1.4;
+			//drawProgressbar(25, 100, 1.4);
+		} else {
+			maDrawImage(LOG, (w >> 1) - (EXTENT_X(logoExtents) >> 1), 0);
+			//prog =1.2;
+			//drawProgressbar(25, 100, 1.2);
+		}
+		maWait(5000);
 		state = Idle;
 		//TODO kolla exitGracefully
 		download.addDownloadListener(this);
@@ -73,12 +97,12 @@ public:
 			if (size > 0) {
 				tmp.resize(size);
 				maReadData(data, tmp.pointer(), 0, size);
-				printf("current version \n%s\n", tmp.c_str());
+				//printf("current version \n%s\n", tmp.c_str());
 				PlaceholderPool::put(data);
 				return tmp;
 			}
 		}
-		printf("No previous version stored\n");//pre graphics
+		//printf("No previous version stored\n");//pre graphics
 		return "";
 	}
 
@@ -86,7 +110,7 @@ public:
 		state = DownProgram;
 		bool validAdress = false;
 		int i = 0;
-		printf("Downloading program\n");
+		//printf("Downloading program\n");
 		while (!validAdress) {
 			int first = programURLs.findFirstOf('@', 0);
 			//printf("\n%i\n", first);
@@ -116,13 +140,14 @@ public:
 	 */
 	void downloadBrowser() {
 		state = DownBrowser;
-		printf("Downloading the browser\n"); //pre graphics
+		//printf("Downloading the browser\n"); //pre graphics
 		maDestroyObject(browser);// destroy the old browser
 		download.beginDownloading(browserURL, 0);// begin downloading the browser
 	}
 
 	/*
-	 * checkApplication examins
+	 * checkApplication examine the data in browserchoise and returns
+	 * true if the file exists and it dosn't contain the exit command.
 	 */
 	bool checkApplication() {
 		MAHandle store = maOpenStore(browserchoice, 0);
@@ -150,17 +175,16 @@ public:
 	}
 
 	void finishedDownloading(Downloader* downloader, MAHandle downloadedData) {
-		printf("finished download\n");
+		//printf("finished download\n");
 		if (state == DownBrowser) {
 			int size = maGetDataSize(downloadedData);
-			printf("Size %i Bytes\n", size);
+			//printf("Size %i Bytes\n", size);
+			//store browser program in browser.sav
 			MAHandle store = maOpenStore(browserSave, MAS_CREATE_IF_NECESSARY);
 			maWriteStore(store, downloadedData);
 			maReadStore(store, browser);
 			maCloseStore(store, 0);
 			// store last-modified header in browserVersion.sav
-			printf("store modified header\n");//debug purpouse
-			printf("%s\n", browserVersion.c_str());//debug purpouse
 			MAHandle data = PlaceholderPool::alloc();
 			maCreateData(data, browserVersion.length());
 			maWriteData(data, browserVersion.c_str(), 0,
@@ -171,25 +195,25 @@ public:
 			maCloseStore(vStore, 0);
 			PlaceholderPool::put(data);//remove data from memory
 			// load program
-			maWait(7000);//debug purpouse
-			http.close();//close http connection to save mony
+			maWait(7000);//debug purpose
+			http.close();//close http connection to save money
 			maLoadProgram(browser, 1);
 		} else if (state == DownProgram) {
-			printf("im here!!!\n");
 			MAHandle program = PlaceholderPool::alloc();
 			int size = maGetDataSize(downloadedData);
-			printf("Size %i Bytes\n", size);
+			//printf("Size %i Bytes\n", size);
 			MAHandle store = maOpenStore("tmp.sav", MAS_CREATE_IF_NECESSARY);
 			maWriteStore(store, downloadedData);
 			maReadStore(store, program);
 			maCloseStore(store, -1);
-			//maWait(7000);//for debugg
+			//maWait(7000);//for debug
 			maLoadProgram(program, 1);
 		}
 	}
 
 	void notifyProgress(Downloader* down, int downloadedBytes, int totalBytes) {
-		printf("progress %i\%\n", 100 * downloadedBytes / totalBytes);
+		//printf("progress %i\%\n", 100 * downloadedBytes / totalBytes);
+		drawProgressbar(downloadedBytes, totalBytes, 1.2);
 	}
 
 	void downloadCancelled(Downloader* down) {
@@ -198,16 +222,16 @@ public:
 	}
 
 	void error(Downloader* down, int errorCode) {
-		printf("error %i\n", errorCode);
+		//printf("error %i\n", errorCode);
 		if (state == DownProgram) {
-			printf("invalid Adress\n");
+			//printf("invalid Adress\n");
 			urlIterator++;
 			if (urlIterator > 3) {
-				printf(
-						"There are no valid adresses to download this program from\n");
+				//printf(
+				//		"There are no valid adresses to download this program from\n");
 				//todo: vad ska jag göra om det inte finns några adresser att ladda ner programmet från?
 			} else {
-				printf("Downloading from %s\n", urls[urlIterator].c_str());
+				//printf("Downloading from %s\n", urls[urlIterator].c_str());
 				download.beginDownloading(urls[urlIterator].c_str(), 0);
 			}
 		}
@@ -215,10 +239,13 @@ public:
 	}
 
 	virtual void httpFinished(HttpConnection* c, int res) {
-		http.getResponseHeader("last-modified", &browserVersion);
-		printf("server browser version\n%s\n", browserVersion.c_str());
+		http.getResponseHeader("last-modified", &browserVersion);// get last-modified header and stroe it in browserversion
+		//printf("server browser version\n%s\n", browserVersion.c_str());
+		if (browserVersion == "") {
+			maExit(0);
+		}
 		if (getVersion() == browserVersion) {
-			printf("browser is up to date");
+			//printf("browser is up to date");
 			//load saved browser
 			MAHandle store = maOpenStore(browserSave, 0);
 			if (store > 0) {
@@ -227,14 +254,15 @@ public:
 				if (result < 0) {
 					//error: could not read
 					printf("Can't read file\n");
+					printf("Restart Freasy!\n");
 					//todo: delete old files to remove error?
 					maExit(0);
 				}
-				maWait(5000);//debug purpouse
+				//maWait(5000);//debug purpouse
 				maLoadProgram(browser, 1);
 			}
 		} else {
-			printf("Download new browser");
+			//printf("Download new browser");
 			downloadBrowser();
 		}
 		return;
@@ -242,7 +270,30 @@ public:
 
 	virtual void connReadFinished(Connection* c, int res) {
 		printf("connread\n");
+		printf("The program can't go here\n");
 		return;
+	}
+
+	void drawProgressbar(int downloadedBytes, int totalBytes, double test) {
+		MAFrameBufferInfo info;
+		maFrameBufferGetInfo(&info);
+		int bredd = info.width;
+		int hojd = info.height;
+		int a = bredd / 20;//justera proportioner här
+		int b = a * 8 / 5;
+		int xpos = a;
+		int ypos = hojd / test - b / 2;
+		int oldColor = maSetColor(0x000000);
+		maFillRect(xpos - 2, ypos - 2, (bredd - 2 * a) + 4, b + 4);
+		maSetColor(0xffffff);
+		maFillRect(xpos - 1, ypos - 1, (bredd - 2 * a) + 2, b + 2);
+		maSetColor(0x00ff00);
+		maFillRect(xpos, ypos, (bredd - 2 * a) * downloadedBytes / totalBytes,
+				b);
+		//maSetColor(0x000000);
+		//maDrawText(bredd/2-8,ypos,""+(downloadedBytes*100/totalBytes));
+		maSetColor(oldColor);
+		maUpdateScreen();
 	}
 };
 
