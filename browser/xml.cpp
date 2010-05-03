@@ -77,18 +77,21 @@ void XMLParser::mtxTagData (const char * data, int length) {
 	}
 
 	else if (strcmp (current_tag, "app_id") == 0) {
+		if (applications [current_application].id != NULL) free (& applications [current_application].id);
 		applications [current_application].id = atoi (data);
 		//applications->id = atoi (data);
 		//printf ("data : %s\n", data);
 	}
 
 	else if (strcmp (current_tag, "app_name") == 0) {
+		if (applications [current_application].name != NULL) free (applications [current_application].name);
 		applications [current_application].name = (char *) memcpy (new char [length], data, length);
 		//applications [current_application].name [length] = 0;
 		//printf ("current application (%d) name : %s\n", current_application, data);
 	}
 
 	else if (strcmp (current_tag, "category") == 0) {
+		if (applications [current_application].category != NULL) free (applications [current_application].category);
 		//applications [current_application].category = data;
 		//applications->category = data;
 		//printf ("data : %s\n", data);
@@ -96,6 +99,7 @@ void XMLParser::mtxTagData (const char * data, int length) {
 	}
 
 	else if (strcmp (current_tag, "author_first_name") == 0) {
+		if (applications [current_application].author_first_name != NULL) free (applications [current_application].author_first_name);
 		//applications [current_application].author_first_name = data;
 		//applications->author_first_name = data;
 		//printf ("data : %s\n", data);
@@ -103,6 +107,7 @@ void XMLParser::mtxTagData (const char * data, int length) {
 	}
 
 	else if (strcmp (current_tag, "author_last_name") == 0) {
+		if (applications [current_application].author_last_name != NULL) free (applications [current_application].author_last_name);
 		//applications [current_application].author_last_name = data;
 		//applications->author_last_name = data;
 		//printf ("data : %s\n", data);
@@ -111,6 +116,7 @@ void XMLParser::mtxTagData (const char * data, int length) {
 	}
 
 	else if (strcmp (current_tag, "description") == 0) {
+		if (applications [current_application].description != NULL) free (applications [current_application].description);
 		//applications [current_application].description = data;
 		//applications->description = data;
 		//printf ("data : %s\n", data);
@@ -118,6 +124,7 @@ void XMLParser::mtxTagData (const char * data, int length) {
 	}
 
 	else if (strcmp (current_tag, "primary_download_url") == 0) {
+		if (applications [current_application].primary_dl_url != NULL) free (applications [current_application].primary_dl_url);
 		//applications [current_application].primary_dl_url = data;
 		//applications->primary_dl_url = data;
 		//printf ("data : %s\n", data);
@@ -125,6 +132,7 @@ void XMLParser::mtxTagData (const char * data, int length) {
 	}
 
 	else if (strcmp (current_tag, "secondary_download_url") == 0) {
+		if (applications [current_application].secondary_dl_url != NULL) free (applications [current_application].secondary_dl_url);
 		//applications [current_application].secondary_dl_url = data;
 		//applications->secondary_dl_url = data;
 		//printf ("data : %s\n", data);

@@ -81,9 +81,9 @@ int model::connect () {
 }
 
 
-int model::send_request () {
-	String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
-	connection.write (req.c_str (), req.length());
+int model::send_request (String request) {
+	//String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
+	connection.write (request.c_str (), request.length());
 	return 0;
 }
 
@@ -91,3 +91,29 @@ int model::receive_answer () {
 	connection.recv (buffer, BUFFERSIZE - parser->remaining_data - 1);
 	return 0;
 }
+
+int model::search_by_category (char * category) {
+	//String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
+	String request = String ("<request><match_by><attribute>category</attribute><operator>ILIKE</operator><value>%");
+	request += category;
+	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
+	request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>";
+
+	send_request (request);
+	return 0;
+}
+
+int model::search_by_name (char * name) {
+	String request = String ("<request><match_by><attribute>app_name</attribute><operator>ILIKE</operator><value>%");
+	request += name;
+	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
+	request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>";
+
+	send_request (request);
+
+	return 0;
+}
+
+
+
+

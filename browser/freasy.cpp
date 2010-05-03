@@ -101,7 +101,7 @@ void Freasy::handle_key_softright () {
 
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) printf ("connection failed!\n");
-	else dataModel->send_request ();
+	else dataModel->search_by_name("motris");
 }
 
 void Freasy::connWriteFinished (Connection * connection, int result) {
@@ -154,8 +154,6 @@ void Freasy::downloadCancelled (Downloader * downloader) {
 void Freasy::error (Downloader * downloader, int error_code) {
 
 }
-
-
 
 
 extern "C" int MAMain() {

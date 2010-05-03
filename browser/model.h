@@ -13,6 +13,7 @@
 #include <mastdlib.h>
 #include <MAUtil/Connection.h>
 #include <MAUtil/Downloader.h>
+#include <maheap.h>
 
 #ifndef MODEL_H_
 #define MODEL_H_
@@ -22,23 +23,22 @@
 using namespace MAUtil;
 using namespace Mtx;
 
+
 /*****************************************************************************
  * APPLICATION STRUCT
  * used as a container of information about an application
  *****************************************************************************/
 struct application {
-	char  * name; 			 /* name of application  					*/
-	char  * author_first_name; /* author of application (first name)	  	*/
-	char  * author_last_name;  /* author of application (last name)       */
-	char  * description;       /* description of the application			*/
-	//char  * icon_file_path;    /* file path to icon of the app 		 	*/
-	//char  * screen_file_path;  /* file path to screenshot of the app 	  	*/
-	char  * category; 		 /* application category					*/
+	char  * name; 			 	 /* name of application  					*/
+	char  * author_first_name; 	 /* author of application (first name)	  	*/
+	char  * author_last_name;  	 /* author of application (last name)       */
+	char  * description;       	 /* description of the application			*/
+	char  * category; 		 	 /* application category					*/
 	char  * primary_dl_url; 	 /* primary download URL					*/
 	char  * secondary_dl_url;	 /* secondary download URL					*/
-	//const char ** comments; 		 /* list of comments for the application    */
-	int     	  grade; 			 /* application's average grade among users */
-	int 		  id; 			     /* unique id of application 				*/
+	//const char ** comments; 	 /* list of comments for the application    */
+	int     	  grade; 		 /* application's average grade among users */
+	int 		  id; 			 /* unique id of application 				*/
 };
 
 
@@ -100,7 +100,7 @@ class XMLParser : public XmlListener, public MtxListener {
  * Classed used for downloading different resources
  * such as icons, screenshots, etc.. for different applications
  * extends ImageDownloader, DownloadListener
- *****************************************************************************/
+ *****************************************************************************
 class resource_downloader : public DownloadListener {
 
 	public :
@@ -112,7 +112,7 @@ class resource_downloader : public DownloadListener {
 	private :
 		/****************************************************************
 		 * DownloadListener functions
-		 ****************************************************************/
+		 ****************************************************************
 		void notifyProgress		 (Downloader * downloader, int downloaded_bytes, int total_bytes) ;
 		bool outOfMemory		 (Downloader * downloader) ;
 		void finishedDownloading (Downloader * downloader, MAHandle data) ;
@@ -121,12 +121,12 @@ class resource_downloader : public DownloadListener {
 
 		/****************************************************************
 		 * Variables
-		 ****************************************************************/
+		 ****************************************************************
 		ImageDownloader downloader;
 		MAHandle   		data;
 
 };
-
+*/
 
 /*****************************************************************************
  * MODEL CLASS
@@ -155,10 +155,12 @@ class model {
 		/********************************************************************
 		 * UTILITY FUNCTIONS
 		 ********************************************************************/
-		int  connect 		() ;
-		bool parse 			() ;
-		int  send_request   () ;
-		int  receive_answer () ;
+		int  connect 			() ;
+		bool parse 				() ;
+		int  send_request   	(String request) ;
+		int  receive_answer 	() ;
+		int  search_by_category (char * category) ;
+		int  search_by_name     (char * name) ;
 
 		int	 count; 			 /* number of apps */
 		bool done_parsing;
