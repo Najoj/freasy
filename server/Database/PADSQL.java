@@ -26,6 +26,15 @@ import java.util.Properties;
 	        db = DriverManager.getConnection (url, settings);
 
 	    }
+		
+		public static int getQueryListLength( String query ) throws SQLException
+		{
+
+			ResultSet rs = db.createStatement().executeQuery(query);
+
+			return rs.getInt(1);
+			
+		}
 	    
 	    public static ArrayList<HashMap<String,String>> SendQuery( String query, int expectedLength ) throws SQLException
 	    {

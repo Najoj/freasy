@@ -44,7 +44,7 @@ public class Answer
 		fillData();
 	}
 	
-	public Answer( ArrayList<HashMap<String,String>> PAD_Array, int offset ) // Vet än inte hur datastrukturen från databasen ser ut.
+	public Answer( ArrayList<HashMap<String,String>> PAD_Array, int offset, int ListLength ) // Vet än inte hur datastrukturen från databasen ser ut.
 	{
 		this.PAD_Array = PAD_Array;
 		this.Offset = offset;

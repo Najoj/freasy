@@ -378,6 +378,15 @@ public class Request // implements InterfaceRequest
 		return "?";
 	}
 	
+	
+	/*
+	 * Converts the request-object data into an SQL statement.
+	 * IllegalArgumentException
+	 * @author Olle Hassel
+	 * @return String SQL statement
+	 */
+	//public String 
+	
 
 	/*
 	 * Converts the request-object data into an SQL statement.
@@ -385,21 +394,29 @@ public class Request // implements InterfaceRequest
 	 * @author Olle Hassel
 	 * @return String SQL statement
 	 */
-	public String toSQL()
+	public String toSQL( boolean listCounter )
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT");
 		sb.append(" ");
 		
-		Iterator<String> PADiter = ReferenceObject.iterator();
-		
-		sb.append(PADiter.next());
-		
-		while ( PADiter.hasNext() )
+		if ( listCounter ) // used when calculating the total number of posts, even those that isn't collected.
 		{
-			sb.append(", ");
-			sb.append(PADiter.next());
+			sb.append("count(app_id)");
 		}
+		else
+		{
+			Iterator<String> PADiter = ReferenceObject.iterator();
+			
+			sb.append(PADiter.next());
+			
+			while ( PADiter.hasNext() )
+			{
+				sb.append(", ");
+				sb.append(PADiter.next());
+			}
+		}
+
 		
 		sb.append(" ");
 		sb.append("FROM");
