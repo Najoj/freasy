@@ -421,7 +421,14 @@ public class Request // implements InterfaceRequest
 			{
 				tmp = matchIter.next();
 								
-				sb.append(tmp.getAttribute()+" "+tmp.getOperator()+" \""+tmp.getValue()+"\"");
+				//if ( ParserConstants.isTextRegexOperator(tmp.getOperator())  )
+				//{
+				//	sb.append(tmp.getAttribute()+" "+tmp.getOperator()+" \""+tmp.getValue()+"\"");
+				//}
+				//else
+				//{
+					sb.append(tmp.getAttribute()+" "+tmp.getOperator()+" '"+tmp.getValue()+"'");
+				//}
 				
 				if ( matchIter.hasNext() )
 				{

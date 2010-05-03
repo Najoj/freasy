@@ -51,9 +51,14 @@ public class ParserConstants
 		AllowedOperators.add(">=");
 		AllowedOperators.add("<");
 		AllowedOperators.add("<=");
-		AllowedOperators.add("LIKE");
+		AllowedOperators.add("ILIKE");
 
 		
+	}
+	
+	public static boolean isTextRegexOperator( String operator )
+	{
+		return operator.equals("ILIKE");
 	}
 	
 	public static String getLineBreak()
