@@ -50,7 +50,7 @@ public class Answer
 		this.Offset = offset;
 		this.NumberOfObjects = PAD_Array.size();
 		this.LastOffset = Offset + NumberOfObjects;
-		this.ListLength = 4711;
+		this.ListLength = ListLength;
 	}
 	
 	private Node printElement( String attribute, String value, Document doc , Element element, Text text )

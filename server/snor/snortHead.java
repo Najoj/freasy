@@ -104,10 +104,6 @@ class snortHead extends Thread {
             	// Debug thing
             	FilePrinter.printFileToTerminal( request.getRequest() ); 
             	
-            	//File fulhack = new File(new Date().getTime()+" - "+ Integer.toHexString(new Random().nextInt() ));
-            	//FilePrinter.printToFile( fulhack, FilePrinter.printFileToString( request.getRequest() ) );
-            	//request.setRequest(fulhack);
-	
             	/***************************************************************
              	* Call parser.
              	*/
