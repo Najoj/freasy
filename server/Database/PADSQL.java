@@ -20,7 +20,7 @@ import java.util.Properties;
 	    {
 	        Class.forName ("org.postgresql.Driver");
 	        Properties settings = new Properties ();
-	        settings.setProperty("user","olle");
+	        settings.setProperty("user","guest");
 	        settings.setProperty("password","freasy");
 	        String url = "jdbc:postgresql://home.ohassel.se/freasy";
 	        db = DriverManager.getConnection (url, settings);
@@ -30,11 +30,16 @@ import java.util.Properties;
 		public static int getQueryListLength( String query ) throws SQLException
 		{
 
-			//ResultSet rs = db.createStatement().executeQuery(query);
+			ResultSet rs = db.createStatement().executeQuery(query);
 
-			//return rs.getInt(1);
 			
-			return 4711;
+			//System.out.println("Test: "+ rs.getMetaData().getColumnCount());
+			//return rs.getInt(1);
+			//System.out.println(rs.next());
+			//System.out.println(rs.getInt(1));
+			
+			rs.next();
+			return rs.getInt(1);
 			
 		}
 	    

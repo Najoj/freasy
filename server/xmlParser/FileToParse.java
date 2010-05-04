@@ -28,15 +28,18 @@ public class FileToParse
 		File XMLrequest = files.getRequest();
 		File XMLanswer = files.getAnswer();
 		
+		
+		FilePrinter.printFileToTerminal(XMLrequest);
 		Request request = new Request( XMLrequest );
 		
 		String answerString = null;
 		
 		try
 		{
+
 			request.parseXML();
 
-			//System.out.println(request.toString());
+			//System.out.println("Request: "+ request.toString());
 				
 			Answer answer = new Answer( PADSQL.SendQuery(request.toSQL(), request.getNumberOfObjects()),
 					request.getOffset(), PADSQL.getQueryListLength( request.getSQLLength() ) );
@@ -47,7 +50,7 @@ public class FileToParse
 		
 			files.appendToLog( "Korrekt forumlerad request. Inga fel." );
 			
-			//System.out.println( answer.toString() );
+			//System.out.println("Answer: "+ answer.toString() );
 			
 		}
 		catch ( XMLParseException e )

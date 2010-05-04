@@ -14,7 +14,10 @@ public class Initializer
 		
 		try	{ PADSQL.Initialize(); }
 		catch (Exception e)	
-		{ System.err.println("Error att database initialization.");	}
+		{ 
+			System.err.println("Error att database initialization.");	
+			System.err.println(e.getMessage());
+		}
 	}
 
 }
