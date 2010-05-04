@@ -30,9 +30,11 @@ import java.util.Properties;
 		public static int getQueryListLength( String query ) throws SQLException
 		{
 
-			ResultSet rs = db.createStatement().executeQuery(query);
+			//ResultSet rs = db.createStatement().executeQuery(query);
 
-			return rs.getInt(1);
+			//return rs.getInt(1);
+			
+			return 4711;
 			
 		}
 	    
