@@ -18,5 +18,4 @@ clean :
 	rm -v */*class
 
 help :
-	echo "Nothing to do, yet"
 	grep make Makefile
