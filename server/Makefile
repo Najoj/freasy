@@ -1,29 +1,29 @@
 #  Makefile for the Java server part of Freasy.
-#  Made by Johan Öhlin 2010. <johanohl@kth.se>
+#  Made by Johan Öhlin on his birthday, 2010. <johanohl@kth.se>
 #
-#  `make all' or just `make' will create a JAR-file
-#  `make compile' will compile to class-files.
-#  `make compile' will compile to class-files.
-#  `make clean' will remove _every_ class object in the subdirectories.
-#  `make help' will display this.
+#  `make all' or just `make' will compile and create a jar file.
+#  `make compile' will compile class-files.
+#  `make jar' will create to jar file.
+#  `make clean' will remove _every_ jar file and class object.
+#  `make help' will display this help description.
 #
 #  A Java compiler, javac, is required.
 
-all: compile manifest
-	jar -cfm Server.jar manifest */*class
-
-jar: manifest
-	jar -cfm Server.jar manifest */*class
+all: compile jar
 
 compile: snor/snor.java Database/PADSQL.java				\
-     Files/RequestFile.java Static/ParserConstants.java
+         Files/RequestFile.java Static/ParserConstants.java
 	javac snor/snor.java
 	javac Database/PADSQL.java
 	javac Files/RequestFile.java
 	javac Static/ParserConstants.java
 
+jar: manifest
+	jar -cfm Server.jar manifest */*class
+
 clean :
-	rm -v */*class
+	rm -fv */*class
+	rm -fv *jar
 
 help :
 	grep make\  Makefile
