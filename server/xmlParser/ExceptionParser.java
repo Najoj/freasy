@@ -36,8 +36,8 @@ public class ExceptionParser
 		
 		return parseMessageToXML( e.getMessage() );
 	}
-	
-	private String parseMessageToXML( String sentMessage )
+
+	public String parseMessageToXML( String sentMessage )
 	{
 		
 		try {

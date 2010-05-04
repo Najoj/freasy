@@ -86,6 +86,14 @@ public class snor {
             } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);
             }
+            catch ( Exception e )
+            {
+            	System.err.println(new Date() + ": " + e);
+        		System.err.println("error!");
+        		System.err.println("Exception: "+e.getMessage());
+        		e.printStackTrace();
+            }
+
         }
     }
 }

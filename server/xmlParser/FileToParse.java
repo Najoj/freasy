@@ -71,6 +71,13 @@ public class FileToParse
 		}
 		catch(SQLException e) 
 		{
+			
+			answerString = new ExceptionParser().parseMessageToXML( "Fel innuti servern!" );
+			
+			files.appendToLog( "Requesten har genrererat ett SAXParseException." );
+			
+			files.setSave(true);
+			
     		System.err.println("error!");
     		System.err.println("Exception: "+e.getMessage());
     		e.printStackTrace();
