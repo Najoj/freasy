@@ -19,30 +19,48 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 
 
-browserView::browserView(application *application, int num_apps) {
 
-	printf ("application pointer (browserview) : %d\n", (int) application);
+browserView::browserView(ListBox *listBox) {
+
+//	printf ("application pointer (browserview) : %d\n", (int) application);
 
 	//printf ("%s\n", application[0].name);
 
-	MAExtent screenSize = maGetScrSize();
-	scrWidth  = EXTENT_X(screenSize);
-	scrHeight = EXTENT_Y(screenSize);
+//	MAExtent screenSize = maGetScrSize();
+//	scrWidth  = EXTENT_X(screenSize);
+//	scrHeight = EXTENT_Y(screenSize);
+//
+//	layout = createMainLayout("select", "exit");
+//	this->setMain(layout);
+//	listBox = (ListBox*) layout->getChildren()[0];
 
-	layout = createMainLayout("select", "exit");
-	this->setMain(layout);
-	listBox = (ListBox*) layout->getChildren()[0];
+	this->listBox = listBox;
+
+//	this->listCategories();
 
 
-	printf("num_apps: %d\n", num_apps);
-	int i;
-	for(i = 0; i < num_apps; i++){
-		this->putApp (application[i].name);
-	}
+//	this->categories = CATEGORIES;
 
-//	currentScreen = new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
-//	screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
-//	screens.add(new AppScreen(this, "Tetris", "Pwn da blocks!"));
+//	printf("num_apps: %d\n", num_apps);
+
+
+//	int i;
+//	for(i = 0; i < num_apps; i++){
+//		this->putApp (application[i].name);
+//	}
+
+//	int n = 0;
+//	for(i = 0; i < num_apps; i++){
+//		if(!alreadyCategorized(application[i].category)){
+//			this->putApp (application[i].category);
+//			categorized.insert(n++, application[i].category);
+//		}
+//	}
+//	this->clearApps();
+
+//	currentScreen = new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
+//	screens.add(new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
+//	screens.add(new AppInfoView(this, "Tetris", "Pwn da blocks!"));
 //	screens.add(new ImageScreen(this));
 //	screens.add(new EditBoxScreen(this));
 //	screens.add(new LayoutScreen(this));
@@ -52,23 +70,7 @@ browserView::browserView(application *application, int num_apps) {
 }
 
 browserView::~browserView () {
-	delete layout;
-	for (int i = 0; i < screens.size(); i++) delete screens[i];
 }
-
-void browserView::putApp(const char* name){
-	printf ("%s\n", name);
-	listBox->add(createLabel(name));
-}
-
-char* browserView::getAppName(int index) {
-	if(appNames.size() < index-1)
-		return NULL;
-	return appNames[index];
-}
-
-
-
 
 
 /*
@@ -91,10 +93,10 @@ void MainScreen::keyPressEvent(int keyCode, int nativeCode) {
 //			}
 //			else{
 //				//add the screen here to save mem (one screen saved at the time)
-//				screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
+//				screens.add(new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
 //				screens[index]->show();
 //			}
-			//screens.add(new AppScreen(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
+			//screens.add(new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
 			screens[0]->show();
 		}
 		break;

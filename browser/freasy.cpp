@@ -14,10 +14,12 @@ Freasy::Freasy () {
 	/* Initiate model to communicate with servers */
 	dataModel = new model (this, this);
 
-	dataModel->connect ();
+	//dataModel->connect ();
+
+	views = new ViewContainer();
 
 	/* Initiate browser view at start up */
-	current_view  = BROWSER_VIEW;
+	current_view  = CATEGORY_VIEW;
 }
 
 Freasy::~Freasy(){
@@ -31,24 +33,15 @@ Freasy::~Freasy(){
 
 void Freasy::handle_key_down () {
 
-	switch (current_view) { /* Behave according to our current view */
-
-		case BROWSER_VIEW :
-			view->listBox->selectNextItem();
-			break;
-	}
+	views->nextItem();
+//	printf("key_down pressed");
 
 }
 
 void Freasy::handle_key_up () {
 
-	switch (current_view) { /* Behave according to our current view */
+	views->prevItem();
 
-		case BROWSER_VIEW :
-			view->listBox->selectPreviousItem();
-			break;
-
-	}
 }
 
 void Freasy::handle_key_right () {
@@ -61,38 +54,12 @@ void Freasy::handle_key_left () {
 
 void Freasy::handle_key_softleft () {
 
-	switch (current_view) { /* Behave according to our current view */
+	dataModel->connect();
 
-		case BROWSER_VIEW :
-			current_view  = APPLICATION_INFO_VIEW;
-			view = app_info_view;
-			view->show ();
-			break;
-
-		/* go back to browser screen */
-		case APPLICATION_INFO_VIEW:
-			current_view  = BROWSER_VIEW;
-			view = browser_view;
-			view->show();
-			break;
-
-	}
 }
 
 void Freasy::handle_key_softright () {
 
-	switch (current_view) { /* Behave according to our current view */
-
-		case BROWSER_VIEW :
-			this->closeEvent();
-			this->close();
-			break;
-
-		case APPLICATION_INFO_VIEW :
-
-			break;
-
-	}
 }
 
 /****************************************************************************
@@ -101,7 +68,7 @@ void Freasy::handle_key_softright () {
 
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) printf ("connection failed!\n");
-	else dataModel->search_by_name("motris");
+	else dataModel->search_by_category (views->getSelected());
 }
 
 void Freasy::connWriteFinished (Connection * connection, int result) {
@@ -114,20 +81,21 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 	else {
 		if (dataModel->parse ()) {
 			if (dataModel->done_parsing) {
-				browser_view  = new browserView (dataModel->get_applications(), dataModel->count);
-				view = browser_view;
-				view->show ();
+				views->showApplications (dataModel->get_applications(), dataModel->count);
+				views->setView(BROWSER_VIEW);
+//				current_view = BROWSER_VIEW;
+				dataModel->close ();
 			}
 			else { printf ("stopped parsing\n"); return; }
 		}
 		else dataModel->receive_answer ();
 
-		//app_info_view = new AppScreen (browser_view, "dummy app", "dummy desc");
+//		app_info_view = new AppInfoView (browser_view, "dummy app", "dummy desc");
 	}
 }
 
 void Freasy::connReadFinished (Connection * connection, int result) {
-	if (result < 0) printf ("reading data failed!\n");
+	//if (result < 0) printf ("reading data failed!\n");
 }
 
 

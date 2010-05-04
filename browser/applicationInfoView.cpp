@@ -18,9 +18,12 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "viewInterface.h"
 //#include "applicationInfoView.h"
 
-AppScreen::AppScreen(Screen *previous, const char *title, const char *descr) : previous(previous) {
-	mainLayout = createMainLayout("see comments", "run");
-	listBox = (ListBox*) mainLayout->getChildren()[0];
+AppInfoView::AppInfoView(ListBox *listBox) {
+
+	this->listBox = listBox;
+
+//	mainLayout = createMainLayout("see comments", "run");
+//	listBox = (ListBox*) mainLayout->getChildren()[0];
 
 	Label *label;
 //	label = createLabel("BottomRight", 64);
@@ -29,50 +32,50 @@ AppScreen::AppScreen(Screen *previous, const char *title, const char *descr) : p
 //	label->setSkin(gSkin);
 //	listBox->add(label);
 
-	label = createLabel
-	(
-		title,
-		32
-	);
-	label->setAutoSizeY();
-	label->setSkin(NULL); // no skin
-	label->setMultiLine(true);
-	listBox->add(label);
+//	label = createLabel
+//	(
+//		title,
+//		32
+//	);
+//	label->setAutoSizeY();
+//	label->setSkin(NULL); // no skin
+//	label->setMultiLine(true);
+//	listBox->add(label);
 
-	label = createLabel
-	(
-		descr,
-		32
-	);
-	label->setAutoSizeY();
-	label->setSkin(NULL); // no skin
-	label->setMultiLine(true);
-	listBox->add(label);
-
-	label = createLabel
-	(
-		"Rating:",
-		32
-	);
-	label->setAutoSizeY();
-	label->setSkin(NULL); // no skin
-	label->setMultiLine(true);
-	listBox->add(label);
-
-	label = createLabel("automatic resizing", 32);
-	label->setAutoSizeX();
-	label->setSkin(gSkin);
+//	label = createLabel
+//	(
+//		descr,
+//		32
+//	);
+//	label->setAutoSizeY();
+//	label->setSkin(NULL); // no skin
+//	label->setMultiLine(true);
+//	listBox->add(label);
+//
+//	label = createLabel
+//	(
+//		"Rating:",
+//		32
+//	);
+//	label->setAutoSizeY();
+//	label->setSkin(NULL); // no skin
+//	label->setMultiLine(true);
+//	listBox->add(label);
+//
+//	label = createLabel("automatic resizing", 32);
+//	label->setAutoSizeX();
+//	label->setSkin(gSkin);
 //	listBox->add(label);
 
 	this->setMain(mainLayout);
 }
 
-AppScreen::~AppScreen() {
+AppInfoView::~AppInfoView() {
 	delete mainLayout;
 }
 
 /*
-void AppScreen::keyPressEvent(int keyCode, int nativeCode) {
+void AppInfoView::keyPressEvent(int keyCode, int nativeCode) {
 	switch(keyCode) {
 			case MAK_SOFTRIGHT:
 				//startApp();

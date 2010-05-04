@@ -36,6 +36,11 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "model.h"
 
+#define BROWSER_VIEW 0
+#define APPLICATION_EDIT_VIEW 1
+#define APPLICATION_INFO_VIEW 2
+#define CATEGORY_VIEW 3
+
 using namespace MAUI;
 using namespace MAUtil;
 
@@ -48,26 +53,24 @@ class MainScreen : public Screen, public WidgetListener {
 public:
 	//MainScreen();
 	//~MainScreen();
-
+/*
 	void setLabelPadding(Widget *w);
 	Label* createLabel(const char *str, int height=32);
 	Widget* createSoftKeyBar(int height, const char *left, const char *right);
 	Layout* createMainLayout(const char *left, const char *right);
 
-	Font *gFont;
-	WidgetSkin *gSkin;
-	int scrWidth;
-	int scrHeight;
+
 	//void keyPressEvent(int keyCode, int nativeCode);
 	Vector<Screen*> screens;
 	ListBox* listBox;
 	Layout* layout;
+	*/
 
 
 private:
 
 
-	Widget* createSoftKeyBar(int height, char *left, char *right);
+	//Widget* createSoftKeyBar(int height, char *left, char *right);
 
 };
 
@@ -75,33 +78,48 @@ class browserView : public MainScreen {
 
 public :
 
-	browserView (application *application, int num_apps);
+	browserView (ListBox *listBox);
 	~ browserView ();
 
 	/**************************************************
 	 * GET FUNCTIONS
 	 **************************************************/
 	char* getAppName(int index);
+	char* getSelected();
 
 	/**************************************************
 	 * SET FUNCTIONS
 	 **************************************************/
 	void putApp(const char*); //The freasy class can add apps to the list via this function
 
+	/**************************************************
+	 * MISC FUNCTIONS
+	 **************************************************/
+	void listApplications(application *application, int numApps);
+	void listCategories();
+	void clearApps(); // remove all apps from the list
+	bool browserView::alreadyCategorized(const char* category); // check if a category has been shown
+
+	ListBox *listBox;
+
 private :
 	Vector<char*> appNames;
-	//AppScreen *currentScreen;
+	Vector<const char*> categorized;
+//	static char *categories[] = {"calculate", "entertainment", "games", "news", "productivity", "search tools", "social", "sports", "travel", "utilities", "weather"};
+	char ** categories;
+	//AppInfoView *currentScreen;
 };
 
-class AppScreen : public MainScreen {
+class AppInfoView : public MainScreen {
 public:
-	AppScreen(Screen *previous, const char *title, const char *desc);
-	~AppScreen();
+	AppInfoView(ListBox *listBox);
+	~AppInfoView();
 	//void keyPressEvent(int keyCode, int nativeCode);
 	int addInfo(char*);
+
+	ListBox *listBox;
 private:
 	Screen *previous;
-	ListBox *listBox;
 	Layout *mainLayout;
 };
 
@@ -140,11 +158,11 @@ public:
 	 */
 	void show();
 
+	ListBox* listBox;
+
 private:
-	void hide();
 
 	Screen *previous;
-	ListBox* listBox;
 	Layout* mainLayout;
 };
 
@@ -159,5 +177,59 @@ private:
 //private:
 //	Screen *mainScreen;
 //};
+
+class ViewContainer {
+public:
+	ViewContainer();
+	~ViewContainer();
+
+	/**************************************************
+	 * GET FUNCTIONS
+	 **************************************************/
+	char* getSelected();
+
+	/**************************************************
+	 * SET FUNCTIONS
+	 **************************************************/
+	void setView(int view);
+	void changeSoftBarText(char *left, char *right);
+
+	/**************************************************
+	 * MISC FUNCTIONS
+	 **************************************************/
+	void showCategories();
+	void showApplications(application *applications, int count);
+	void showInfo();
+
+	void prevItem();
+	void nextItem();
+
+	void setLabelPadding(Widget *w);
+	Label* createLabel(const char *str, int height);
+	Label* createLabel(const char *str);
+	Layout* createMainLayout(const char *left, const char *right);
+	Layout* createSoftKeyBar(int height, const char *left, const char *right);
+
+	ListBox *listBox;
+
+	browserView *browser_view;
+	AppInfoView *app_info_view;
+	AppEditView *app_edit_view;
+
+private:
+	Font *gFont;
+	WidgetSkin *gSkin;
+
+	int current_view;
+
+	int scrWidth;
+	int scrHeight;
+
+	Label *softLeft;
+	Label *softRight;
+	Layout *mainLayout;
+
+	char **categories;
+};
 
 #endif /* _VIEWINTERFACE_H_ */

@@ -156,6 +156,7 @@ class model {
 		 * UTILITY FUNCTIONS
 		 ********************************************************************/
 		int  connect 			() ;
+		int close ();
 		bool parse 				() ;
 		int  send_request   	(String request) ;
 		int  receive_answer 	() ;

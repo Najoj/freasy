@@ -81,6 +81,12 @@ int model::connect () {
 }
 
 
+int model::close () {
+	connection.close ();
+	return 0;
+}
+
+
 int model::send_request (String request) {
 	//String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
 	connection.write (request.c_str (), request.length());

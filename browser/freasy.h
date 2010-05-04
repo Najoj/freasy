@@ -54,12 +54,7 @@ private :
 	void downloadCancelled	 (Downloader * downloader) ;
 	void error 				 (Downloader * downloader, int error_code) ;
 
-
-	MainScreen * view;
-
-	browserView * browser_view;
-	AppEditView * app_edit_view;
-	AppScreen   * app_info_view;
+	ViewContainer * views;
 
 	/*
 	 * DATA
@@ -84,10 +79,6 @@ private :
 	 */
 	int loadSettings	(char* filePath);
 	int loadFavorites	(char* filePath);
-
-	static const int BROWSER_VIEW 		   = 0;
-	static const int APPLICATION_EDIT_VIEW = 1;
-	static const int APPLICATION_INFO_VIEW = 2;
 
 	int current_view;
 };
