@@ -68,19 +68,24 @@ void Freasy::handle_key_softright () {
 
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) printf ("connection failed!\n");
-	else dataModel->search_by_category (views->getSelected());
+	else{
+		printf ("selected category %s\n", views->getSelected ());
+		dataModel->search_by_category (views->getSelected());
+	}
 }
 
 void Freasy::connWriteFinished (Connection * connection, int result) {
 	if (result < 0) printf ("writing failed!\n");
-	else dataModel->receive_answer ();
+	else {  printf ("finished writing asshole!\n"); dataModel->receive_answer (); }
 }
 
 void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) printf ("receiving data failed!\n");
 	else {
+		printf ("fuck you asshole!\n");
 		if (dataModel->parse ()) {
 			if (dataModel->done_parsing) {
+				printf ("done parsing asshole!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
 //				current_view = BROWSER_VIEW;

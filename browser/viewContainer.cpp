@@ -24,17 +24,22 @@ ViewContainer::ViewContainer() {
 	scrWidth  = EXTENT_X(screenSize);
 	scrHeight = EXTENT_Y(screenSize);
 
-	mainLayout = createMainLayout("select", "exit");
-
-	this->showCategories();
+	createMainLayout("select", "exit");
+	listBox = createListBox();
+	mainLayout->add(softKeys);
 
 	browser_view = new browserView(listBox);
 	browser_view->setMain(mainLayout);
 
-	mainLayout = createMainLayout("fuck you", "exit");
 
+	createMainLayout("fuck you", "exit");
+	mainLayout->add (softKeys);
 	app_info_view = new AppInfoView(listBox);
 	app_info_view->setMain(mainLayout);
+
+
+
+	this->showCategories();
 
 	browser_view->show();
 
@@ -60,13 +65,27 @@ void ViewContainer::showCategories() {
 
 void ViewContainer::showApplications(application *applications, int count) {
 
-	listBox->~ListBox();
-	listBox = new ListBox(0, 0, scrWidth, scrHeight-softKeys->getHeight(), mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR, true);
+	//browser_view->listBox->~ListBox();
+	//listBox = NULL;
+
+	free (listBox);
+
+	listBox = createListBox ();
+
+
+	printf ("listbox pointer address : %d\n", (int) listBox);
+	printf ("browserView->listBox pointer address : %d\n", (int) browser_view->listBox);
+
+
+
+	//browser_view->listBox = new ListBox(0, 0, scrWidth, scrHeight-softKeys->getHeight(), mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR, true);
 
 	int i;
 	for(i = 0; i < count; i++){
+		printf("%s\n", applications[i].name);
 		listBox->add(createLabel (applications[i].name));
 	}
+	browser_view->show();
 
 }
 
@@ -132,9 +151,13 @@ void ViewContainer::prevItem(){
  ********************************************************/
 
 char* ViewContainer::getSelected(){
-	int index = listBox->getSelectedIndex();
-//	printf ("index %d\n", index);
-	return categories[index];
+	switch (current_view) {
+	case CATEGORY_VIEW :
+	case BROWSER_VIEW :
+		return categories [browser_view->listBox->getSelectedIndex ()];
+
+
+	}
 }
 
 void ViewContainer::setLabelPadding(Widget *w) {
@@ -186,9 +209,8 @@ Layout* ViewContainer::createMainLayout(const char *left, const char *right) {
 	mainLayout = new Layout(0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
 	softKeys = createSoftKeyBar(30, left, right);
-	listBox = createListBox();
 
-	mainLayout->add(softKeys);
+	//mainLayout->add(softKeys);
 
 	return mainLayout;
 }
