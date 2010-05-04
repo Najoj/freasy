@@ -209,6 +209,7 @@ public:
 	Label* createLabel(const char *str);
 	Layout* createMainLayout(const char *left, const char *right);
 	Layout* createSoftKeyBar(int height, const char *left, const char *right);
+	ListBox* createListBox();
 
 	ListBox *listBox;
 
@@ -224,6 +225,8 @@ private:
 
 	int scrWidth;
 	int scrHeight;
+
+	Widget *softKeys;
 
 	Label *softLeft;
 	Label *softRight;

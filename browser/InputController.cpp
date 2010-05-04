@@ -30,7 +30,7 @@ void InputController::pointerMoved (int x, int y){
 }
 
 void InputController::pointerReleased (int x, int y){
-	printf("Releasing on time\n");
+//	printf("Releasing on time\n");
 }
 
 
