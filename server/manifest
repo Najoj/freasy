@@ -1,1 +1,2 @@
 Main-Class: snor/snor
+Class-Path: /usr/share/java/postgresql-jdbc3 lib/jxl.jar
