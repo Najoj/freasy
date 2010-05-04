@@ -387,6 +387,49 @@ public class Request // implements InterfaceRequest
 	 */
 	//public String 
 	
+	public String getSQLLength()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT");
+		sb.append(" ");
+		
+		sb.append("count(app_id)");
+
+		
+		sb.append(" ");
+		sb.append("FROM");
+		sb.append(" ");
+		
+		sb.append( ParserConstants.getPadTableName() );
+		
+		Iterator<MatchBy_Object> matchIter = MatchByStack.iterator();
+		MatchBy_Object tmp;
+		
+		if ( !MatchByStack.isEmpty() )
+		{
+			
+			sb.append(" ");
+			sb.append("WHERE");
+			sb.append(" ");
+			
+			while ( matchIter.hasNext() )
+			{
+				tmp = matchIter.next();
+								
+				sb.append(tmp.getAttribute()+" "+tmp.getOperator()+" '"+tmp.getValue()+"'");
+				
+				if ( matchIter.hasNext() )
+				{
+					sb.append(" AND ");
+				}
+				
+			}
+			
+		}
+		sb.append(";");
+		
+		return sb.toString();
+	}
 
 	/*
 	 * Converts the request-object data into an SQL statement.
@@ -394,18 +437,12 @@ public class Request // implements InterfaceRequest
 	 * @author Olle Hassel
 	 * @return String SQL statement
 	 */
-	public String toSQL( boolean listCounter )
+	public String toSQL()
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT");
 		sb.append(" ");
 		
-		if ( listCounter ) // used when calculating the total number of posts, even those that isn't collected.
-		{
-			sb.append("count(app_id)");
-		}
-		else
-		{
 			Iterator<String> PADiter = ReferenceObject.iterator();
 			
 			sb.append(PADiter.next());
@@ -415,7 +452,6 @@ public class Request // implements InterfaceRequest
 				sb.append(", ");
 				sb.append(PADiter.next());
 			}
-		}
 
 		
 		sb.append(" ");

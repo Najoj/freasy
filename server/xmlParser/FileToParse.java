@@ -38,8 +38,8 @@ public class FileToParse
 
 			//System.out.println(request.toString());
 				
-			Answer answer = new Answer( PADSQL.SendQuery(request.toSQL( false ), request.getNumberOfObjects()),
-					request.getOffset(), PADSQL.getQueryListLength( request.toSQL( true ) ) );
+			Answer answer = new Answer( PADSQL.SendQuery(request.toSQL(), request.getNumberOfObjects()),
+					request.getOffset(), PADSQL.getQueryListLength( request.getSQLLength() ) );
 
 			//Answer answer = new Answer();
 			
