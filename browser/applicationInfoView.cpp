@@ -25,7 +25,7 @@ AppInfoView::AppInfoView(ListBox *listBox) {
 //	mainLayout = createMainLayout("see comments", "run");
 //	listBox = (ListBox*) mainLayout->getChildren()[0];
 
-	Label *label;
+	//Label *label;
 //	label = createLabel("BottomRight", 64);
 //	label->setHorizontalAlignment(Label::HA_RIGHT);
 //	label->setVerticalAlignment(Label::VA_BOTTOM);
@@ -67,7 +67,7 @@ AppInfoView::AppInfoView(ListBox *listBox) {
 //	label->setSkin(gSkin);
 //	listBox->add(label);
 
-	this->setMain(mainLayout);
+	//this->setMain(mainLayout);
 }
 
 AppInfoView::~AppInfoView() {

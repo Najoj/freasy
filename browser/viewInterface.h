@@ -199,7 +199,7 @@ public:
 	 **************************************************/
 	void showCategories();
 	void showApplications(application *applications, int count);
-	void showInfo();
+	void showInfo(application * app);
 
 	void prevItem();
 	void nextItem();

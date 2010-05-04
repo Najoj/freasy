@@ -49,6 +49,11 @@ ViewContainer::ViewContainer() {
 
 void ViewContainer::showCategories() {
 
+	if (listBox->getChildren().size() != 0) {
+		free (listBox);
+		listBox = createListBox ();
+	}
+
 	listBox->add(createLabel  ("calculate"));
 	listBox->add(createLabel  ("entertainment"));
 	listBox->add(createLabel  ("games"));
@@ -64,21 +69,9 @@ void ViewContainer::showCategories() {
 }
 
 void ViewContainer::showApplications(application *applications, int count) {
-
-	//browser_view->listBox->~ListBox();
-	//listBox = NULL;
-
 	free (listBox);
 
 	listBox = createListBox ();
-
-
-	printf ("listbox pointer address : %d\n", (int) listBox);
-	printf ("browserView->listBox pointer address : %d\n", (int) browser_view->listBox);
-
-
-
-	//browser_view->listBox = new ListBox(0, 0, scrWidth, scrHeight-softKeys->getHeight(), mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR, true);
 
 	int i;
 	for(i = 0; i < count; i++){
@@ -86,10 +79,26 @@ void ViewContainer::showApplications(application *applications, int count) {
 		listBox->add(createLabel (applications[i].name));
 	}
 	browser_view->show();
-
 }
 
-void ViewContainer::showInfo() {
+void ViewContainer::showInfo(application * app) {
+	if (app == NULL) return;
+
+	changeSoftBarText("fuck", "you");
+
+	free (listBox);
+
+
+	printf("showinfo : %s\n", app->author_first_name);
+	listBox = createListBox ();
+
+	listBox->add(createLabel (app->name));
+	listBox->add(createLabel (app->author_first_name));
+
+//	app_info_view->show();
+
+
+	browser_view->show ();
 
 }
 
@@ -153,9 +162,14 @@ void ViewContainer::prevItem(){
 char* ViewContainer::getSelected(){
 	switch (current_view) {
 	case CATEGORY_VIEW :
-	case BROWSER_VIEW :
-		return categories [browser_view->listBox->getSelectedIndex ()];
+		return categories [listBox->getSelectedIndex ()];
+		break;
 
+	case BROWSER_VIEW :
+		Widget * fitta = listBox->getChildren()[listBox->getSelectedIndex()];
+		//printf ("kuk %s\n", (char *)((Label *) fitta)->getCaption ().c_str());
+
+		return (char *)((Label *) fitta)->getCaption ().c_str();
 
 	}
 }

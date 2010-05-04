@@ -143,7 +143,7 @@ class model {
 		 * GET FUNCTIONS
 		 ********************************************************************/
 		application * get_applications () ;
-		application * get_info		   (const char * app_name) ;
+		application * get_info		   (char * app_name) ;
 
 		/********************************************************************
 		 * SET FUNCTIONS

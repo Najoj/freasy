@@ -54,11 +54,51 @@ void Freasy::handle_key_left () {
 
 void Freasy::handle_key_softleft () {
 
-	dataModel->connect();
+	switch (current_view) {
 
+		case CATEGORY_VIEW :
+			dataModel->connect();
+			break;
+
+		case BROWSER_VIEW :
+			//printf ("selected app : %s\n", views->getSelected());
+
+			//char * haj = views->getSelected();
+
+			views->showInfo (dataModel->get_info (views->getSelected ()));
+
+			views->setView (APPLICATION_INFO_VIEW);
+			current_view = APPLICATION_INFO_VIEW;
+
+			break;
+
+	}
 }
 
 void Freasy::handle_key_softright () {
+
+	switch (current_view) {
+
+		case APPLICATION_INFO_VIEW :
+			views->showApplications (dataModel->get_applications(), dataModel->count);
+			current_view = BROWSER_VIEW;
+			views->setView (BROWSER_VIEW);
+			break;
+
+		case BROWSER_VIEW :
+			views->showCategories ();
+			current_view = CATEGORY_VIEW;
+			views->setView(CATEGORY_VIEW);
+			break;
+
+		case CATEGORY_VIEW :
+			close();
+			break;
+
+	}
+
+
+
 
 }
 
@@ -88,7 +128,7 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 				printf ("done parsing asshole!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
-//				current_view = BROWSER_VIEW;
+				current_view = BROWSER_VIEW;
 				dataModel->close ();
 			}
 			else { printf ("stopped parsing\n"); return; }
