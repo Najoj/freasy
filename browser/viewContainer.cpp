@@ -170,8 +170,7 @@ char* ViewContainer::getSelected(){
 		Widget * fitta = listBox->getChildren()[listBox->getSelectedIndex()];
 		//printf ("kuk %s\n", (char *)((Label *) fitta)->getCaption ().c_str());
 
-		return (char *)((Label *) fitta)->getCaption ().c_str();
-
+		return (char *) ((Label *) fitta)->getCaption ().c_str();
 	}
 }
 

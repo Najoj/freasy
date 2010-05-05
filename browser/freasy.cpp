@@ -9,18 +9,14 @@
 
 Freasy::Freasy () {
 
-	setCurrentFileSystem(R_TEST_FILESYSTEM, 0);
+	setCurrentFileSystem (R_TEST_FILESYSTEM, 0);
 
-	/* Initiate input controller to listen for user input */
-	new InputControllerX (this);
+	new InputControllerX (this); 			/* Initiate input controller to listen for user input */
 
-	/* Initiate model to communicate with servers */
-	dataModel = new model (this, this);
-
-	views = new ViewContainer();
-
-	/* Initiate browser view at start up */
-	current_view  = CATEGORY_VIEW;
+	dataModel 	  = new model (this, this); /* Initiate model to communicate with servers 		  */
+	views 		  = new ViewContainer ();	/* Initiate handle for views				  		  */
+	current_view  = CATEGORY_VIEW; 			/* Initiate browser view at start up 		  		  */
+	viewed_app	  = - 1;					/* We're currently not viewing any app				  */
 }
 
 Freasy::~Freasy(){
@@ -62,6 +58,8 @@ void Freasy::handle_key_softleft () {
 			break;
 
 		case BROWSER_VIEW :
+			viewed_app = views->listBox->getSelectedIndex ();
+
 			views->showInfo (dataModel->get_info (views->getSelected ()));
 
 			views->setView (APPLICATION_INFO_VIEW);
@@ -71,7 +69,7 @@ void Freasy::handle_key_softleft () {
 
 		case APPLICATION_INFO_VIEW :
 			app2download_file = fopen ("toDownload.txt", "w");
-			fputs ("URL", app2download_file);
+			fputs (dataModel->get_applications () [viewed_app].primary_dl_url, app2download_file);
 			close ();
 
 			break;
@@ -84,19 +82,24 @@ void Freasy::handle_key_softright () {
 	switch (current_view) {
 
 		case APPLICATION_INFO_VIEW :
+			viewed_app = - 1;
+
 			views->showApplications (dataModel->get_applications(), dataModel->count);
 			current_view = BROWSER_VIEW;
 			views->setView (BROWSER_VIEW);
+
 			break;
 
 		case BROWSER_VIEW :
 			views->showCategories ();
 			current_view = CATEGORY_VIEW;
-			views->setView(CATEGORY_VIEW);
+			views->setView (CATEGORY_VIEW);
+
 			break;
 
 		case CATEGORY_VIEW :
 			close();
+
 			break;
 
 	}

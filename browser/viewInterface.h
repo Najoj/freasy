@@ -37,10 +37,10 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "model.h"
 
-#define BROWSER_VIEW 0
-#define APPLICATION_EDIT_VIEW 1
-#define APPLICATION_INFO_VIEW 2
-#define CATEGORY_VIEW 3
+#define BROWSER_VIEW 			0
+#define APPLICATION_EDIT_VIEW 	1
+#define APPLICATION_INFO_VIEW 	2
+#define CATEGORY_VIEW 			3
 
 using namespace MAUI;
 using namespace MAUtil;

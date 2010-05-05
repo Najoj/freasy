@@ -82,6 +82,7 @@ private :
 	int loadFavorites	(char* filePath);
 
 	int current_view;
+	int viewed_app;
 };
 
 
