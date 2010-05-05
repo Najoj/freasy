@@ -92,13 +92,9 @@ void ViewContainer::showInfo(application * app) {
 //	printf("showinfo : %s\n", app->author_first_name);
 	listBox = createListBox ();
 
-	String *kebab = new String("kebab");
-
-//	char *ptr = (char) new String("name: ").append("bajs", 4);
-
-	listBox->add(createInfoLabel (app->name));
+	listBox->add(createInfoLabel ("name", app->name));
 //	listBox->add(createInfoLabel (app->description));
-	listBox->add(createInfoLabel (app->author_first_name));
+	listBox->add(createInfoLabel ("author", app->name));
 
 //	app_info_view->show();
 
@@ -203,10 +199,14 @@ Label* ViewContainer::createLabel(const char *str) {
 	return label;
 }
 
-Label* ViewContainer::createInfoLabel(const char *str) {
+Label* ViewContainer::createInfoLabel(const char *pre, const char *str) {
 	int height = 32;
 	Label *label;
-	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
+
+	String *new_str = new String(pre);
+	new_str->append(str, strlen(str));
+
+	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, new_str->c_str(), 0, gFont);
 	label->setSkin(NULL);
 	setLabelPadding(label);
 	return label;

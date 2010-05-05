@@ -208,7 +208,7 @@ public:
 	void setLabelPadding(Widget *w);
 	Label* createLabel(const char *str, int height);
 	Label* createLabel(const char *str);
-	Label* createInfoLabel(const char *str); //a label for app_info_view
+	Label* createInfoLabel(const char *pre, const char *str); //a label for app_info_view
 	Layout* createMainLayout(const char *left, const char *right);
 	Layout* createSoftKeyBar(int height, const char *left, const char *right);
 	ListBox* createListBox();
