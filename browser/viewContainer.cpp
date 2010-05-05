@@ -92,9 +92,9 @@ void ViewContainer::showInfo(application * app) {
 //	printf("showinfo : %s\n", app->author_first_name);
 	listBox = createListBox ();
 
-	listBox->add(createInfoLabel ("name", app->name));
+	listBox->add(createInfoLabel ("", app->name));
 //	listBox->add(createInfoLabel (app->description));
-	listBox->add(createInfoLabel ("author", app->name));
+	listBox->add(createInfoLabel ("author: ", app->author_first_name));
 
 //	app_info_view->show();
 
