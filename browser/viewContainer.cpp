@@ -32,7 +32,7 @@ ViewContainer::ViewContainer() {
 	browser_view->setMain(mainLayout);
 
 
-	createMainLayout("fuck you", "exit");
+	createMainLayout("run", "back");
 	mainLayout->add (softKeys);
 	app_info_view = new AppInfoView(listBox);
 	app_info_view->setMain(mainLayout);
@@ -84,16 +84,21 @@ void ViewContainer::showApplications(application *applications, int count) {
 void ViewContainer::showInfo(application * app) {
 	if (app == NULL) return;
 
-	changeSoftBarText("fuck", "you");
+	changeSoftBarText("run", "back");
 
 	free (listBox);
 
 
-	printf("showinfo : %s\n", app->author_first_name);
+//	printf("showinfo : %s\n", app->author_first_name);
 	listBox = createListBox ();
 
-	listBox->add(createLabel (app->name));
-	listBox->add(createLabel (app->author_first_name));
+	String *kebab = new String("kebab");
+
+//	char *ptr = (char) new String("name: ").append("bajs", 4);
+
+	listBox->add(createInfoLabel (app->name));
+//	listBox->add(createInfoLabel (app->description));
+	listBox->add(createInfoLabel (app->author_first_name));
 
 //	app_info_view->show();
 
@@ -194,6 +199,15 @@ Label* ViewContainer::createLabel(const char *str) {
 	Label *label;
 	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
 	label->setSkin(gSkin);
+	setLabelPadding(label);
+	return label;
+}
+
+Label* ViewContainer::createInfoLabel(const char *str) {
+	int height = 32;
+	Label *label;
+	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
+	label->setSkin(NULL);
 	setLabelPadding(label);
 	return label;
 }

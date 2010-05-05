@@ -33,6 +33,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include <MAUI/EditBox.h>
 #include <MAUtil/Moblet.h>
 #include <MAUI/Widget.h>
+#include <MAUtil/String.h>
 
 #include "model.h"
 
@@ -207,6 +208,7 @@ public:
 	void setLabelPadding(Widget *w);
 	Label* createLabel(const char *str, int height);
 	Label* createLabel(const char *str);
+	Label* createInfoLabel(const char *str); //a label for app_info_view
 	Layout* createMainLayout(const char *left, const char *right);
 	Layout* createSoftKeyBar(int height, const char *left, const char *right);
 	ListBox* createListBox();
