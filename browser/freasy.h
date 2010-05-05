@@ -59,11 +59,12 @@ private :
 	/*
 	 * DATA
 	 */
-	FILE *settings;
-	FILE *favorites;
+	//FILE *settings;
+	//FILE *favorites;
 	model * dataModel;
-	const char* settings_file_name;
-	const char* favorites_file_name;
+	FILE  * app2download_file;
+	//const char* settings_file_name;
+	//const char* favorites_file_name;
 	//Screen *currentScreen; //The active screen, named View in the ADD 1.2
 
 	/*

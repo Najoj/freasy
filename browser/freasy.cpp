@@ -8,13 +8,14 @@
 #include "freasy.h"
 
 Freasy::Freasy () {
+
+	setCurrentFileSystem(R_TEST_FILESYSTEM, 0);
+
 	/* Initiate input controller to listen for user input */
 	new InputControllerX (this);
 
 	/* Initiate model to communicate with servers */
 	dataModel = new model (this, this);
-
-	//dataModel->connect ();
 
 	views = new ViewContainer();
 
@@ -61,14 +62,17 @@ void Freasy::handle_key_softleft () {
 			break;
 
 		case BROWSER_VIEW :
-			//printf ("selected app : %s\n", views->getSelected());
-
-			//char * haj = views->getSelected();
-
 			views->showInfo (dataModel->get_info (views->getSelected ()));
 
 			views->setView (APPLICATION_INFO_VIEW);
 			current_view = APPLICATION_INFO_VIEW;
+
+			break;
+
+		case APPLICATION_INFO_VIEW :
+			app2download_file = fopen ("toDownload.txt", "w");
+			fputs ("URL", app2download_file);
+			close ();
 
 			break;
 
@@ -97,9 +101,6 @@ void Freasy::handle_key_softright () {
 
 	}
 
-
-
-
 }
 
 /****************************************************************************
@@ -109,23 +110,25 @@ void Freasy::handle_key_softright () {
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) printf ("connection failed!\n");
 	else{
-		printf ("selected category %s\n", views->getSelected ());
+		//printf ("selected category %s\n", views->getSelected ());
 		dataModel->search_by_category (views->getSelected());
 	}
 }
 
 void Freasy::connWriteFinished (Connection * connection, int result) {
 	if (result < 0) printf ("writing failed!\n");
-	else {  printf ("finished writing asshole!\n"); dataModel->receive_answer (); }
+	else {
+		//printf ("finished writing asshole!\n");
+		dataModel->receive_answer (); }
 }
 
 void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) printf ("receiving data failed!\n");
 	else {
-		printf ("fuck you asshole!\n");
+		//printf ("fuck you asshole!\n");
 		if (dataModel->parse ()) {
 			if (dataModel->done_parsing) {
-				printf ("done parsing asshole!\n");
+				//printf ("done parsing asshole!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
 				current_view = BROWSER_VIEW;

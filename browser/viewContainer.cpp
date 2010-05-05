@@ -75,7 +75,7 @@ void ViewContainer::showApplications(application *applications, int count) {
 
 	int i;
 	for(i = 0; i < count; i++){
-		printf("%s\n", applications[i].name);
+		//printf("%s\n", applications[i].name);
 		listBox->add(createLabel (applications[i].name));
 	}
 	browser_view->show();

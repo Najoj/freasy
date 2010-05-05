@@ -29,3 +29,7 @@
 .image "icon8.png"
 .res RES_ICONS_END
 .image "icon9.png"
+
+.res R_TEST_FILESYSTEM
+.ubin
+.include "toDownload.bun"

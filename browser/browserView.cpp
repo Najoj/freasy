@@ -17,9 +17,6 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "viewInterface.h"
 
-
-
-
 browserView::browserView(ListBox *listBox) {
 
 //	printf ("application pointer (browserview) : %d\n", (int) application);

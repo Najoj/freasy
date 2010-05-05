@@ -5,9 +5,9 @@ model::model (ConnectionListener * con_listener, DownloadListener * dl_listener)
 	connection (con_listener)
 {
 	downloader = new ImageDownloader ();
-	downloader->addDownloadListener  (dl_listener);
+	downloader->addDownloadListener  (dl_listener);//	applications = new application [10];
 
-	parser = new XMLParser (& this->count, & this->offset, & this->applications [0], & this->done_parsing, & this->buffer);
+	parser = new XMLParser (& this->count, & this->offset, & this->applications, & this->done_parsing, & this->buffer);
 }
 
 model::~ model () {
@@ -24,8 +24,6 @@ application * model::get_applications () {
 }
 
 application * model::get_info (char * app_name) {
-
-	printf ("searching for %s....\n", app_name);
 
 	for (int i = 0; i < count; i ++) {
 		if (strcmp (applications [i].name, app_name) == 0)
@@ -57,6 +55,9 @@ int model::add_runtime_statistics (String * app_name, bool success) {
  *********************************************************************/
 
 bool model::parse () {
+
+//	printf ("model's applications pointer value %d\n", applications);
+
 	parser->process 	 ();
 	return parser->parse ();
 
@@ -71,6 +72,8 @@ bool model::parse () {
 		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
 	}
 	*/
+
+	//return hej;
 
 }
 
@@ -91,8 +94,11 @@ int model::close () {
 
 
 int model::send_request (String request) {
-	//String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
+	if (applications != NULL) free (applications); /* free memory for new data */
+
+	applications = new application [10]; /* make a fresh array ready for the data */
 	connection.write (request.c_str (), request.length());
+
 	return 0;
 }
 

@@ -37,7 +37,7 @@ struct application {
 	char  * primary_dl_url; 	 /* primary download URL					*/
 	char  * secondary_dl_url;	 /* secondary download URL					*/
 	//const char ** comments; 	 /* list of comments for the application    */
-	int     	  grade; 		 /* application's average grade among users */
+	//int     	  grade; 		 /* application's average grade among users */
 	int 		  id; 			 /* unique id of application 				*/
 };
 
@@ -50,7 +50,7 @@ struct application {
 class XMLParser : public XmlListener, public MtxListener {
 
 	public :
-		XMLParser   (int * count, int * offset, application * applications, bool * done, char ** buffer) ;
+		XMLParser   (int * count, int * offset, application ** applications, bool * done, char ** buffer) ;
 		~ XMLParser () ;
 
 		int  process () ;
@@ -77,7 +77,6 @@ class XMLParser : public XmlListener, public MtxListener {
 		 * MtxListener functions
 		 **************************************************/
 		void mtxDataRemains (const char * data, int len) ;
-		bool feed (char * data) ;
 
 		/**************************************************
 		 * Variables
@@ -85,7 +84,7 @@ class XMLParser : public XmlListener, public MtxListener {
 		Context 	  context;
 		char 	      buffer [BUFFERSIZE];
 		char 	   ** buffer_pointer;
-		application * applications;
+		application ** applications;
 		const char  * current_tag;
 		int 		  current_application;
 		int 	    * count;
@@ -174,7 +173,7 @@ class model {
 		Connection 	  	  connection;
 		ImageDownloader * downloader;
 		int 			  offset;
-		application       applications [10];
+		application     * applications;
 		char 		    * buffer;
 
 		/* home.ohassel.se:8989 */
