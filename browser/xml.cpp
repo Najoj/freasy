@@ -110,7 +110,7 @@ void XMLParser::mtxTagData (const char * data, int length) {
 
 	}
 
-	else if (strcmp (current_tag, "description") == 0) {
+	else if (strcmp (current_tag, "short_description") == 0) {
 		//if (applications [current_application].description != NULL) free (applications [current_application].description);
 		//applications [current_application].description = data;
 		//applications->description = data;

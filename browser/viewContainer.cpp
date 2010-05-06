@@ -97,7 +97,7 @@ void ViewContainer::showInfo(application * app) {
 
 	listBox->add(createInfoLabel ("", app->name));
 //	listBox->add(createInfoLabel (app->description));
-//	listBox->add(createInfoLabel ("description: ", app->description));
+	listBox->add(createInfoLabel ("description: ", app->description));
 	listBox->add(createInfoLabel ("author: ", app->author_first_name));
 
 //	app_info_view->show();
@@ -211,6 +211,8 @@ Label* ViewContainer::createInfoLabel(const char *pre, const char *str) {
 
 	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, new_str->c_str(), 0, gFont);
 	label->setSkin(NULL);
+	label->setAutoSizeY();
+	label->setMultiLine(true);
 	setLabelPadding(label);
 	return label;
 }

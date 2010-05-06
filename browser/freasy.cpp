@@ -113,6 +113,7 @@ void Freasy::handle_key_softright () {
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) {
 		free (views->listBox);
+		views->setView(2);
 		views->listBox = views->createListBox ();
 		views->listBox->add(views->createInfoLabel ("", "Connection to server failed.\n Go back and try again."));
 		views->browser_view->show();
@@ -131,7 +132,7 @@ void Freasy::connWriteFinished (Connection * connection, int result) {
 		views->browser_view->show();
 	}
 	else {
-		//printf ("finished writing asshole!\n");
+		//printf ("finished writing!\n");
 		dataModel->receive_answer (); }
 }
 
