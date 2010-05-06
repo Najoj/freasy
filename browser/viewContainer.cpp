@@ -73,6 +73,9 @@ void ViewContainer::showApplications(application *applications, int count) {
 
 	listBox = createListBox ();
 
+	if(applications[0].name == NULL)
+		listBox->add(createInfoLabel("", "No apps in this category"));
+
 	int i;
 	for(i = 0; i < count; i++){
 		//printf("%s\n", applications[i].name);
@@ -94,6 +97,7 @@ void ViewContainer::showInfo(application * app) {
 
 	listBox->add(createInfoLabel ("", app->name));
 //	listBox->add(createInfoLabel (app->description));
+//	listBox->add(createInfoLabel ("description: ", app->description));
 	listBox->add(createInfoLabel ("author: ", app->author_first_name));
 
 //	app_info_view->show();

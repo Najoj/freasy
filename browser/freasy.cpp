@@ -111,7 +111,12 @@ void Freasy::handle_key_softright () {
  ****************************************************************************/
 
 void Freasy::connectFinished (Connection * connection, int result) {
-	if (result < 0) printf ("connection failed!\n");
+	if (result < 0) {
+		free (views->listBox);
+		views->listBox = views->createListBox ();
+		views->listBox->add(views->createInfoLabel ("", "Connection to server failed.\n Go back and try again."));
+		views->browser_view->show();
+	}
 	else{
 		//printf ("selected category %s\n", views->getSelected ());
 		dataModel->search_by_category (views->getSelected());
@@ -119,19 +124,29 @@ void Freasy::connectFinished (Connection * connection, int result) {
 }
 
 void Freasy::connWriteFinished (Connection * connection, int result) {
-	if (result < 0) printf ("writing failed!\n");
+	if (result < 0) {
+		free (views->listBox);
+		views->listBox = views->createListBox ();
+		views->listBox->add(views->createInfoLabel ("", "Writing to server failed.\n Go back and try again."));
+		views->browser_view->show();
+	}
 	else {
 		//printf ("finished writing asshole!\n");
 		dataModel->receive_answer (); }
 }
 
 void Freasy::connRecvFinished (Connection * connection, int result) {
-	if (result < 0) printf ("receiving data failed!\n");
+	if (result < 0) {
+		free (views->listBox);
+		views->listBox = views->createListBox ();
+		views->listBox->add(views->createInfoLabel ("", "Receiving data from server failed.\n Go back and try again."));
+		views->browser_view->show();
+	}
 	else {
-		//printf ("fuck you asshole!\n");
+		//printf ("failed here!\n");
 		if (dataModel->parse ()) {
 			if (dataModel->done_parsing) {
-				//printf ("done parsing asshole!\n");
+				//printf ("done parsing!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
 				current_view = BROWSER_VIEW;
