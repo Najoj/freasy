@@ -36,9 +36,7 @@ struct application {
 	char  * category; 		 	 /* application category					*/
 	char  * primary_dl_url; 	 /* primary download URL					*/
 	char  * secondary_dl_url;	 /* secondary download URL					*/
-	//const char ** comments; 	 /* list of comments for the application    */
-	//int     	  grade; 		 /* application's average grade among users */
-	int 		  id; 			 /* unique id of application 				*/
+	int     id; 			 	 /* unique id of application 				*/
 };
 
 
@@ -81,15 +79,15 @@ class XMLParser : public XmlListener, public MtxListener {
 		/**************************************************
 		 * Variables
 		 **************************************************/
-		Context 	  context;
-		char 	      buffer [BUFFERSIZE];
-		char 	   ** buffer_pointer;
+		Context 	   context;
+		char 	       buffer [BUFFERSIZE];
+		char 	    ** buffer_pointer;
 		application ** applications;
-		const char  * current_tag;
-		int 		  current_application;
-		int 	    * count;
-		int 		* offset;
-		bool 		* done;
+		const char   * current_tag;
+		int 		   current_application;
+		int 	     * count;
+		int 		 * offset;
+		bool 		 * done;
 
 };
 

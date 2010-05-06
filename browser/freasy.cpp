@@ -127,6 +127,7 @@ void Freasy::connectFinished (Connection * connection, int result) {
 void Freasy::connWriteFinished (Connection * connection, int result) {
 	if (result < 0) {
 		free (views->listBox);
+		dataModel->close ();
 		views->listBox = views->createListBox ();
 		views->listBox->add(views->createInfoLabel ("", "Writing to server failed.\n Go back and try again."));
 		views->browser_view->show();
@@ -140,20 +141,24 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) {
 		free (views->listBox);
 		views->listBox = views->createListBox ();
-		views->listBox->add(views->createInfoLabel ("", "Receiving data from server failed.\n Go back and try again."));
+		views->listBox->add (views->createInfoLabel ("", "Receiving data from server failed.\n Go back and try again."));
 		views->browser_view->show();
 	}
 	else {
 		//printf ("failed here!\n");
 		if (dataModel->parse ()) {
+			dataModel->close ();
 			if (dataModel->done_parsing) {
 				//printf ("done parsing!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
 				current_view = BROWSER_VIEW;
-				dataModel->close ();
 			}
-			else { printf ("stopped parsing\n"); return; }
+			else {
+				printf ("stopped parsing\n");
+				dataModel->connect ();
+				return;
+			}
 		}
 		else dataModel->receive_answer ();
 
