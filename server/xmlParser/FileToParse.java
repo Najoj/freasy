@@ -95,7 +95,12 @@ public class FileToParse
 			
 			files.setSave(true);
 		}
-		
+		/**
+		 * CLASSIC JAKE HAX!!!
+		 */
+		if(answerString == null){
+			answerString = "JAKEHAX!";
+		}
 		FilePrinter.printToFile(XMLanswer, answerString);
 
 	}
