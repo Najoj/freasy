@@ -80,7 +80,7 @@ class snortHead extends Thread {
      * @author  Johan Öhlin <johanohl@kth.se>
      * @author  Olle Hassel <ohassel@kth.se>
      */
-    public void start() {
+    public void run() {
         try {
         	System.out.print("Anslutning skapad.");
             try {
