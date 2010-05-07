@@ -91,16 +91,7 @@ public class snor {
         		System.err.println("Exception: "+e.getMessage());
         		e.printStackTrace();
             }
-            
-            try
-            {
-            	serverSocket.close();
-            }
-            catch(IOException e) 
-            {
-            	
-            }
-            
+                        
         }
     }
 }
