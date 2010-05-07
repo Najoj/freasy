@@ -52,8 +52,6 @@ class snortHead extends Thread {
 
     private Socket clientSocket;
     RequestFile request;
-    InputStream in;
-    OutputStream out;
     
     /***************************************************************************
      * The constructor that calls the Thread class, saves the clients socket and
@@ -97,9 +95,9 @@ class snortHead extends Thread {
                 byte[] byteArray = new byte[maxFileLength];
                 
                 
-            	in = clientSocket.getInputStream();              	
+                InputStream in = clientSocket.getInputStream();              	
                 int requestFileLength = in.read(byteArray);
-                in.close();    
+    
                 
                 
             	// Debug thing
@@ -129,15 +127,16 @@ class snortHead extends Thread {
              	*  Start the sending of file
              	*/
             	
-            	out = clientSocket.getOutputStream();
+            	OutputStream out = clientSocket.getOutputStream();
             	out.write(byteArray, 0, answerFileLength);
             	
             	out.flush();
-            	out.close();
           		
                 /***************************************************************
                  * Closes connection
                  */
+                in.close();
+                out.close();
             	clientSocket.close();
 
         } 
