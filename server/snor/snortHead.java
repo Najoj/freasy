@@ -152,6 +152,7 @@ class snortHead extends Thread {
             request.delete();
             System.exit(-1);
         }
+        
 
         /***********************************************************************
          * Remove files when finished.
