@@ -78,7 +78,7 @@ public class snor {
         while(true) 
         {
             try {
-                System.out.print(new Date() + ": Väntar... ");
+                System.out.println(new Date() + ": Väntar... ");
                 new snortHead( serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
                 System.out.println(" Tråd skapad.");
             } catch(IOException e) {
