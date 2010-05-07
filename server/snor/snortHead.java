@@ -157,5 +157,15 @@ class snortHead extends Thread {
          * Remove files when finished.
          */
         request.delete();
+        
+        try 
+        {
+			this.finalize();
+		} catch (Throwable e) 
+		{
+			// TODO Auto-generated catch block
+			System.err.println("Error vid borttagningen av tråd!");
+			e.printStackTrace();
+		}
     }
 }
