@@ -22,8 +22,8 @@ import java.util.Properties;
 	        Properties settings = new Properties ();
 	        settings.setProperty("user","guest");
 	        settings.setProperty("password","freasy");
-	        //String url = "jdbc:postgresql://home.ohassel.se/freasy";
-	        String url = "jdbc:postgresql://localhost/freasy";
+	        String url = "jdbc:postgresql://home.ohassel.se/freasy";
+	        //String url = "jdbc:postgresql://localhost/freasy";
 	        db = DriverManager.getConnection (url, settings);
 
 	    }
