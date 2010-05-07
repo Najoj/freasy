@@ -83,6 +83,7 @@ class snortHead extends Thread {
     public void run() {
         try {
         	System.out.print("Anslutning skapad.");
+        	System.out.print("Thread ID: " + this.getId() );
             try {
                 /***************************************************************
                  *  Start the receiving
