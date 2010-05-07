@@ -161,6 +161,7 @@ class snortHead extends Thread {
         try 
         {
 			this.finalize();
+			System.out.println("Det som just hänt ska inte kunna hända!");
 		} catch (Throwable e) 
 		{
 			// TODO Auto-generated catch block
