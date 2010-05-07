@@ -79,6 +79,7 @@ bool model::parse () {
 
 
 int model::connect () {
+	if (connection.isOpen ()) return -1; /* we're already connected!! */
 	//int result = connection.connect ("socket://home.ohassel.se:8989");
 	int result = connection.connect ("socket://83.176.229.151:8989");
 	if (result < 0) printf ("connecting failed\n");

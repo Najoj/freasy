@@ -32,4 +32,4 @@
 
 .res R_TEST_FILESYSTEM
 .bin
-.include "toDownload.bun"
+.include "browserChoice.bun"

@@ -68,9 +68,23 @@ void Freasy::handle_key_softleft () {
 			break;
 
 		case APPLICATION_INFO_VIEW :
-			app2download_file = fopen ("toDownload.txt", "w");
+			app2download_file = fopen ("browserChoice.sav", "w");
+
+			//printf ("download url written to file : %s\n", dataModel->get_applications () [viewed_app].primary_dl_url);
+
 			fputs (dataModel->get_applications () [viewed_app].primary_dl_url, app2download_file);
-			close ();
+			fputc ('@', app2download_file);
+			fputs (itoa (dataModel->get_applications () [viewed_app].id, new char, 10), app2download_file);
+
+			fclose (app2download_file);
+
+//			app2download_file = fopen ("browserChoice.sav", "r");
+//			printf ("%s\n", fgets (new char, 100, app2download_file));
+//			fclose (app2download_file);
+
+			//printf ("%s\n", itoa (dataModel->get_applications () [viewed_app].id, new char, 10));
+			//printf ("%d\n", dataModel->get_applications () [viewed_app].id);
+			close  ();
 
 			break;
 
