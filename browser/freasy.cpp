@@ -98,6 +98,17 @@ void Freasy::handle_key_softright () {
 			break;
 
 		case CATEGORY_VIEW :
+			String text = "EXIT";
+			MAHandle data = PlaceholderPool::alloc();
+			maCreateData(data, text.length());
+			maWriteData(data, text.c_str(), 0, text.length());
+			MAHandle store = maOpenStore("browserChoice.sav", MAS_CREATE_IF_NECESSARY);
+			int res = maWriteStore(store, data);
+			if (res < 0) {
+				printf("ERROR in EXIT: %i\n", res);
+			}
+			maCloseStore(store, 0);
+			PlaceholderPool::put(data);
 			close();
 
 			break;
