@@ -13,11 +13,11 @@
 
 using namespace MAUtil;
 
-static const char* browserURL = "http://www.csc.kth.se/~cjanson/default.comb";
+static const char* browserURL = "http://www.csc.kth.se/~cjanson/default2.comb";
 static const char* browserSave = "browser.sav";
-static const char* browserVSave = "browserVersion.txt";
-static const char* exitGracefullyFile = "ExitGracefully.txt";
-static const char* browserchoice = "browserChoice.txt";
+static const char* browserVSave = "browserVersion.sav";
+static const char* exitGracefullyFile = "ExitGracefully.sav";
+static const char* browserchoice = "browserChoice.sav";
 
 class Launcher: public Moblet,
 		public DownloadListener,
