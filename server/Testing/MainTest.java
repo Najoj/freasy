@@ -4,7 +4,7 @@ package Testing;
 import java.io.File;
 import xmlParser.FileToParse;
 import Files.RequestFile;
-import Static.FilePrinter;
+//import Static.FilePrinter;
 import Static.Initializer;
 
 public class MainTest {

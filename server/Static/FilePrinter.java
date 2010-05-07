@@ -63,6 +63,21 @@ public class FilePrinter
 	    }
 	}
 	
+	public static void printArrayToFile( byte[] byteArray, File file, int fileLength ) throws IOException
+	{
+	   	BufferedOutputStream bos = new BufferedOutputStream( new FileOutputStream( file ) );
+		bos.write(byteArray, 0, fileLength);
+		bos.flush();
+		bos.close();
+	}
+	
+	public static void printFileToArray( byte[] byteArray, File file, int fileLength ) throws IOException
+	{
+    	BufferedInputStream stream = new BufferedInputStream( new FileInputStream( file ) );
+    	stream.read(byteArray, 0, fileLength);
+    	stream.close();
+	}
+	
 	public static String printFileToString( File file )
 	{
 

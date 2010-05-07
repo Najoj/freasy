@@ -75,13 +75,11 @@ public class snor {
         /***********************************************************************
          * Accepts all clients comming, unless something bad happens.
          */
-        while(true) {
+        while(true) 
+        {
             try {
                 System.out.print(new Date() + ": Väntar... ");
-                new snortHead( serverSocket.accept(),
-                               new Date().getTime(),
-                               random.nextInt()
-                               ).start();
+                new snortHead( serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
                 System.out.println(" Tråd skapad.");
             } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);
@@ -93,7 +91,16 @@ public class snor {
         		System.err.println("Exception: "+e.getMessage());
         		e.printStackTrace();
             }
-
+            
+            try
+            {
+            	serverSocket.close();
+            }
+            catch(IOException e) 
+            {
+            	
+            }
+            
         }
     }
 }

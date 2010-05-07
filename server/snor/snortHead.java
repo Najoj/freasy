@@ -19,18 +19,18 @@ package snor;
 /*******************************************************************************
  *  Java library imports.
  */
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+//import java.io.BufferedInputStream;
+//import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+//import java.io.FileInputStream;
+//import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Date;
-import java.util.Random;
+//import java.util.Date;
+//import java.util.Random;
 
 /*******************************************************************************
  *  Other imports.
@@ -52,6 +52,8 @@ class snortHead extends Thread {
 
     private Socket clientSocket;
     RequestFile request;
+    InputStream in;
+    OutputStream out;
     
     /***************************************************************************
      * The constructor that calls the Thread class, saves the clients socket and
@@ -73,6 +75,7 @@ class snortHead extends Thread {
                     new File(fileName + "_request.xml"),
                     new File(fileName + "_answer.xml"),
                     fileName);
+          
     }
     
     /***************************************************************************
@@ -82,9 +85,10 @@ class snortHead extends Thread {
      */
     public void run() {
         try {
+        	
         	System.out.print("Anslutning skapad.");
         	System.out.print("Thread ID: " + this.getId() );
-            try {
+        	
                 /***************************************************************
                  *  Start the receiving
                  */
@@ -92,55 +96,63 @@ class snortHead extends Thread {
             	int maxFileLength = 5*1024;
                 byte[] byteArray = new byte[maxFileLength];
                 
-            	InputStream is = clientSocket.getInputStream();              	
-                int requestFileLength = is.read(byteArray);
-   
-            	BufferedOutputStream bos = new BufferedOutputStream(
-            	                             new FileOutputStream(
-            	                              request.getRequest()
-            	                           ));
-            	bos.write(byteArray, 0, requestFileLength);
-            	bos.flush();
-            	
+                
+            	in = clientSocket.getInputStream();              	
+                int requestFileLength = in.read(byteArray);
+                in.close();    
+                
+                
             	// Debug thing
             	FilePrinter.printFileToTerminal( request.getRequest() ); 
+            	
+             	/***************************************************************
+             	*  Convert input byte[] to request file
+             	*/
+            	
+            	FilePrinter.printArrayToFile(byteArray, request.getRequest(), requestFileLength);
             	
             	/***************************************************************
              	* Call parser.
              	*/
             	new FileToParse().parseFile( request );
+            	
+             	/***************************************************************
+             	*  Convert answer file to byte[]
+             	*/
+            	
+             	int answerFileLength = (int)request.getAnswer().length();
+            	byteArray = new byte[answerFileLength];
+            	
+            	FilePrinter.printFileToArray(byteArray, request.getAnswer(), answerFileLength);
             
              	/***************************************************************
              	*  Start the sending of file
              	*/
-             	int answerFileLength = (int)request.getAnswer().length();
-            	byteArray = new byte[answerFileLength];
-            
-            	BufferedInputStream bis = new BufferedInputStream(
-            	                            new FileInputStream(
-            	                              request.getAnswer()
-            	                            )
-            	                          );
-            	bis.read(byteArray, 0, answerFileLength);
-            
-            	OutputStream os = clientSocket.getOutputStream();
-            	os.write(byteArray, 0, answerFileLength);
-           		os.flush();
+            	
+            	out = clientSocket.getOutputStream();
+            	out.write(byteArray, 0, answerFileLength);
+            	
+            	out.flush();
+            	out.close();
           		
                 /***************************************************************
                  * Closes connection
                  */
             	clientSocket.close();
-            	
-            } catch (SocketException e) {
-            	System.err.println( e.getMessage() );
-            }
-        } catch(IOException e) {
+
+        } 
+        catch (SocketException e) 
+        {
+        	System.err.println( e.getMessage() );
+        }
+        
+        catch(IOException e) 
+        {
             System.err.println(e);
             request.delete();
             System.exit(-1);
         }
-        
+
         /***********************************************************************
          * Remove files when finished.
          */
