@@ -24,6 +24,10 @@ void InputControllerX::keyPressEvent (int key_code, int native_code) {
 
 	switch (key_code) {
 
+		case MAK_FIRE :
+			freasy->handle_key_softleft ();
+			break;
+
 		case MAK_UP :
 			freasy->handle_key_up ();
 			break;

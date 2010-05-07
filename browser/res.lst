@@ -31,5 +31,5 @@
 .image "icon9.png"
 
 .res R_TEST_FILESYSTEM
-.ubin
+.bin
 .include "toDownload.bun"

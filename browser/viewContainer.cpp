@@ -87,7 +87,7 @@ void ViewContainer::showApplications(application *applications, int count) {
 void ViewContainer::showInfo(application * app) {
 	if (app == NULL) return;
 
-	changeSoftBarText("run", "back");
+	createSoftKeyBar(30, "run", "back");
 
 	free (listBox);
 
