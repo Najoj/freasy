@@ -111,7 +111,6 @@ public:
 		//printf("Downloading program\n");
 		while (!validAdress) {
 			int first = programURLs.findFirstOf('@', 0);
-			//printf("\n%i\n", first);
 			if (first == -1) {
 				//printf("lastChance");
 				urls[i].resize(programURLs.size());
