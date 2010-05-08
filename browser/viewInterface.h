@@ -129,9 +129,9 @@ class AppInfoView : public MainScreen {
 
 public:
 	AppInfoView   (WidgetSkin * skin);
-//	~ AppInfoView ();
 
 	void showInfo (application * app);
+	void showException (const char * msg);
 
 private:
 	ListBox * list_box;
