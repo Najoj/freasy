@@ -70,8 +70,8 @@ class snortHead extends Thread {
          */
         String fileName = time + "_" + Integer.toHexString(random);
         request = new RequestFile(
-                    new File(fileName + "_request.xml"),
-                    new File(fileName + "_answer.xml"),
+                    "",
+                    "",
                     fileName);
           
     }
@@ -86,6 +86,7 @@ class snortHead extends Thread {
         	
         	System.out.print("Anslutning skapad.");
         	System.out.print("Thread ID: " + this.getId() );
+        	System.out.println();
         	
                 /***************************************************************
                  *  Start the receiving
@@ -97,18 +98,18 @@ class snortHead extends Thread {
                 
                 InputStream in = clientSocket.getInputStream();              	
                 int requestFileLength = in.read(byteArray);
+                String string_request = new String(byteArray);
     
-                
-                
-            	// Debug thing
-            	FilePrinter.printFileToTerminal( request.getRequest() ); 
+                //DEBUG
+                System.out.println(string_request); 
             	
              	/***************************************************************
              	*  Convert input byte[] to request file
              	*/
             	
-            	FilePrinter.printArrayToFile(byteArray, request.getRequest(), requestFileLength);
-            	
+            	//FilePrinter.printArrayToFile(byteArray, request.getRequest(), requestFileLength);
+            	request.setRequest(string_request);
+                
             	/***************************************************************
              	* Call parser.
              	*/
@@ -118,17 +119,18 @@ class snortHead extends Thread {
              	*  Convert answer file to byte[]
              	*/
             	
-             	int answerFileLength = (int)request.getAnswer().length();
-            	byteArray = new byte[answerFileLength];
+             	//int answerFileLength = (int)request.getAnswer().length();
+            	//byteArray = new byte[answerFileLength];
             	
-            	FilePrinter.printFileToArray(byteArray, request.getAnswer(), answerFileLength);
+            	//FilePrinter.printFileToArray(byteArray, request.getAnswer(), answerFileLength);
             
              	/***************************************************************
              	*  Start the sending of file
              	*/
             	
             	OutputStream out = clientSocket.getOutputStream();
-            	out.write(byteArray, 0, answerFileLength);
+            	//out.write(byteArray, 0, answerFileLength);
+            	out.write(request.getAnswer().getBytes());
             	
             	out.flush();
           		

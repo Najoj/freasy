@@ -16,15 +16,25 @@ import java.util.Properties;
 		private static Connection db;
 		
 	    //public void main (String[] args) throws Exception 
-		public static void Initialize() throws Exception 
+		public static void Initialize() 
 	    {
-	        Class.forName ("org.postgresql.Driver");
+			try {
+				Class.forName ("org.postgresql.Driver");
+			} catch (Exception e) {
+				System.out.println("Class org.postgresql.Driver not found");
+				System.exit(0);
+			}
 	        Properties settings = new Properties ();
 	        settings.setProperty("user","guest");
 	        settings.setProperty("password","freasy");
 	        String url = "jdbc:postgresql://home.ohassel.se/freasy";
 	        //String url = "jdbc:postgresql://localhost/freasy";
-	        db = DriverManager.getConnection (url, settings);
+	        try {
+	        	db = DriverManager.getConnection (url, settings);
+	        } catch (Exception e) {
+	        	System.out.println("Unable to connect to database server");
+	        	System.exit(0);
+	        }
 
 	    }
 		

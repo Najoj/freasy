@@ -1,16 +1,24 @@
 
 package xmlParser;
 
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Stack;
 
-import java.io.File;
-import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import Static.ParserConstants;
 
@@ -18,7 +26,7 @@ import Static.ParserConstants;
 public class Request // implements InterfaceRequest 
 {
 	
-	File XMLrequest;
+	String XMLrequest;
 	
 	private class MatchBy_Object
 	{
@@ -66,7 +74,7 @@ public class Request // implements InterfaceRequest
         
         
         
-	public Request( File XMLrequest )
+	public Request( String XMLrequest )
 	{
 		this.XMLrequest = XMLrequest;
 		
@@ -235,7 +243,11 @@ public class Request // implements InterfaceRequest
 	{
 		try {
 				DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			    Document doc = builder.parse(XMLrequest);
+				
+				StringReader sr = new StringReader(XMLrequest.trim());
+				InputSource is = new InputSource(sr);
+				
+			    Document doc = builder.parse(is);
 			    
 			    NodeList root;
 			    

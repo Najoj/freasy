@@ -1,107 +1,104 @@
-
 package xmlParser;
-import java.io.File;
+
 import java.sql.SQLException;
 
 import org.xml.sax.SAXParseException;
+
 import Database.PADSQL;
 import Files.RequestFile;
-import Static.FilePrinter;
-
 
 /**
  * @author olle
- *
+ * 
  */
-public class FileToParse
-{
-	
+public class FileToParse {
+
 	/*
 	 * Inputs a File and recieves a File that answers according to the input.
 	 * 
 	 * @author Olle Hassel
+	 * 
 	 * @param an XML-file instanced as a File object
-	 * @return an XML-file answer to the request, or an exception-xml file if unable to parse
+	 * 
+	 * @return an XML-file answer to the request, or an exception-xml file if
+	 * unable to parse
 	 */
-	public void parseFile( RequestFile files )
-	{
-		File XMLrequest = files.getRequest();
-		File XMLanswer = files.getAnswer();
-		
-		
-		FilePrinter.printFileToTerminal(XMLrequest);
-		Request request = new Request( XMLrequest );
-		
+	public void parseFile(RequestFile files) {
+		// File XMLrequest = files.getRequest();
+		// File XMLanswer = files.getAnswer();
+		String req = files.getRequest();
+
+		// FilePrinter.printFileToTerminal(XMLrequest);
+		Request request = new Request(req);
+
 		String answerString = null;
-		
-		try
-		{
+
+		try {
 
 			request.parseXML();
 
-			//System.out.println("Request: "+ request.toString());
-				
-			Answer answer = new Answer( PADSQL.SendQuery(request.toSQL(), request.getNumberOfObjects()),
-					request.getOffset(), PADSQL.getQueryListLength( request.getSQLLength() ) );
+			// System.out.println("Request: "+ request.toString());
 
-			//Answer answer = new Answer();
-			
+			Answer answer = new Answer(PADSQL.SendQuery(request.toSQL(),
+					request.getNumberOfObjects()), request.getOffset(), PADSQL
+					.getQueryListLength(request.getSQLLength()));
+
+			// Answer answer = new Answer();
+
 			answerString = answer.exportXML();
-		
-			files.appendToLog( "Korrekt forumlerad request. Inga fel." );
-			
-			//System.out.println("Answer: "+ answer.toString() );
-			
-		}
-		catch ( XMLParseException e )
-		{
+
+			files.appendToLog("Korrekt forumlerad request. Inga fel.");
+
+			// System.out.println("Answer: "+ answer.toString() );
+
+		} catch (XMLParseException e) {
 			ExceptionParser error = new ExceptionParser();
-			answerString = error.parseException( XMLanswer, e );
-			
-			files.appendToLog( "Requesten har genrererat ett XMLParseException." );
-			
+			answerString = error.parseException(e);
+
+			files
+					.appendToLog("Requesten har genrererat ett XMLParseException.");
+
 			files.setSave(true);
-			
-		}
-		catch ( SAXParseException e )
-		{
+
+		} catch (SAXParseException e) {
 			ExceptionParser error = new ExceptionParser();
-			answerString = error.parseException( XMLanswer, e );
-			
-			files.appendToLog( "Requesten har genrererat ett SAXParseException." );
-			
+			answerString = error.parseException(e);
+
+			files
+					.appendToLog("Requesten har genrererat ett SAXParseException.");
+
 			files.setSave(true);
-		}
-		catch(SQLException e) 
-		{
-			
-			answerString = new ExceptionParser().parseMessageToXML( "Fel innuti servern!" );
-			
-			files.appendToLog( "Requesten har genrererat ett SAXParseException." );
-			
+		} catch (SQLException e) {
+
+			answerString = new ExceptionParser()
+					.parseMessageToXML("Fel innuti servern!");
+
+			files
+					.appendToLog("Requesten har genrererat ett SAXParseException.");
+
 			files.setSave(true);
-			
-    		System.err.println("error!");
-    		System.err.println("Exception: "+e.getMessage());
-    		e.printStackTrace();
-		}
-		catch ( Exception e )
-		{
+
+			System.err.println("error!");
+			System.err.println("Exception: " + e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
 			// Major error, probably bug in the server code.
-			
+
 			// Spara undan requesten, kolla varför felet inträffade!
-			
-			files.appendToLog( "!!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!" );
-			
+
+			files
+					.appendToLog("!!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
+
 			files.setSave(true);
 		}
 		/**
 		 * CLASSIC JAKE HAX!!!
 		 */
-		if(answerString == null){
+		if (answerString == null) {
 			answerString = "JAKEHAX!";
 		}
-		FilePrinter.printToFile(XMLanswer, answerString);
+
+		files.setAnswer(answerString);
 
 	}
 }

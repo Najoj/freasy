@@ -1,7 +1,6 @@
 
 package xmlParser;
 
-import java.io.File;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,19 +19,15 @@ import org.xml.sax.SAXParseException;
 
 public class ExceptionParser 
 {
-	
-	File XMLexception;
 
-	public String parseException( File XMLexception, XMLParseException e )
+	public String parseException( XMLParseException e )
 	{
-		this.XMLexception = XMLexception;
 		
 		return parseMessageToXML( e.getMessage() );
 	}
 	
-	public String parseException( File XMLexception, SAXParseException e )
+	public String parseException( SAXParseException e )
 	{
-		this.XMLexception = XMLexception;
 		
 		return parseMessageToXML( e.getMessage() );
 	}

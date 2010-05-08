@@ -1,74 +1,63 @@
 package Files;
 
-import java.io.File;
 import java.util.Date;
 
 import Static.FilePrinter;
 
-public class RequestFile 
-{
+public class RequestFile {
 
-	private File Request;
-	private File Answer;
+	private String request;
+	private String answer;
 
 	private StringBuilder log;
-	
+
 	private boolean Save;
-	
-	public RequestFile( File Request, File Answer, String FileName)
-	{
-		this.Request = Request;
-		this.Answer = Answer;
+
+	public RequestFile(String request, String answer, String fileName) {
+		this.request = request;
+		this.answer = answer;
 		Save = false;
 		log = new StringBuilder();
-		log.append( new Date().toString() + " : " + FileName + " : " );
+		log.append(new Date().toString() + " : " + fileName + " : ");
 	}
-	
-	public void appendToLog( String s )
-	{
-		log.append( s );
+
+	public void appendToLog(String s) {
+		log.append(s);
 	}
-	
-	public void setSave( boolean save )
-	{
+
+	public void setSave(boolean save) {
 		this.Save = save;
 	}
-	
-	public File getRequest()
-	{
-		return Request;
+
+	public String getRequest() {
+		return request;
+	}
+
+	public void setRequest(String request) {
+		this.request = request;
+	}
+
+	public String getAnswer() {
+		return answer;
 	}
 	
-	public void setRequest( File Request ) // Fulhack för att testa om fel i snortHread
-	{
-		this.Request = Request;
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
-	
-	public File getAnswer()
-	{
-		return Answer;
+
+	private void writeLogEntry() {
+		FilePrinter.appendToFile(FilePrinter.getRequestLog(), log.toString());
 	}
-	
-	private void writeLogEntry()
-	{
-		FilePrinter.appendToFile( FilePrinter.getRequestLog(), log.toString() );
+
+	public void delete() {
+		/**
+		 * writeLogEntry();
+		 * 
+		 * if (!Save) { Request.delete(); Answer.delete(); } else { appendToLog(
+		 * Request.getName() + " - " + Answer.getName() );
+		 * 
+		 * Answer.delete(); }
+		 **/
 	}
-	
-	public void delete()
-	{
-		writeLogEntry();
-		
-		if (!Save)
-		{
-			Request.delete();
-			Answer.delete();
-		}
-		else
-		{
-			appendToLog( Request.getName() + " - " + Answer.getName() );
-			
-			Answer.delete();
-		}
-	}
-	
+
 }
