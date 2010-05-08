@@ -103,7 +103,6 @@ void ViewContainer::showApplications (application * applications, int count) {
 
 	browser_view = new browserView (gSkin);
 	//Set the previous category
-	printf("selected index %d", selectedItem);
 
 	browser_view->showApplications (applications, count);
 

@@ -60,10 +60,7 @@ void Freasy::handle_key_softleft () {
 		case BROWSER_VIEW :
 			if (dataModel->count == 0) break;
 
-			viewed_app = views->browser_view->list_box->getSelectedIndex ();
-
-			views->showInfo (dataModel->get_info (views->getSelected ()));
-			current_view = APPLICATION_INFO_VIEW;
+			dataModel->download_icon (views->browser_view->list_box->getSelectedIndex ());
 
 			break;
 
@@ -205,7 +202,11 @@ bool Freasy::outOfMemory (Downloader * downloader) {
 }
 
 void Freasy::finishedDownloading (Downloader * downloader, MAHandle data) {
+	viewed_app = views->browser_view->list_box->getSelectedIndex ();
 
+	//views->showInfo (dataModel->get_info (views->getSelected ()));
+	views->showImage (data);
+	current_view = APPLICATION_INFO_VIEW;
 }
 
 void Freasy::downloadCancelled (Downloader * downloader) {
