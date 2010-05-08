@@ -138,7 +138,7 @@ void Freasy::handle_key_softright () {
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) {
 		free (views->listBox);
-		views->setView(BROWSER_VIEW); //why doesnt it work?
+		views->setView(BROWSER_VIEW);
 		current_view = BROWSER_VIEW;
 		views->listBox = views->createListBox ();
 		views->listBox->add(views->createInfoLabel ("", "Connection to server failed.\n Go back and try again."));
@@ -153,6 +153,8 @@ void Freasy::connectFinished (Connection * connection, int result) {
 void Freasy::connWriteFinished (Connection * connection, int result) {
 	if (result < 0) {
 		free (views->listBox);
+		views->setView(BROWSER_VIEW);
+		current_view = BROWSER_VIEW;
 		dataModel->close ();
 		views->listBox = views->createListBox ();
 		views->listBox->add(views->createInfoLabel ("", "Writing to server failed.\n Go back and try again."));
@@ -166,6 +168,8 @@ void Freasy::connWriteFinished (Connection * connection, int result) {
 void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) {
 		free (views->listBox);
+		views->setView(BROWSER_VIEW);
+		current_view = BROWSER_VIEW;
 		views->listBox = views->createListBox ();
 		views->listBox->add (views->createInfoLabel ("", "Receiving data from server failed.\n Go back and try again."));
 		views->browser_view->show();
