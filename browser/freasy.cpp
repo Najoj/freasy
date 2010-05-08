@@ -51,11 +51,15 @@ void Freasy::handle_key_softleft () {
 	switch (current_view) {
 
 		case CATEGORY_VIEW :
+			views->selectedItem = views->browser_view->list_box->getSelectedIndex ();
+
 			dataModel->connect();
+
 			break;
 
 		case BROWSER_VIEW :
 			viewed_app = views->browser_view->list_box->getSelectedIndex ();
+
 			views->showInfo (dataModel->get_info (views->getSelected ()));
 			current_view = APPLICATION_INFO_VIEW;
 
