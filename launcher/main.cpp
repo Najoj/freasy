@@ -54,8 +54,7 @@ public:
 		}
 		maWait(5000);
 		state = Idle;
-		//TODO kolla exitGracefully
-		checkExitGracefully();
+		checkExitGracefully();//check exitGracefully
 		download.addDownloadListener(this);
 		//Check if a application have been selected
 		if (checkApplication()) {
