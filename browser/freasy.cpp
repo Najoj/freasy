@@ -182,7 +182,7 @@ void Freasy::connRecvFinished (Connection * connection, int result) {
 		if (dataModel->parse ()) {
 			dataModel->close ();
 			if (dataModel->done_parsing) {
-				printf ("done parsing!\n");
+				//printf ("done parsing!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
 				current_view = BROWSER_VIEW;
