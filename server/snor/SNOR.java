@@ -25,9 +25,6 @@ import java.net.ServerSocket;
 import java.util.Date;
 import java.util.Random;
 
-/*******************************************************************************
- *  Other imports.
- */
 import Static.Initializer;
 
 /*******************************************************************************
@@ -39,7 +36,7 @@ import Static.Initializer;
  * @author  Olle Hassel <ohassel@kth.se>
  * @note    Remember to change \c PORT.
  */
-public class snor {
+public class SNOR {
     /***************************************************************************
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
      *  XXX Remember to change for you own purpose! XXX
@@ -73,13 +70,13 @@ public class snor {
         }
         
         /***********************************************************************
-         * Accepts all clients comming, unless something bad happens.
+         * Accepts all clients coming, unless something bad happens.
          */
         while(true) 
         {
             try {
                 System.out.println(new Date() + ": Väntar... ");
-                new snortHead( serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
+                new SnortHead( serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
                 System.out.println(" Tråd skapad.");
             } catch(IOException e) {
                 System.err.println(new Date() + ": " + e);
