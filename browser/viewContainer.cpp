@@ -22,7 +22,7 @@ ViewContainer::ViewContainer(int * current_view) {
 	engine.setDefaultSkin (gSkin);
 
 	this->categories = CATEGORIES;
-
+	selectedItem = 0;
 }
 
 void ViewContainer::setView(int view) {
@@ -102,7 +102,11 @@ void ViewContainer::showApplications (application * applications, int count) {
 	}
 
 	browser_view = new browserView (gSkin);
+	//Set the previous category
+	printf("selected index %d", selectedItem);
+
 	browser_view->showApplications (applications, count);
+
 	browser_view->show ();
 }
 
@@ -119,6 +123,7 @@ void ViewContainer::showCategories () {
 
 	browser_view = new browserView (gSkin);
 	browser_view->showCategories ();
+	browser_view->list_box->setSelectedIndex(selectedItem);
 	browser_view->show ();
 }
 
@@ -141,3 +146,7 @@ void ViewContainer::showException (const char * msg) {
 	app_info_view->show ();
 
 }
+
+//void ViewContainer::setCategoryChoosen(int i){
+	//browser_view ->selectedItem = i;
+//}

@@ -123,6 +123,7 @@ private :
 	char   ** categories;
 	Layout  * mainLayout;
 
+
 };
 
 class AppInfoView : public MainScreen {
@@ -217,6 +218,8 @@ public:
 	void showInfo(application * app);
 	void showException(const char * msg);
 
+	void setCategoryChoosen(int i);
+
 	void prevItem();
 	void nextItem();
 
@@ -233,6 +236,8 @@ public:
 	browserView *browser_view;
 	AppInfoView *app_info_view;
 	AppEditView *app_edit_view;
+
+	int selectedItem;
 
 private:
 	Font *gFont;
