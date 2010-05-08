@@ -58,6 +58,8 @@ void Freasy::handle_key_softleft () {
 			break;
 
 		case BROWSER_VIEW :
+			if (dataModel->count == 0) break;
+
 			viewed_app = views->browser_view->list_box->getSelectedIndex ();
 
 			views->showInfo (dataModel->get_info (views->getSelected ()));
