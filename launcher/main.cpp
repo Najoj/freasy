@@ -227,6 +227,13 @@ public:
 				maWriteStore(store, data);
 				maCloseStore(store, 0);
 				PlaceholderPool::put(data);
+
+				//Clears background
+						maSetColor(0x000000);
+						MAFrameBufferInfo info;
+						maFrameBufferGetInfo(&info);
+						maFillRect(0,0, info.width,info.height);
+
 				maLoadProgram(program, 1);/*start the program*/
 			} else {
 				printf("Out of system memory. Press 0 to exit.");
