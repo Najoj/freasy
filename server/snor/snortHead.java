@@ -21,23 +21,14 @@ package snor;
  */
 //import java.io.BufferedInputStream;
 //import java.io.BufferedOutputStream;
-import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-//import java.util.Date;
-//import java.util.Random;
 
-/*******************************************************************************
- *  Other imports.
- */
 import xmlParser.FileToParse;
 import Files.RequestFile;
-import Static.FilePrinter;
 
 
 /*******************************************************************************
@@ -99,6 +90,12 @@ class snortHead extends Thread {
                 InputStream in = clientSocket.getInputStream();              	
                 int requestFileLength = in.read(byteArray);
                 String string_request = new String(byteArray);
+                
+                int pos = string_request.indexOf("<");
+                if(pos != 0) {
+                	String substring = string_request.substring(pos);
+                	string_request = "<request>" + substring;
+                }
     
                 //DEBUG
                 System.out.println(string_request); 
