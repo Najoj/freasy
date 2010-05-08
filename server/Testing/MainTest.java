@@ -19,10 +19,10 @@ public class MainTest {
 		Initializer.initialize();
 		
 		//FilePrinter.printFileToTerminal(new File("/home/olle/workspace/Freasy/src/testanswer.xml"));
-				
+		/*		
 		new FileToParse().parseFile( new RequestFile( new File("/home/olle/workspace/Freasy/src/testrequest.xml"),
 				new File("/home/olle/workspace/Freasy/src/testanswer.xml"),"TEST" ) );
-
+*/
 	}
 
 }
