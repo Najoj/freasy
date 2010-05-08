@@ -129,6 +129,7 @@ void Freasy::handle_key_softright () {
 
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) {
+
 		/* show exception screen */
 		views->showException("Connection to server failed.");
 		views->setView(BROWSER_VIEW);

@@ -18,13 +18,30 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "viewInterface.h"
 
 browserView::browserView (WidgetSkin * skin) : MainScreen (skin) {
+
 	int height = 30;
 
 	/*************** main layout **************************/
 	Layout * main_layout    = new Layout (0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
 
+	/******************* list box ********************/
+	this->list_box = new ListBox (0, 0, scrWidth, scrHeight - height,
+								  main_layout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR,
+								  true);
+	list_box->setPaddingLeft   (5);
+	list_box->setPaddingRight  (5);
+	list_box->setPaddingTop    (15);
+	list_box->setPaddingBottom (15);
+	list_box->setSkin		   (skin);
+
+	setMain (main_layout);
+}
+
+void browserView::showCategories() {
+
 	/*************** softkeys ********************/
+	int height = 30;
 	Layout * softkey_layout = new Layout(0, scrHeight, scrWidth, height, NULL, 2, 1);
 
 	Label * softLeft  = new Label (0, 0, scrWidth / 2, height, softkey_layout);
@@ -39,34 +56,7 @@ browserView::browserView (WidgetSkin * skin) : MainScreen (skin) {
 	softRight->setHorizontalAlignment (Label::HA_RIGHT);
 	setLabelPadding (softRight);
 
-
-	/******************* list box ********************/
-	this->list_box = new ListBox (0, 0, scrWidth, scrHeight - softkey_layout->getHeight(),
-								  main_layout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR,
-								  true);
-	list_box->setPaddingLeft   (5);
-	list_box->setPaddingRight  (5);
-	list_box->setPaddingTop    (15);
-	list_box->setPaddingBottom (15);
-	list_box->setSkin		   (skin);
-
-	main_layout->add (softkey_layout);
-
-	setMain (main_layout);
-}
-
-void browserView::showCategories() {
-//	list_box->add (createLabel ("calculate",     list_box));
-//	list_box->add (createLabel ("entertainment", list_box));
-//	list_box->add (createLabel ("games", 		 list_box));
-//	list_box->add (createLabel ("news", 		 list_box));
-//	list_box->add (createLabel ("productivity",  list_box));
-//	list_box->add (createLabel ("search tools",  list_box));
-//	list_box->add (createLabel ("social",    	 list_box));
-//	list_box->add (createLabel ("sports",    	 list_box));
-//	list_box->add (createLabel ("travel",    	 list_box));
-//	list_box->add (createLabel ("utilities", 	 list_box));
-//	list_box->add (createLabel ("weather",   	 list_box));
+	this->getMain ()->add (softkey_layout);
 
 	createLabel ("calculate",     list_box);
 	createLabel ("entertainment", list_box);
@@ -84,6 +74,24 @@ void browserView::showCategories() {
 void browserView::showApplications(application *applications, int count) {
 	if(applications[0].name == NULL)
 		createInfoLabel ("", "No apps in this category", list_box);
+
+	/*************** softkeys ********************/
+	int height = 30;
+	Layout * softkey_layout = new Layout(0, scrHeight, scrWidth, height, NULL, 2, 1);
+
+	Label * softLeft  = new Label (0, 0, scrWidth / 2, height, softkey_layout);
+	softLeft->setCaption ("select");
+	softLeft->setBackgroundColor (0);
+	softLeft->setHorizontalAlignment (Label::HA_LEFT);
+	setLabelPadding (softLeft);
+
+	Label * softRight = new Label (0, 0, scrWidth/2, height, softkey_layout);
+	softRight->setCaption ("back");
+	softRight->setBackgroundColor (0);
+	softRight->setHorizontalAlignment (Label::HA_RIGHT);
+	setLabelPadding (softRight);
+
+	this->getMain ()->add (softkey_layout);
 
 	int i;
 	for(i = 0; i < count; i++){
