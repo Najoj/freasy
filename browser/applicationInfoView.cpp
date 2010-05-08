@@ -48,6 +48,12 @@ void AppInfoView::showInfo(application * app) {
 	createInfoLabel ("author : ",      app->author_first_name, list_box);
 }
 
+void AppInfoView::showImage(MAHandle image) {
+	Image *i = new Image(0, 0, 32, 32, NULL, false, false, image);
+	this->setMain(i);
+	this->show();
+}
+
 void AppInfoView::showException(const char * msg) {
 	createInfoLabel ("Error: ", msg, list_box);
 }

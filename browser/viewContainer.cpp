@@ -147,6 +147,26 @@ void ViewContainer::showException (const char * msg) {
 
 }
 
+void ViewContainer::showImage(MAHandle image) {
+
+	switch (* current_view) {
+
+		case CATEGORY_VIEW :
+			delete browser_view;
+			break;
+
+		case APPLICATION_INFO_VIEW :
+			delete app_info_view;
+			break;
+
+	}
+
+	app_info_view = new AppInfoView (gSkin);
+	app_info_view->showImage (image);
+	app_info_view->show ();
+
+}
+
 //void ViewContainer::setCategoryChoosen(int i){
 	//browser_view ->selectedItem = i;
 //}

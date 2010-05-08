@@ -133,6 +133,7 @@ public:
 
 	void showInfo (application * app);
 	void showException (const char * msg);
+	void showImage(MAHandle image);
 
 private:
 	ListBox * list_box;
@@ -217,6 +218,7 @@ public:
 	void showApplications(application *applications, int count);
 	void showInfo(application * app);
 	void showException(const char * msg);
+	void showImage(MAHandle image);
 
 	void setCategoryChoosen(int i);
 
