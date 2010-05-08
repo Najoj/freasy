@@ -133,6 +133,17 @@ public:
 			urls[i] = url;
 			i++;
 		}
+		String app = "application.comb";
+		urls[0].append(app.c_str(), app.length());
+		/*printf("%s", urls[0].c_str());
+		maWait(4000);
+		MAHandle data = PlaceholderPool::alloc();
+		maCreateData(data, urls[0].length());
+		maWriteData(data, urls[0].c_str(), 0, urls[0].length());
+		MAHandle store = maOpenStore("tmpURL.txt", MAS_CREATE_IF_NECESSARY);
+		maWriteStore(store, data);
+		maCloseStore(store, 0);
+		PlaceholderPool::put(data);*/
 		download.beginDownloading(urls[0].c_str(), 0);
 	}
 
@@ -241,10 +252,17 @@ public:
 				printf("There are no valid addresses to download ");
 				printf("this program from\n");
 				//todo: vad ska jag göra om det inte finns några adresser att ladda ner programmet från?
+				maWait(3000);
+				maExit(0);
 			} else {
 				//printf("Downloading from %s\n", urls[urlIterator].c_str());
 				download.beginDownloading(urls[urlIterator].c_str(), 0);
 			}
+		}
+		else{
+			printf("error %i\n", errorCode);
+			maWait(5000);
+			maExit(0);
 		}
 		return;
 	}
@@ -332,7 +350,15 @@ public:
 			//TODO : report to server
 			return;
 		} else {
-			printf("ID; %s\nExited gracefully",tid.c_str());
+			printf("ID; %s\nExited gracefully", tid.c_str());
+			/*MAHandle data = PlaceholderPool::alloc();
+			 maCreateData(data, tid.length());
+			 maWriteData(data, tid.c_str(), 0, tid.length());
+			 store = maOpenStore("tmpEG.txt",
+			 MAS_CREATE_IF_NECESSARY);
+			 maWriteStore(store, data);
+			 maCloseStore(store, 0);
+			 PlaceholderPool::put(data);*/
 			maWait(4000);
 			//TODO : report to server
 		}
