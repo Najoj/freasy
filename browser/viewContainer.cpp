@@ -87,12 +87,13 @@ void ViewContainer::showApplications(application *applications, int count) {
 void ViewContainer::showInfo(application * app) {
 	if (app == NULL) return;
 
-	createSoftKeyBar(30, "run", "back");
+//	createSoftKeyBar(30, "run", "back");
 
 	free (listBox);
 
 
 //	printf("showinfo : %s\n", app->author_first_name);
+	createMainLayout("run", "back");
 	listBox = createListBox ();
 
 	listBox->add(createInfoLabel ("", app->name));
