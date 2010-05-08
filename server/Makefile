@@ -12,10 +12,10 @@
 all: compile jar
 
 compile: snor/SNOR.java Database/PADSQL.java		\
-         Files/RequestFile.java Static/ParserConstants.java
+         Files/RequestAnswer.java Static/ParserConstants.java
 	javac snor/SNOR.java
 	javac Database/PADSQL.java
-	javac Files/RequestFile.java
+	javac Files/RequestAnswer.java
 	javac Static/ParserConstants.java
 
 jar: manifest
