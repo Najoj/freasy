@@ -5,7 +5,7 @@ model::model (ConnectionListener * con_listener, DownloadListener * dl_listener)
 	connection (con_listener)
 {
 	downloader = new ImageDownloader ();
-	downloader->addDownloadListener  (dl_listener);//	applications = new application [10];
+	downloader->addDownloadListener  (dl_listener);
 
 	parser = new XMLParser (& this->count, & this->offset, & this->applications, & this->done_parsing, & this->buffer);
 }
@@ -55,33 +55,15 @@ int model::add_runtime_statistics (String * app_name, bool success) {
  *********************************************************************/
 
 bool model::parse () {
-
-//	printf ("model's applications pointer value %d\n", applications);
-
 	parser->process 	 ();
 	return parser->parse ();
-
-	/*
-	for (int i = 0; i < count; i ++) {
-		printf (" ******** APPLICATION %d ********** \n", i);
-		printf ("name : %s\n", applications [i].name);
-		printf ("id : %d\n", applications [i].id);
-		printf ("author : %s %s\n", applications [i].author_first_name, applications [i].author_last_name);
-		printf ("description : %s\n", applications [i].description);
-		printf ("category : %s\n", applications [i].category);
-		printf ("primary_dl_url : %s\n", applications [i].primary_dl_url);
-	}
-	*/
-
-	//return hej;
-
 }
 
 
 int model::connect () {
 	if (connection.isOpen ()) return -1; /* we're already connected!! */
-	//int result = connection.connect ("socket://home.ohassel.se:8989");
-	int result = connection.connect ("socket://130.237.81.39:8989");
+	int result = connection.connect ("socket://home.ohassel.se:8989");
+	//int result = connection.connect ("socket://130.237.81.39:8989");
 	//int result = connection.connect ("socket://picturelogin.dyndns.org:8989");
 	if (result < 0) printf ("connecting failed\n");
 
@@ -110,7 +92,6 @@ int model::receive_answer () {
 }
 
 int model::search_by_category (char * category) {
-	//String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
 	String request = String ("<request><match_by><attribute>category</attribute><operator>ILIKE</operator><value>%");
 	request += category;
 	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
@@ -121,7 +102,7 @@ int model::search_by_category (char * category) {
 }
 
 int model::search_by_name (char * name) {
-	String request = String ("      <request><match_by><attribute>app_name</attribute><operator>ILIKE</operator><value>%");
+	String request = String ("<request><match_by><attribute>app_name</attribute><operator>ILIKE</operator><value>%");
 	request += name;
 	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
 	request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>";
@@ -131,6 +112,11 @@ int model::search_by_name (char * name) {
 	return 0;
 }
 
+void model::download_icon (int index) {
+	String url = String (applications [index].primary_dl_url);
+	url += "/icon/32/icon.png";
+	downloader->beginDownloading (url.c_str (), icon);
+}
 
 
 

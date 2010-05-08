@@ -93,39 +93,6 @@ class XMLParser : public XmlListener, public MtxListener {
 
 
 /*****************************************************************************
- * RESOURCE DOWNLOADER CLASS
- * Classed used for downloading different resources
- * such as icons, screenshots, etc.. for different applications
- * extends ImageDownloader, DownloadListener
- *****************************************************************************
-class resource_downloader : public DownloadListener {
-
-	public :
-		resource_downloader   ();
-		~ resource_downloader ();
-
-		MAHandle * download_resource (const char * url) ;
-
-	private :
-		/****************************************************************
-		 * DownloadListener functions
-		 ****************************************************************
-		void notifyProgress		 (Downloader * downloader, int downloaded_bytes, int total_bytes) ;
-		bool outOfMemory		 (Downloader * downloader) ;
-		void finishedDownloading (Downloader * downloader, MAHandle data) ;
-		void downloadCancelled	 (Downloader * downloader) ;
-		void error 				 (Downloader * downloader, int error_code) ;
-
-		/****************************************************************
-		 * Variables
-		 ****************************************************************
-		ImageDownloader downloader;
-		MAHandle   		data;
-
-};
-*/
-
-/*****************************************************************************
  * MODEL CLASS
  * main class taking care of interaction with server
  * providing information about applications to other classes
@@ -153,12 +120,13 @@ class model {
 		 * UTILITY FUNCTIONS
 		 ********************************************************************/
 		int  connect 			() ;
-		int close ();
+		int  close				();
 		bool parse 				() ;
 		int  send_request   	(String request) ;
 		int  receive_answer 	() ;
 		int  search_by_category (char * category) ;
 		int  search_by_name     (char * name) ;
+		void download_icon		(int index) ;
 
 		int	 count; 			 /* number of apps */
 		bool done_parsing;
@@ -173,6 +141,7 @@ class model {
 		int 			  offset;
 		application     * applications;
 		char 		    * buffer;
+		MAHandle          icon;
 
 		/* home.ohassel.se:8989 */
 };
