@@ -40,17 +40,19 @@ AppInfoView::AppInfoView (WidgetSkin * skin) : MainScreen (skin) {
 	setMain (main_layout);
 }
 
-void AppInfoView::showInfo(application * app) {
+void AppInfoView::showInfo(application * app, MAHandle image) {
 	if (app == NULL) return;
 
 	createInfoLabel ("",               app->name,              list_box);
 	createInfoLabel ("description : ", app->description,       list_box);
 	createInfoLabel ("author : ",      app->author_first_name, list_box);
+
+	this->showImage(image);
 }
 
 void AppInfoView::showImage(MAHandle image) {
-	Image *i = new Image(0, 0, 32, 32, NULL, false, false, image);
-	this->setMain(i);
+
+	Image *i = new Image(0, 0, 32, 32, list_box, false, false, image);
 	this->show();
 }
 

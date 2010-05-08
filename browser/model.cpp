@@ -62,8 +62,8 @@ bool model::parse () {
 
 int model::connect () {
 	if (connection.isOpen ()) return -1; /* we're already connected!! */
-	int result = connection.connect ("socket://home.ohassel.se:8989");
-	//int result = connection.connect ("socket://130.237.81.39:8989");
+//	int result = connection.connect ("socket://home.ohassel.se:8989");
+	int result = connection.connect ("socket://130.237.81.39:8989");
 	//int result = connection.connect ("socket://picturelogin.dyndns.org:8989");
 	if (result < 0) printf ("connecting failed\n");
 

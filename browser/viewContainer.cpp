@@ -109,11 +109,11 @@ void ViewContainer::showApplications (application * applications, int count) {
 	browser_view->show ();
 }
 
-void ViewContainer::showInfo (application * app) {
+void ViewContainer::showInfo (application * app, MAHandle image) {
 	delete browser_view;
 
 	app_info_view = new AppInfoView (gSkin);
-	app_info_view->showInfo (app);
+	app_info_view->showInfo (app, image);
 	app_info_view->show ();
 }
 

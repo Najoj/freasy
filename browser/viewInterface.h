@@ -131,7 +131,7 @@ class AppInfoView : public MainScreen {
 public:
 	AppInfoView   (WidgetSkin * skin);
 
-	void showInfo (application * app);
+	void showInfo (application * app, MAHandle image);
 	void showException (const char * msg);
 	void showImage(MAHandle image);
 
@@ -216,7 +216,7 @@ public:
 	 **************************************************/
 	void showCategories();
 	void showApplications(application *applications, int count);
-	void showInfo(application * app);
+	void showInfo(application * app, MAHandle image);
 	void showException(const char * msg);
 	void showImage(MAHandle image);
 

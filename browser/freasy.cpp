@@ -205,7 +205,7 @@ void Freasy::finishedDownloading (Downloader * downloader, MAHandle data) {
 	viewed_app = views->browser_view->list_box->getSelectedIndex ();
 
 	//views->showInfo (dataModel->get_info (views->getSelected ()));
-	views->showImage (data);
+	views->showInfo (dataModel->get_info (views->getSelected ()), data);
 	current_view = APPLICATION_INFO_VIEW;
 }
 
