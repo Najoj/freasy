@@ -13,7 +13,7 @@
 
 using namespace MAUtil;
 
-static const char* browserURL = "http://www.csc.kth.se/~cjanson/default3.comb";
+static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
