@@ -17,119 +17,86 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 
 #include "viewInterface.h"
 
-browserView::browserView(ListBox *listBox) {
+browserView::browserView (WidgetSkin * skin) : MainScreen (skin) {
+	int height = 30;
 
-//	printf ("application pointer (browserview) : %d\n", (int) application);
-
-	//printf ("%s\n", application[0].name);
-
-//	MAExtent screenSize = maGetScrSize();
-//	scrWidth  = EXTENT_X(screenSize);
-//	scrHeight = EXTENT_Y(screenSize);
-//
-//	layout = createMainLayout("select", "exit");
-//	this->setMain(layout);
-//	listBox = (ListBox*) layout->getChildren()[0];
-
-	this->listBox = listBox;
-
-//	this->listCategories();
+	/*************** main layout **************************/
+	Layout * main_layout    = new Layout (0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
 
-//	this->categories = CATEGORIES;
+	/*************** softkeys ********************/
+	Layout * softkey_layout = new Layout(0, scrHeight, scrWidth, height, NULL, 2, 1);
 
-//	printf("num_apps: %d\n", num_apps);
+	Label * softLeft  = new Label (0, 0, scrWidth / 2, height, softkey_layout);
+	softLeft->setCaption ("select");
+	softLeft->setBackgroundColor (0);
+	softLeft->setHorizontalAlignment (Label::HA_LEFT);
+	setLabelPadding (softLeft);
 
-
-//	int i;
-//	for(i = 0; i < num_apps; i++){
-//		this->putApp (application[i].name);
-//	}
-
-//	int n = 0;
-//	for(i = 0; i < num_apps; i++){
-//		if(!alreadyCategorized(application[i].category)){
-//			this->putApp (application[i].category);
-//			categorized.insert(n++, application[i].category);
-//		}
-//	}
-//	this->clearApps();
-
-//	currentScreen = new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)");
-//	screens.add(new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
-//	screens.add(new AppInfoView(this, "Tetris", "Pwn da blocks!"));
-//	screens.add(new ImageScreen(this));
-//	screens.add(new EditBoxScreen(this));
-//	screens.add(new LayoutScreen(this));
-//	screens.add(new CustomScreen(this));
+	Label * softRight = new Label (0, 0, scrWidth/2, height, softkey_layout);
+	softRight->setCaption ("exit");
+	softRight->setBackgroundColor (0);
+	softRight->setHorizontalAlignment (Label::HA_RIGHT);
+	setLabelPadding (softRight);
 
 
+	/******************* list box ********************/
+	this->list_box = new ListBox (0, 0, scrWidth, scrHeight - softkey_layout->getHeight(),
+								  main_layout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR,
+								  true);
+	list_box->setPaddingLeft   (5);
+	list_box->setPaddingRight  (5);
+	list_box->setPaddingTop    (15);
+	list_box->setPaddingBottom (15);
+	list_box->setSkin		   (skin);
+
+	main_layout->add (softkey_layout);
+
+	setMain (main_layout);
 }
 
-browserView::~browserView () {
+void browserView::showCategories() {
+//	list_box->add (createLabel ("calculate",     list_box));
+//	list_box->add (createLabel ("entertainment", list_box));
+//	list_box->add (createLabel ("games", 		 list_box));
+//	list_box->add (createLabel ("news", 		 list_box));
+//	list_box->add (createLabel ("productivity",  list_box));
+//	list_box->add (createLabel ("search tools",  list_box));
+//	list_box->add (createLabel ("social",    	 list_box));
+//	list_box->add (createLabel ("sports",    	 list_box));
+//	list_box->add (createLabel ("travel",    	 list_box));
+//	list_box->add (createLabel ("utilities", 	 list_box));
+//	list_box->add (createLabel ("weather",   	 list_box));
+
+	createLabel ("calculate",     list_box);
+	createLabel ("entertainment", list_box);
+	createLabel ("games", 		  list_box);
+	createLabel ("news", 		  list_box);
+	createLabel ("productivity",  list_box);
+	createLabel ("search tools",  list_box);
+	createLabel ("social",    	  list_box);
+	createLabel ("sports",    	  list_box);
+	createLabel ("travel",    	  list_box);
+	createLabel ("utilities", 	  list_box);
+	createLabel ("weather",   	  list_box);
 }
 
+void browserView::showApplications(application *applications, int count) {
+	if(applications[0].name == NULL)
+		createInfoLabel ("", "No apps in this category", list_box);
 
-/*
-void MainScreen::keyPressEvent(int keyCode, int nativeCode) {
-	switch(keyCode) {
-	case MAK_UP:
-		listBox->selectPreviousItem();
-		break;
-	case MAK_DOWN:
-		listBox->selectNextItem();
-		break;
-	case MAK_FIRE:
-	case MAK_SOFTLEFT:
-	case MAK_RIGHT:
-		{
-//			int index = listBox->getSelectedIndex();
-//			if(index == screens.size()+1) {
-//				moblet->closeEvent();
-//				moblet->close();
-//			}
-//			else{
-//				//add the screen here to save mem (one screen saved at the time)
-//				screens.add(new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
-//				screens[index]->show();
-//			}
-			//screens.add(new AppInfoView(this, "Detta är en kebabapp!", "Med den kan man köpa kebab :)"));
-			screens[0]->show();
-		}
-		break;
-	case MAK_SOFTRIGHT:
-		moblet->closeEvent();
-		moblet->close();
-		//remove the screen here to save mem
-		break;
+	int i;
+	for(i = 0; i < count; i++){
+		//printf("%s\n", applications[i].name);
+		createLabel (applications [i].name, list_box);
 	}
 }
 
-void MyMoblet::keyPressEvent(int keyCode, int nativeCode) {
+void browserView::select_next () {
+	list_box->selectNextItem ();
 }
 
-void MyMoblet::keyReleaseEvent(int keyCode, int nativeCode) {
+void browserView::select_previous () {
+	list_box->selectPreviousItem ();
 }
 
-void MyMoblet::closeEvent() {
-	// do destruction here
-	delete mainScreen;
-}
-
-
-MyMoblet::MyMoblet() {
-	gFont = new MAUI::Font(RES_FONT);
-	gSkin = new WidgetSkin(RES_SELECTED, RES_UNSELECTED, 16, 32, 16, 32, true, true);
-	Engine& engine = Engine::getSingleton();
-	engine.setDefaultFont(gFont);
-	engine.setDefaultSkin(gSkin);
-
-	MAExtent screenSize = maGetScrSize();
-	scrWidth = EXTENT_X(screenSize);
-	scrHeight = EXTENT_Y(screenSize);
-	mainScreen = new MainScreen();
-	mainScreen->show();
-
-}
-
-*/

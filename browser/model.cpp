@@ -81,7 +81,8 @@ bool model::parse () {
 int model::connect () {
 	if (connection.isOpen ()) return -1; /* we're already connected!! */
 	//int result = connection.connect ("socket://home.ohassel.se:8989");
-	int result = connection.connect ("socket://picturelogin.dyndns.org:8989");
+	int result = connection.connect ("socket://130.237.81.39:8989");
+	//int result = connection.connect ("socket://picturelogin.dyndns.org:8989");
 	if (result < 0) printf ("connecting failed\n");
 
 	return result;
@@ -110,7 +111,7 @@ int model::receive_answer () {
 
 int model::search_by_category (char * category) {
 	//String req = String ("        <request><order_by><attribute>app_name</attribute><direction>DESC</direction></order_by><answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/></pad_reference_object></request>");
-	String request = String ("      <request><match_by><attribute>category</attribute><operator>ILIKE</operator><value>%");
+	String request = String ("<request><match_by><attribute>category</attribute><operator>ILIKE</operator><value>%");
 	request += category;
 	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
 	request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><short_description/><category/><primary_download_url/><author_first_name/><author_last_name/></pad_reference_object></request>";

@@ -17,6 +17,8 @@ Freasy::Freasy () {
 	views 		  = new ViewContainer ();	/* Initiate handle for views				  		  */
 	current_view  = CATEGORY_VIEW; 			/* Initiate browser view at start up 		  		  */
 	viewed_app	  = - 1;					/* We're currently not viewing any app				  */
+
+	views->showCategories ();
 }
 
 Freasy::~Freasy(){
@@ -58,7 +60,7 @@ void Freasy::handle_key_softleft () {
 			break;
 
 		case BROWSER_VIEW :
-			viewed_app = views->listBox->getSelectedIndex ();
+			viewed_app = views->browser_view->list_box->getSelectedIndex ();
 
 			views->showInfo (dataModel->get_info (views->getSelected ()));
 
@@ -137,12 +139,12 @@ void Freasy::handle_key_softright () {
 
 void Freasy::connectFinished (Connection * connection, int result) {
 	if (result < 0) {
-		free (views->listBox);
-		views->setView(BROWSER_VIEW);
-		current_view = BROWSER_VIEW;
-		views->listBox = views->createListBox ();
-		views->listBox->add(views->createInfoLabel ("", "Connection to server failed.\n Go back and try again."));
-		views->browser_view->show();
+		//free (views->listBox);
+//		views->setView(BROWSER_VIEW);
+//		current_view = BROWSER_VIEW;
+//		views->listBox = views->createListBox ();
+//		views->listBox->add(views->createInfoLabel ("", "Connection to server failed.\n Go back and try again."));
+//		views->browser_view->show();
 	}
 	else{
 		//printf ("selected category %s\n", views->getSelected ());
@@ -152,13 +154,13 @@ void Freasy::connectFinished (Connection * connection, int result) {
 
 void Freasy::connWriteFinished (Connection * connection, int result) {
 	if (result < 0) {
-		free (views->listBox);
-		views->setView(BROWSER_VIEW);
-		current_view = BROWSER_VIEW;
+//		free (views->listBox);
+//		views->setView(BROWSER_VIEW);
+//		current_view = BROWSER_VIEW;
 		dataModel->close ();
-		views->listBox = views->createListBox ();
-		views->listBox->add(views->createInfoLabel ("", "Writing to server failed.\n Go back and try again."));
-		views->browser_view->show();
+//		views->listBox = views->createListBox ();
+//		views->listBox->add(views->createInfoLabel ("", "Writing to server failed.\n Go back and try again."));
+//		views->browser_view->show();
 	}
 	else {
 		//printf ("finished writing!\n");
@@ -167,19 +169,20 @@ void Freasy::connWriteFinished (Connection * connection, int result) {
 
 void Freasy::connRecvFinished (Connection * connection, int result) {
 	if (result < 0) {
-		free (views->listBox);
-		views->setView(BROWSER_VIEW);
-		current_view = BROWSER_VIEW;
-		views->listBox = views->createListBox ();
-		views->listBox->add (views->createInfoLabel ("", "Receiving data from server failed.\n Go back and try again."));
-		views->browser_view->show();
+//		free (views->listBox);
+//		views->setView(BROWSER_VIEW);
+//		current_view = BROWSER_VIEW;
+//		views->listBox = views->createListBox ();
+//		views->listBox->add (views->createInfoLabel ("", "Receiving data from server failed.\n Go back and try again."));
+//		views->browser_view->show();
+		dataModel->close ();
 	}
 	else {
 		//printf ("failed here!\n");
 		if (dataModel->parse ()) {
 			dataModel->close ();
 			if (dataModel->done_parsing) {
-				//printf ("done parsing!\n");
+				printf ("done parsing!\n");
 				views->showApplications (dataModel->get_applications(), dataModel->count);
 				views->setView(BROWSER_VIEW);
 				current_view = BROWSER_VIEW;

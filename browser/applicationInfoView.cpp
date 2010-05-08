@@ -18,60 +18,51 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #include "viewInterface.h"
 //#include "applicationInfoView.h"
 
-AppInfoView::AppInfoView(ListBox *listBox) {
+AppInfoView::AppInfoView (WidgetSkin * skin) : MainScreen (skin) {
 
-	this->listBox = listBox;
+	int height = 30;
 
-//	mainLayout = createMainLayout("see comments", "run");
-//	listBox = (ListBox*) mainLayout->getChildren()[0];
+	/*************** main layout **************************/
+	Layout * main_layout    = new Layout (0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
-	//Label *label;
-//	label = createLabel("BottomRight", 64);
-//	label->setHorizontalAlignment(Label::HA_RIGHT);
-//	label->setVerticalAlignment(Label::VA_BOTTOM);
-//	label->setSkin(gSkin);
-//	listBox->add(label);
 
-//	label = createLabel
-//	(
-//		title,
-//		32
-//	);
-//	label->setAutoSizeY();
-//	label->setSkin(NULL); // no skin
-//	label->setMultiLine(true);
-//	listBox->add(label);
+	/*************** softkeys ********************/
+	Layout * softkey_layout = new Layout(0, scrHeight, scrWidth, height, NULL, 2, 1);
 
-//	label = createLabel
-//	(
-//		descr,
-//		32
-//	);
-//	label->setAutoSizeY();
-//	label->setSkin(NULL); // no skin
-//	label->setMultiLine(true);
-//	listBox->add(label);
-//
-//	label = createLabel
-//	(
-//		"Rating:",
-//		32
-//	);
-//	label->setAutoSizeY();
-//	label->setSkin(NULL); // no skin
-//	label->setMultiLine(true);
-//	listBox->add(label);
-//
-//	label = createLabel("automatic resizing", 32);
-//	label->setAutoSizeX();
-//	label->setSkin(gSkin);
-//	listBox->add(label);
+	Label * softLeft  = new Label (0, 0, scrWidth / 2, height, softkey_layout);
+	softLeft->setCaption ("run");
+	softLeft->setBackgroundColor (0);
+	softLeft->setHorizontalAlignment (Label::HA_LEFT);
+	setLabelPadding (softLeft);
 
-	//this->setMain(mainLayout);
+	Label * softRight = new Label (0, 0, scrWidth/2, height, softkey_layout);
+	softRight->setCaption ("back");
+	softRight->setBackgroundColor (0);
+	softRight->setHorizontalAlignment (Label::HA_RIGHT);
+	setLabelPadding (softRight);
+
+
+	/******************* list box ********************/
+	this->list_box = new ListBox (0, 0, scrWidth, scrHeight - softkey_layout->getHeight(),
+								  main_layout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR,
+								  true);
+	list_box->setPaddingLeft   (5);
+	list_box->setPaddingRight  (5);
+	list_box->setPaddingTop    (15);
+	list_box->setPaddingBottom (15);
+	list_box->setSkin		   (skin);
+
+	main_layout->add (softkey_layout);
+
+	setMain (main_layout);
 }
 
-AppInfoView::~AppInfoView() {
-	delete mainLayout;
+void AppInfoView::showInfo(application * app) {
+	if (app == NULL) return;
+
+	createInfoLabel ("",               app->name,              list_box);
+	createInfoLabel ("description : ", app->description,       list_box);
+	createInfoLabel ("author : ",      app->author_first_name, list_box);
 }
 
 /*

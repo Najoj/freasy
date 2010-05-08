@@ -51,7 +51,18 @@ using namespace MAUtil;
 
 /* CLASS DEFINITIONS */
 class MainScreen : public Screen, public WidgetListener {
+
 public:
+	MainScreen(WidgetSkin * skin);
+	~MainScreen();
+	void setLabelPadding(Widget *w);
+	Label* createLabel(const char *str, int height);
+	Label* createLabel(const char *str, Widget * parent);
+	Label* createInfoLabel(const char *pre, const char *str, Widget * parent); //a label for app_info_view
+	Layout* createMainLayout(const char *left, const char *right);
+	Layout* createSoftKeyBar(int height, const char *left, const char *right);
+	ListBox* createListBox();
+
 	//MainScreen();
 	//~MainScreen();
 /*
@@ -67,10 +78,18 @@ public:
 	Layout* layout;
 	*/
 
+	ListBox *listBox;
+	Layout *mainLayout;
+
+	int scrWidth;
+	int scrHeight;
 
 private:
 
+	WidgetSkin * gSkin;
+	Font       * gFont;
 
+	Widget     * softKeys;
 	//Widget* createSoftKeyBar(int height, char *left, char *right);
 
 };
@@ -79,49 +98,44 @@ class browserView : public MainScreen {
 
 public :
 
-	browserView (ListBox *listBox);
-	~ browserView ();
+	browserView   (WidgetSkin * skin);
+//	~ browserView ();
 
 	/**************************************************
 	 * GET FUNCTIONS
 	 **************************************************/
-	char* getAppName(int index);
-	char* getSelected();
 
 	/**************************************************
 	 * SET FUNCTIONS
 	 **************************************************/
-	void putApp(const char*); //The freasy class can add apps to the list via this function
+	void select_next	 ();
+	void select_previous ();
 
 	/**************************************************
 	 * MISC FUNCTIONS
 	 **************************************************/
-	void listApplications(application *application, int numApps);
-	void listCategories();
-	void clearApps(); // remove all apps from the list
-	bool browserView::alreadyCategorized(const char* category); // check if a category has been shown
+	void showCategories   ();
+	void showApplications (application *applications, int count);
 
-	ListBox *listBox;
+	ListBox * list_box;
 
 private :
-	Vector<char*> appNames;
-	Vector<const char*> categorized;
-//	static char *categories[] = {"calculate", "entertainment", "games", "news", "productivity", "search tools", "social", "sports", "travel", "utilities", "weather"};
-	char ** categories;
-	//AppInfoView *currentScreen;
+	char   ** categories;
+	Layout  * mainLayout;
+
 };
 
 class AppInfoView : public MainScreen {
-public:
-	AppInfoView(ListBox *listBox);
-	~AppInfoView();
-	//void keyPressEvent(int keyCode, int nativeCode);
-	int addInfo(char*);
 
-	ListBox *listBox;
+public:
+	AppInfoView   (WidgetSkin * skin);
+//	~ AppInfoView ();
+
+	void showInfo (application * app);
+
 private:
-	Screen *previous;
-	Layout *mainLayout;
+	ListBox * list_box;
+
 };
 
 /**
@@ -205,15 +219,15 @@ public:
 	void prevItem();
 	void nextItem();
 
-	void setLabelPadding(Widget *w);
-	Label* createLabel(const char *str, int height);
-	Label* createLabel(const char *str);
-	Label* createInfoLabel(const char *pre, const char *str); //a label for app_info_view
-	Layout* createMainLayout(const char *left, const char *right);
-	Layout* createSoftKeyBar(int height, const char *left, const char *right);
-	ListBox* createListBox();
+//	void setLabelPadding(Widget *w);
+//	Label* createLabel(const char *str, int height);
+//	Label* createLabel(const char *str);
+//	Label* createInfoLabel(const char *pre, const char *str); //a label for app_info_view
+//	Layout* createMainLayout(const char *left, const char *right);
+//	Layout* createSoftKeyBar(int height, const char *left, const char *right);
+//	ListBox* createListBox();
 
-	ListBox *listBox;
+//	ListBox *listBox;
 
 	browserView *browser_view;
 	AppInfoView *app_info_view;
@@ -224,9 +238,6 @@ private:
 	WidgetSkin *gSkin;
 
 	int current_view;
-
-	int scrWidth;
-	int scrHeight;
 
 	Widget *softKeys;
 
