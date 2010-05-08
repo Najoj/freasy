@@ -11,9 +11,9 @@
 
 all: compile jar
 
-compile: snor/snor.java Database/PADSQL.java				\
+compile: snor/SNOR.java Database/PADSQL.java		\
          Files/RequestFile.java Static/ParserConstants.java
-	javac snor/snor.java
+	javac snor/SNOR.java
 	javac Database/PADSQL.java
 	javac Files/RequestFile.java
 	javac Static/ParserConstants.java

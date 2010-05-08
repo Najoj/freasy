@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import org.xml.sax.SAXParseException;
 
 import Database.PADSQL;
-import Files.RequestFile;
+import Files.RequestAnswer;
 
 /**
  * @author olle
@@ -23,7 +23,7 @@ public class FileToParse {
 	 * @return an XML-file answer to the request, or an exception-xml file if
 	 * unable to parse
 	 */
-	public void parseFile(RequestFile files) {
+	public void parseFile(RequestAnswer files) {
 		// File XMLrequest = files.getRequest();
 		// File XMLanswer = files.getAnswer();
 		String req = files.getRequest();
@@ -47,38 +47,33 @@ public class FileToParse {
 
 			answerString = answer.exportXML();
 
-			files.appendToLog("Korrekt forumlerad request. Inga fel.");
+			// files.appendToLog("Korrekt forumlerad request. Inga fel.");
 
 			// System.out.println("Answer: "+ answer.toString() );
+			System.out.println("Korrekt formulerad request.");
 
 		} catch (XMLParseException e) {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
-			files
-					.appendToLog("Requesten har genrererat ett XMLParseException.");
-
-			files.setSave(true);
+			// files.appendToLog("Requesten har genrererat ett XMLParseException.");
+			System.err.println("Requesten har genrererat ett XMLParseException.");
 
 		} catch (SAXParseException e) {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
-			files
-					.appendToLog("Requesten har genrererat ett SAXParseException.");
-
-			files.setSave(true);
+			// files.appendToLog("Requesten har genrererat ett SAXParseException.");
+			
+			System.err.println("Requesten har genrererat ett SAXParseException.");
 		} catch (SQLException e) {
 
 			answerString = new ExceptionParser()
 					.parseMessageToXML("Fel innuti servern!");
 
-			files
-					.appendToLog("Requesten har genrererat ett SAXParseException.");
+			// files.appendToLog("Requesten har genererat ett SAXParseException.");
 
-			files.setSave(true);
-
-			System.err.println("error!");
+			System.err.println("Requesten har genererat ett SAXParseException.");
 			System.err.println("Exception: " + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -86,10 +81,7 @@ public class FileToParse {
 
 			// Spara undan requesten, kolla varför felet inträffade!
 
-			files
-					.appendToLog("!!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
-
-			files.setSave(true);
+			// files.appendToLog("!!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
 		}
 		/**
 		 * CLASSIC JAKE HAX!!!
