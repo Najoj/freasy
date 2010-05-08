@@ -9,7 +9,9 @@
 
 char *CATEGORIES[] = {"calculate", "entertainment", "games", "news", "productivity", "search tools", "social", "sports", "travel", "utilities", "weather"};
 
-ViewContainer::ViewContainer() {
+ViewContainer::ViewContainer(int * current_view) {
+
+	this->current_view = current_view;
 
 	//do some skin and stuff
 	gFont = new MAUI::Font (RES_FONT);
@@ -21,48 +23,11 @@ ViewContainer::ViewContainer() {
 
 	this->categories = CATEGORIES;
 
-
-//	createMainLayout("select", "exit");
-//	listBox = createListBox();
-//	mainLayout->add(softKeys);
-
-	//browser_view = new browserView (gSkin);
-//	browser_view->setMain(mainLayout);
-
-
-	//createMainLayout("run", "back");
-//	mainLayout->add (softKeys);
-//	app_info_view = new AppInfoView();
-//	app_info_view->setMain(mainLayout);
-
-	//browser_view->showCategories();
-
-	//browser_view->show();
-
-
-	current_view = CATEGORY_VIEW;
-
-//	app_info_view->show();
-
 }
 
 void ViewContainer::setView(int view) {
 
-	current_view = view;
-
-//	switch(view){
-//	case CATEGORY_VIEW:
-//		this->showCategories();
-//		break;
-//	case BROWSER_VIEW:
-//		this->showApplications();
-//		break;
-//	case APPLICATION_INFO_VIEW:
-//		this->showInfo();
-//		break;
-//	case APPLICATION_EDIT_VIEW:
-//		break;
-//	}
+	* current_view = view;
 
 }
 
@@ -70,32 +35,35 @@ void ViewContainer::setView(int view) {
  * NAVIGATION FUNCTIONS
  ********************************************************/
 void ViewContainer::nextItem(){
-	switch(current_view){
-	case CATEGORY_VIEW:
-	case BROWSER_VIEW:
-		browser_view->select_next ();
-		break;
-	case APPLICATION_INFO_VIEW:
-//		app_info_view->listBox->selectNextItem();
-		break;
-	case APPLICATION_EDIT_VIEW:
-		app_edit_view->listBox->selectNextItem();
-		break;
+	switch(* current_view){
+		case CATEGORY_VIEW:
+
+		case BROWSER_VIEW:
+			browser_view->select_next ();
+			break;
+
+		case APPLICATION_INFO_VIEW:
+			break;
+
+		case APPLICATION_EDIT_VIEW:
+			app_edit_view->listBox->selectNextItem();
+			break;
 	}
 }
 
 void ViewContainer::prevItem(){
-	switch(current_view){
-	case CATEGORY_VIEW:
-	case BROWSER_VIEW:
-		browser_view->select_previous ();
-		break;
-	case APPLICATION_INFO_VIEW:
-//		app_info_view->listBox->selectPreviousItem();
-		break;
-	case APPLICATION_EDIT_VIEW:
-		app_edit_view->listBox->selectPreviousItem();
-		break;
+	switch (* current_view) {
+		case CATEGORY_VIEW:
+		case BROWSER_VIEW:
+			browser_view->select_previous ();
+			break;
+
+		case APPLICATION_INFO_VIEW:
+			break;
+
+		case APPLICATION_EDIT_VIEW:
+			app_edit_view->listBox->selectPreviousItem();
+			break;
 	}
 }
 
@@ -104,27 +72,24 @@ void ViewContainer::prevItem(){
  ********************************************************/
 
 char* ViewContainer::getSelected(){
-	switch (current_view) {
-	case CATEGORY_VIEW :
-		return categories [browser_view->list_box->getSelectedIndex ()];
-		break;
+	switch (* current_view) {
+		case CATEGORY_VIEW :
+			return categories [browser_view->list_box->getSelectedIndex ()];
+			break;
 
-	case BROWSER_VIEW :
-		Widget * fitta = browser_view->list_box->getChildren () [browser_view->list_box->getSelectedIndex ()];
-		//printf ("kuk %s\n", (char *)((Label *) fitta)->getCaption ().c_str());
+		case BROWSER_VIEW :
+			Widget * fitta = browser_view->list_box->getChildren () [browser_view->list_box->getSelectedIndex ()];
+			//printf ("kuk %s\n", (char *)((Label *) fitta)->getCaption ().c_str());
 
-		return (char *) ((Label *) fitta)->getCaption ().c_str ();
+			return (char *) ((Label *) fitta)->getCaption ().c_str ();
+
+			break;
 	}
 }
 
 void ViewContainer::showApplications (application * applications, int count) {
 
-//	if (app_info_view != NULL) delete app_info_view;
-
-//	if (browser_view  != NULL) delete browser_view;
-
-
-	switch (current_view) {
+	switch (* current_view) {
 
 		case CATEGORY_VIEW :
 			delete browser_view;
@@ -157,84 +122,22 @@ void ViewContainer::showCategories () {
 	browser_view->show ();
 }
 
+void ViewContainer::showException (const char * msg) {
 
-//void ViewContainer::setLabelPadding(Widget *w) {
-//	w->setPaddingLeft(PADDING);
-//	w->setPaddingBottom(PADDING);
-//	w->setPaddingRight(PADDING);
-//	w->setPaddingTop(PADDING);
-//}
-//
-//Label* ViewContainer::createLabel(const char *str, int height) {
-//	Label *label;
-//	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
-//	label->setSkin(gSkin);
-//	setLabelPadding(label);
-//	return label;
-//}
-//
-//Label* ViewContainer::createLabel(const char *str) {
-//	int height = 32;
-//	Label *label;
-//	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, str, 0, gFont);
-//	label->setSkin(gSkin);
-//	setLabelPadding(label);
-//	return label;
-//}
-//
-//Label* ViewContainer::createInfoLabel(const char *pre, const char *str) {
-//	int height = 32;
-//	Label *label;
-//
-//	String *new_str = new String(pre);
-//	new_str->append(str, strlen(str));
-//
-//	label = new Label(0,0, scrWidth-PADDING*2, height, NULL, new_str->c_str(), 0, gFont);
-//	label->setSkin(NULL);
-//	label->setAutoSizeY();
-//	label->setMultiLine(true);
-//	setLabelPadding(label);
-//	return label;
-//}
-//
-//Layout* ViewContainer::createSoftKeyBar(int height, const char *left, const char *right) {
-//	Layout *layout = new Layout(0, 0, scrWidth, height, NULL, 2, 1);
-//
-//	softLeft = new Label(0,0, scrWidth/2, height, NULL, left, 0, gFont);
-//	softLeft->setHorizontalAlignment(Label::HA_LEFT);
-//	setLabelPadding(softLeft);
-//	layout->add(softLeft);
-//
-//	softRight = new Label(0,0, scrWidth/2, height, NULL, right, 0, gFont);
-//	softRight->setHorizontalAlignment(Label::HA_RIGHT);
-//	setLabelPadding(softRight);
-//	layout->add(softRight);
-//
-//	return layout;
-//}
-//
-//void ViewContainer::changeSoftBarText(char *left, char *right) {
-//	softLeft->setCaption (String (left));
-//	softRight->setCaption (String (right));
-//}
-//
-//Layout* ViewContainer::createMainLayout(const char *left, const char *right) {
-//	mainLayout = new Layout(0, 0, scrWidth, scrHeight, NULL, 1, 2);
-//
-//	softKeys = createSoftKeyBar(30, left, right);
-//
-//	//mainLayout->add(softKeys);
-//
-//	return mainLayout;
-//}
-//
-//ListBox* ViewContainer::createListBox() {
-//	ListBox *listBox = new ListBox(0, 0, scrWidth, scrHeight-softKeys->getHeight(), mainLayout, ListBox::LBO_VERTICAL, ListBox::LBA_LINEAR, true);
-//	listBox->setSkin(gSkin);
-//	listBox->setPaddingLeft(5);
-//	listBox->setPaddingRight(5);
-//	listBox->setPaddingTop(15);
-//	listBox->setPaddingBottom(15);
-//
-//	return listBox;
-//}
+	switch (* current_view) {
+
+		case CATEGORY_VIEW :
+			delete browser_view;
+			break;
+
+		case APPLICATION_INFO_VIEW :
+			delete app_info_view;
+			break;
+
+	}
+
+	app_info_view = new AppInfoView (gSkin);
+	app_info_view->showException (msg) ;
+	app_info_view->show ();
+
+}

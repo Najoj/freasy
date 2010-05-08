@@ -195,7 +195,7 @@ private:
 
 class ViewContainer {
 public:
-	ViewContainer();
+	ViewContainer(int * current_view);
 	~ViewContainer();
 
 	/**************************************************
@@ -215,6 +215,7 @@ public:
 	void showCategories();
 	void showApplications(application *applications, int count);
 	void showInfo(application * app);
+	void showException(const char * msg);
 
 	void prevItem();
 	void nextItem();
@@ -237,7 +238,7 @@ private:
 	Font *gFont;
 	WidgetSkin *gSkin;
 
-	int current_view;
+	int * current_view;
 
 	Widget *softKeys;
 
