@@ -55,6 +55,7 @@ public:
 		maWait(5000);
 		state = Idle;
 		//TODO kolla exitGracefully
+		checkExitGracefully();
 		download.addDownloadListener(this);
 		//Check if a application have been selected
 		if (checkApplication()) {
@@ -207,7 +208,16 @@ public:
 			if (res != STERR_FULL) {
 				maReadStore(store, program);
 				maCloseStore(store, -1);
-				maLoadProgram(program, 1);
+				//exitGracefully file write
+				MAHandle data = PlaceholderPool::alloc();
+				maCreateData(data, programID.length());
+				maWriteData(data, programID.c_str(), 0, programID.length());
+				MAHandle store = maOpenStore(exitGracefullyFile,
+						MAS_CREATE_IF_NECESSARY);
+				maWriteStore(store, data);
+				maCloseStore(store, 0);
+				PlaceholderPool::put(data);
+				maLoadProgram(program, 1);/*start the program*/
 			} else {
 				printf("Out of system memory. Press 0 to exit.");
 			}
@@ -293,6 +303,40 @@ public:
 		//maDrawText(bredd/2-8,ypos,""+(downloadedBytes*100/totalBytes));
 		maSetColor(oldColor);
 		maUpdateScreen();
+	}
+
+	void checkExitGracefully() {
+		MAHandle store;
+		if ((store = maOpenStore(exitGracefullyFile, 0)) == STERR_NONEXISTENT) {
+			return;/*no exit gracefully*/
+		}
+		MAHandle data = PlaceholderPool::alloc();
+		maReadStore(store, data);
+		maCloseStore(store, -1);
+		String tmp;
+		int size = maGetDataSize(data);
+		if (size > 0) {
+			//read data from exit gracefully
+			tmp.resize(size);
+			maReadData(data, tmp.pointer(), 0, size);
+			PlaceholderPool::put(data);
+		}
+		int first = tmp.findFirstOf('#', 0);
+		String tid = "";/*temporary ID*/
+		tid.resize(first);
+		tid = tmp.substr(0, first);
+		if (first == -1) {
+			/*didn't exit gracefully*/
+			printf("didn't exit gracefully");
+			maWait(4000);
+			//TODO : report to server
+			return;
+		} else {
+			printf("ID; %s\nExited gracefully",tid.c_str());
+			maWait(4000);
+			//TODO : report to server
+		}
+		return;
 	}
 };
 
