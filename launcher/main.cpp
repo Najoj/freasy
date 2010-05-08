@@ -13,7 +13,7 @@
 
 using namespace MAUtil;
 
-static const char* browserURL = "http://www.csc.kth.se/~cjanson/default2.comb";
+static const char* browserURL = "http://www.csc.kth.se/~cjanson/default3.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
@@ -33,6 +33,7 @@ private:
 	String browserVersion;//version of browser on server
 	String programURLs;//used to temporary store the urls
 	String urls[4];//here the urls are stored
+	String programID;//here the program identity is stored
 	int urlIterator;//used to iterate over the urls
 public:
 	Launcher() :
@@ -113,8 +114,10 @@ public:
 			int first = programURLs.findFirstOf('@', 0);
 			if (first == -1) {
 				//printf("lastChance");
-				urls[i].resize(programURLs.size());
-				urls[i] = programURLs;
+				//urls[i].resize(programURLs.size());
+				//urls[i] = programURLs;
+				programID.resize(programURLs.size());
+				programID = programURLs;
 				validAdress = true;
 			}
 			String url = "";
@@ -190,7 +193,7 @@ public:
 				maCloseStore(vStore, 0);
 				PlaceholderPool::put(data);//remove data from memory
 				// load program
-				maWait(7000);//debug purpose
+				maWait(1000);//debug purpose
 				http.close();//close http connection to save money
 				maLoadProgram(browser, 1);
 			} else {
