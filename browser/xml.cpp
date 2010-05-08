@@ -5,7 +5,7 @@ XMLParser::XMLParser (int * count, int * offset, application ** applications, bo
 
 	this->offset 	   	 = offset;
 	this->count  	     = count;
-	this->applications  = applications;
+	this->applications   = applications;
 	this->done			 = done;
 	* done 				 = false;
 	remaining_data		 = 0;
@@ -133,6 +133,12 @@ void XMLParser::mtxTagData (const char * data, int length) {
 		//printf ("data : %s\n", data);
 		(* applications) [current_application].secondary_dl_url = (char *) memcpy (new char [length], data, length);
 	}
+
+	else if (strcmp (current_tag, "icon") == 0) {
+		if      (strcmp (data, "f") == 0) (* applications) [current_application].icon = false;
+		else if (strcmp (data, "t") == 0) (* applications) [current_application].icon = true;
+	}
+
 }
 
 void XMLParser::mtxTagEnd (const char * name, int len) {

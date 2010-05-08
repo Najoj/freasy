@@ -37,6 +37,7 @@ struct application {
 	char  * primary_dl_url; 	 /* primary download URL					*/
 	char  * secondary_dl_url;	 /* secondary download URL					*/
 	int     id; 			 	 /* unique id of application 				*/
+	bool	icon;				 /* tells if there's an icon available 		*/
 };
 
 
@@ -128,8 +129,9 @@ class model {
 		int  search_by_name     (char * name) ;
 		void download_icon		(int index) ;
 
-		int	 count; 			 /* number of apps */
-		bool done_parsing;
+		int	 	 count; 			 /* number of apps */
+		bool 	 done_parsing;
+		MAHandle icon;
 
 	private :
 		/**************************************************
@@ -141,7 +143,6 @@ class model {
 		int 			  offset;
 		application     * applications;
 		char 		    * buffer;
-		MAHandle          icon;
 
 		/* home.ohassel.se:8989 */
 };

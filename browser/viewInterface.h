@@ -132,6 +132,7 @@ public:
 	AppInfoView   (WidgetSkin * skin);
 
 	void showInfo (application * app, MAHandle image);
+	void showInfo (application * app);
 	void showException (const char * msg);
 	void showImage(MAHandle image);
 
@@ -216,7 +217,7 @@ public:
 	 **************************************************/
 	void showCategories();
 	void showApplications(application *applications, int count);
-	void showInfo(application * app, MAHandle image);
+	void showInfo(application * app, MAHandle image = NULL);
 	void showException(const char * msg);
 	void showImage(MAHandle image);
 

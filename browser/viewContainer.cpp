@@ -113,7 +113,10 @@ void ViewContainer::showInfo (application * app, MAHandle image) {
 	delete browser_view;
 
 	app_info_view = new AppInfoView (gSkin);
-	app_info_view->showInfo (app, image);
+
+	if (image) app_info_view->showInfo (app, image);
+	else app_info_view->showInfo (app);
+
 	app_info_view->show ();
 }
 
@@ -122,7 +125,7 @@ void ViewContainer::showCategories () {
 
 	browser_view = new browserView (gSkin);
 	browser_view->showCategories ();
-	browser_view->list_box->setSelectedIndex(selectedItem);
+	browser_view->list_box->setSelectedIndex (selectedItem);
 	browser_view->show ();
 }
 

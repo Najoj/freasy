@@ -60,7 +60,13 @@ void Freasy::handle_key_softleft () {
 		case BROWSER_VIEW :
 			if (dataModel->count == 0) break;
 
-			dataModel->download_icon (views->browser_view->list_box->getSelectedIndex ());
+			if (dataModel->get_info (views->getSelected ())->icon)
+				dataModel->download_icon (views->browser_view->list_box->getSelectedIndex ());
+			else {
+				viewed_app = views->browser_view->list_box->getSelectedIndex ();
+				views->showInfo (dataModel->get_info (views->getSelected ()), NULL);
+				current_view = APPLICATION_INFO_VIEW;
+			}
 
 			break;
 
@@ -203,18 +209,20 @@ bool Freasy::outOfMemory (Downloader * downloader) {
 
 void Freasy::finishedDownloading (Downloader * downloader, MAHandle data) {
 	viewed_app = views->browser_view->list_box->getSelectedIndex ();
-
-	//views->showInfo (dataModel->get_info (views->getSelected ()));
 	views->showInfo (dataModel->get_info (views->getSelected ()), data);
 	current_view = APPLICATION_INFO_VIEW;
 }
 
 void Freasy::downloadCancelled (Downloader * downloader) {
-
+	viewed_app = views->browser_view->list_box->getSelectedIndex ();
+	views->showInfo (dataModel->get_info (views->getSelected ()), NULL);
+	current_view = APPLICATION_INFO_VIEW;
 }
 
 void Freasy::error (Downloader * downloader, int error_code) {
-
+	viewed_app = views->browser_view->list_box->getSelectedIndex ();
+	views->showInfo (dataModel->get_info (views->getSelected ()), NULL);
+	current_view = APPLICATION_INFO_VIEW;
 }
 
 
