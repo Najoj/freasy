@@ -13,6 +13,7 @@ public class Initializer
 		
 		
 		PADSQL.Initialize();
+		LogFiles.Initialize();
 		/**try	{ PADSQL.Initialize(); }
 		catch (Exception e)	
 		{ 

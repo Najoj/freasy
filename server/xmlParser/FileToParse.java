@@ -1,6 +1,9 @@
 package xmlParser;
 
 import java.sql.SQLException;
+import java.util.Date;
+
+import Static.LogFiles;
 
 import org.xml.sax.SAXParseException;
 
@@ -47,7 +50,7 @@ public class FileToParse {
 
 			answerString = answer.exportXML();
 
-			// files.appendToLog("Korrekt forumlerad request. Inga fel.");
+			LogFiles.getRequestLog().appendToLog(new Date() + " - Korrekt forumlerad request. Inga fel.");
 
 			// System.out.println("Answer: "+ answer.toString() );
 			System.out.println("Korrekt formulerad request.");
@@ -56,14 +59,14 @@ public class FileToParse {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
-			// files.appendToLog("Requesten har genrererat ett XMLParseException.");
+			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genrererat ett XMLParseException.");
 			System.err.println("Requesten har genrererat ett XMLParseException.");
 
 		} catch (SAXParseException e) {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
-			// files.appendToLog("Requesten har genrererat ett SAXParseException.");
+			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genrererat ett SAXParseException.");
 			
 			System.err.println("Requesten har genrererat ett SAXParseException.");
 		} catch (SQLException e) {
@@ -71,9 +74,9 @@ public class FileToParse {
 			answerString = new ExceptionParser()
 					.parseMessageToXML("Fel innuti servern!");
 
-			// files.appendToLog("Requesten har genererat ett SAXParseException.");
+			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genererat ett SQLException.");
 
-			System.err.println("Requesten har genererat ett SAXParseException.");
+			System.err.println("Requesten har genererat ett SQLException.");
 			System.err.println("Exception: " + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -81,7 +84,7 @@ public class FileToParse {
 
 			// Spara undan requesten, kolla varför felet inträffade!
 
-			// files.appendToLog("!!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
+			LogFiles.getRequestLog().appendToLog(new Date() + " !!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
 		}
 		/**
 		 * CLASSIC JAKE HAX!!!
