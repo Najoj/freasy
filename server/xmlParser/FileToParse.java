@@ -42,13 +42,17 @@ public class FileToParse {
 
 			// System.out.println("Request: "+ request.toString());
 
+			System.out.println("Försöker öppna databaskopplingen");
 			PADSQL.Initialize();
 			
 			Answer answer = new Answer(PADSQL.SendQuery(request.toSQL(),
 					request.getNumberOfObjects()), request.getOffset(), PADSQL
 					.getQueryListLength(request.getSQLLength()));
 			
+			System.out.println("Korrekta svar från databasen");
+			
 			PADSQL.Close();
+			System.out.println("Databaskopplingen korrekt stängd");
 
 			// Answer answer = new Answer();
 

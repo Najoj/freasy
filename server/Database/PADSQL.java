@@ -46,6 +46,8 @@ public class PADSQL {
 
 	public static int getQueryListLength(String query) throws SQLException {
 
+		System.out.println("Försöker skicka listlängdrequest till databasen");
+		
 		ResultSet rs = db.createStatement().executeQuery(query);
 
 		rs.next();
@@ -55,6 +57,8 @@ public class PADSQL {
 
 	public static ArrayList<HashMap<String, String>> SendQuery(String query,
 			int expectedLength) throws SQLException {
+		
+		System.out.println("Försöker skicka request till databasen");
 
 		// System.out.println("Skickar följande SQL-sats:  "+query);
 
