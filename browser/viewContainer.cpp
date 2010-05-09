@@ -34,36 +34,39 @@ void ViewContainer::setView(int view) {
 /********************************************************
  * NAVIGATION FUNCTIONS
  ********************************************************/
-void ViewContainer::nextItem(){
-	switch(* current_view){
-		case CATEGORY_VIEW:
+void ViewContainer::nextItem (){
+	switch (* current_view){
 
-		case BROWSER_VIEW:
+		case CATEGORY_VIEW :
+		case BROWSER_VIEW  :
 			browser_view->select_next ();
 			break;
 
-		case APPLICATION_INFO_VIEW:
+		case APPLICATION_INFO_VIEW :
 			break;
 
-		case APPLICATION_EDIT_VIEW:
+		case APPLICATION_EDIT_VIEW :
 			app_edit_view->listBox->selectNextItem();
 			break;
+
 	}
 }
 
-void ViewContainer::prevItem(){
+void ViewContainer::prevItem (){
 	switch (* current_view) {
-		case CATEGORY_VIEW:
-		case BROWSER_VIEW:
+
+		case CATEGORY_VIEW :
+		case BROWSER_VIEW  :
 			browser_view->select_previous ();
 			break;
 
-		case APPLICATION_INFO_VIEW:
+		case APPLICATION_INFO_VIEW :
 			break;
 
-		case APPLICATION_EDIT_VIEW:
+		case APPLICATION_EDIT_VIEW :
 			app_edit_view->listBox->selectPreviousItem();
 			break;
+
 	}
 }
 
@@ -73,6 +76,7 @@ void ViewContainer::prevItem(){
 
 char* ViewContainer::getSelected(){
 	switch (* current_view) {
+
 		case CATEGORY_VIEW :
 			return categories [browser_view->list_box->getSelectedIndex ()];
 			break;
@@ -84,6 +88,7 @@ char* ViewContainer::getSelected(){
 			return (char *) ((Label *) fitta)->getCaption ().c_str ();
 
 			break;
+
 	}
 }
 

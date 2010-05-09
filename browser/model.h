@@ -85,10 +85,12 @@ class XMLParser : public XmlListener, public MtxListener {
 		char 	    ** buffer_pointer;
 		application ** applications;
 		const char   * current_tag;
-		int 		   current_application;
+		int 		   index;
 		int 	     * count;
 		int 		 * offset;
 		bool 		 * done;
+		char 		 * data;
+		int			   length;
 
 };
 
@@ -121,7 +123,7 @@ class model {
 		 * UTILITY FUNCTIONS
 		 ********************************************************************/
 		int  connect 			() ;
-		int  close				();
+		int  close				() ;
 		bool parse 				() ;
 		int  send_request   	(String request) ;
 		int  receive_answer 	() ;

@@ -1,6 +1,9 @@
 #include "model.h"
 
-XMLParser::XMLParser (int * count, int * offset, application ** applications, bool * done, char ** buffer) {
+XMLParser::XMLParser (int * count, 				   int * offset,
+		              application ** applications, bool * done,
+		              char ** buffer)
+{
 	context.init (this, this);
 
 	this->offset 	   	 = offset;
@@ -12,6 +15,9 @@ XMLParser::XMLParser (int * count, int * offset, application ** applications, bo
 
 	this->buffer_pointer   = buffer;
 	* this->buffer_pointer = this->buffer;
+
+	this->length = 0;
+	this->data   = NULL;
 }
 
 XMLParser::~ XMLParser () {
@@ -28,6 +34,7 @@ void XMLParser::stop () {
 
 bool XMLParser::parse () {
 	* done = false;
+	//printf ("buffer : %s\n", buffer);
 	return context.feed (buffer);
 }
 
@@ -47,8 +54,8 @@ void XMLParser::mtxTagStart (const char * name, int len) {
 
 void XMLParser::mtxTagAttr (const char * attribute_name, const char * attribute_value) {
 	if (strcmp (attribute_name, "element") == 0) {
-		current_application = atoi (attribute_value);
-		//printf ("current application %d\n", current_application);
+		index = atoi (attribute_value);
+		//printf ("current application %d\n", index);
 	}
 }
 
@@ -56,92 +63,26 @@ void XMLParser::mtxTagStartEnd () {
 
 }
 
-void XMLParser::mtxTagData (const char * data, int length) {
+void XMLParser::mtxTagData (const char * tag_data, int length) {
+	/* ignore whitespace */
+	if (strcmp (tag_data, "\n") == 0 || strcmp (tag_data, " ") == 0) return;
 
-	if (strcmp (data,"\n") == 0 || strcmp (data, " ") == 0) return;
-
-	length ++; /* increment for a null terminated string */
-
-	if (strcmp (current_tag, "number_of_objects") == 0)
-		//printf ("data : %s\n", data);
-		* count = atoi (data);
-
-	else if (strcmp (current_tag, "offset") == 0) {
-		//printf ("data : %s\n", data);
-		* offset = atoi (data);
+	/* if no data from previous parse alloc new data array */
+	if (this->length == 0) {
+		data = (char *) memcpy (new char [length + 1], tag_data, length + 1);
+		this->length = length;
 	}
-
-	else if (strcmp (current_tag, "app_id") == 0) {
-		//if (applications [current_application].id != NULL) free (& applications [current_application].id);
-		(* applications) [current_application].id = atoi (data);
-		//applications->id = atoi (data);
-		//printf ("data : %s\n", data);
+	/* else append to previous data */
+	else {
+		memcpy (data + this->length, tag_data, length + 1);
+		this->length += length;
 	}
-
-	else if (strcmp (current_tag, "app_name") == 0) {
-		//if (applications [current_application].name != NULL) {/* printf ("freeing name %s\n", applications[current_application].name);*/ free (applications [current_application].name); }
-		(* applications) [current_application].name = (char *) memcpy (new char [length], data, length);
-		//applications [current_application].name [length] = 0;
-		//printf ("current application (%d) name : %s\n", current_application, data);
-	}
-
-	else if (strcmp (current_tag, "category") == 0) {
-		//if (applications [current_application].category != NULL) free (applications [current_application].category);
-		//applications [current_application].category = data;
-		//applications->category = data;
-		//printf ("data : %s\n", data);
-		(* applications) [current_application].category = (char *) memcpy (new char [length], data, length);
-	}
-
-	else if (strcmp (current_tag, "author_first_name") == 0) {
-		//if (applications [current_application].author_first_name != NULL) free (applications [current_application].author_first_name);
-		//applications [current_application].author_first_name = data;
-		//applications->author_first_name = data;
-		//printf ("data : %s\n", data);
-		(* applications) [current_application].author_first_name = (char *) memcpy (new char [length], data, length);
-	}
-
-	else if (strcmp (current_tag, "author_last_name") == 0) {
-		//if (applications [current_application].author_last_name != NULL) free (applications [current_application].author_last_name);
-		//applications [current_application].author_last_name = data;
-		//applications->author_last_name = data;
-		//printf ("data : %s\n", data);
-		(* applications) [current_application].author_last_name = (char *) memcpy (new char [length], data, length);
-
-	}
-
-	else if (strcmp (current_tag, "short_description") == 0) {
-		//if (applications [current_application].description != NULL) free (applications [current_application].description);
-		//applications [current_application].description = data;
-		//applications->description = data;
-		//printf ("data : %s\n", data);
-		(* applications) [current_application].description = (char *) memcpy (new char [length], data, length);
-	}
-
-	else if (strcmp (current_tag, "primary_download_url") == 0) {
-		//if (applications [current_application].primary_dl_url != NULL) free (applications [current_application].primary_dl_url);
-		//applications [current_application].primary_dl_url = data;
-		//applications->primary_dl_url = data;
-		//printf ("data : %s\n", data);
-		(* applications) [current_application].primary_dl_url = (char *) memcpy (new char [length], data, length);
-	}
-
-	else if (strcmp (current_tag, "secondary_download_url") == 0) {
-		//if (applications [current_application].secondary_dl_url != NULL) free (applications [current_application].secondary_dl_url);
-		//applications [current_application].secondary_dl_url = data;
-		//applications->secondary_dl_url = data;
-		//printf ("data : %s\n", data);
-		(* applications) [current_application].secondary_dl_url = (char *) memcpy (new char [length], data, length);
-	}
-
-	else if (strcmp (current_tag, "icon") == 0) {
-		if      (strcmp (data, "f") == 0) (* applications) [current_application].icon = false;
-		else if (strcmp (data, "t") == 0) (* applications) [current_application].icon = true;
-	}
-
 }
 
-void XMLParser::mtxTagEnd (const char * name, int len) {
+void XMLParser::mtxTagEnd (const char * name, int tag_length) {
+
+	length = 0;
+
 	if (strcmp (name, "answer") == 0) {
 		* done 		   = true; /* parser is now done */
 
@@ -152,6 +93,92 @@ void XMLParser::mtxTagEnd (const char * name, int len) {
 
 		stop (); /* this is the last tag, stop so we dont process trailing characters */
 	}
+
+	if (strcmp (name, "number_of_objects") == 0)
+		//printf ("data : %s\n", data);
+		* count = atoi (data);
+
+	else if (strcmp (name, "offset") == 0) {
+		//printf ("data : %s\n", data);
+		* offset = atoi (data);
+	}
+
+	else if (strcmp (name, "app_id") == 0) {
+		//if (applications [index].id != NULL) free (& applications [index].id);
+		(* applications) [index].id = atoi (data);
+		//applications->id = atoi (data);
+		//printf ("data : %s\n", data);
+	}
+
+	else if (strcmp (name, "app_name") == 0) {
+		//if (applications [index].name != NULL) {/* printf ("freeing name %s\n", applications[index].name);*/ free (applications [index].name); }
+		//(* applications) [index].name = (char *) memcpy (new char [length], data, length);
+		//applications [index].name [length] = 0;
+		(* applications) [index].name = data;
+	}
+
+	else if (strcmp (name, "category") == 0) {
+		//if (applications [index].category != NULL) free (applications [index].category);
+		//applications [index].category = data;
+		//applications->category = data;
+		//printf ("data : %s\n", data);
+		//(* applications) [index].category = (char *) memcpy (new char [length], data, length);
+		(* applications) [index].category = data;
+	}
+
+	else if (strcmp (name, "author_first_name") == 0) {
+		//if (applications [index].author_first_name != NULL) free (applications [index].author_first_name);
+		//applications [index].author_first_name = data;
+		//applications->author_first_name = data;
+		//printf ("data : %s\n", data);
+		//(* applications) [index].author_first_name = (char *) memcpy (new char [length], data, length);
+		(* applications) [index].author_first_name = data;
+	}
+
+	else if (strcmp (name, "author_last_name") == 0) {
+		//if (applications [index].author_last_name != NULL) free (applications [index].author_last_name);
+		//applications [index].author_last_name = data;
+		//applications->author_last_name = data;
+		//printf ("data : %s\n", data);
+		//(* applications) [index].author_last_name = (char *) memcpy (new char [length], data, length);
+		(* applications) [index].author_last_name = data;
+	}
+
+	else if (strcmp (name, "short_description") == 0) {
+		//if (applications [index].description != NULL) free (applications [index].description);
+		//applications [index].description = data;
+		//applications->description = data;
+		//printf ("data : %s\n", data);
+		//printf ("%s\n",(* applications) [index].description);
+		//(* applications) [index].description = (char *) memcpy (new char [length], data, length);
+		(* applications) [index].description = data;
+
+	}
+
+	else if (strcmp (name, "primary_download_url") == 0) {
+		//if (applications [index].primary_dl_url != NULL) free (applications [index].primary_dl_url);
+		//applications [index].primary_dl_url = data;
+		//applications->primary_dl_url = data;
+		//printf ("data : %s\n", data);
+		//(* applications) [index].primary_dl_url = (char *) memcpy (new char [length], data, length);
+		(* applications) [index].primary_dl_url = data;
+	}
+
+	else if (strcmp (name, "secondary_download_url") == 0) {
+		//if (applications [index].secondary_dl_url != NULL) free (applications [index].secondary_dl_url);
+		//applications [index].secondary_dl_url = data;
+		//applications->secondary_dl_url = data;
+		//printf ("data : %s\n", data);
+		//(* applications) [index].secondary_dl_url = (char *) memcpy (new char [length], data, length);
+		(* applications) [index].secondary_dl_url = data;
+	}
+
+	else if (strcmp (name, "icon") == 0) {
+		if      (strcmp (data, "f") == 0) (* applications) [index].icon = false;
+		else if (strcmp (data, "t") == 0) (* applications) [index].icon = true;
+	}
+
+
 }
 
 void XMLParser::mtxParseError () {
