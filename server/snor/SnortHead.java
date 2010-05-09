@@ -88,6 +88,12 @@ class SnortHead extends Thread {
 			in.read(byteArray);
 			String string_request = new String(byteArray);
 
+			if(string_request.length() < 10) {
+				return;
+			}
+			
+			string_request = string_request.trim();
+
 			int pos = string_request.indexOf("<");
 			if (pos != 0) {
 				String substring = string_request.substring(pos);
