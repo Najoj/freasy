@@ -59,7 +59,6 @@ void AppInfoView::showInfo (application * app) {
 }
 
 
-
 void AppInfoView::showImage(MAHandle image) {
 
 	Image *i = new Image(0, 0, 32, 32, list_box, false, false, image);
