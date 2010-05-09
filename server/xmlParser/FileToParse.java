@@ -42,9 +42,13 @@ public class FileToParse {
 
 			// System.out.println("Request: "+ request.toString());
 
+			PADSQL.Initialize();
+			
 			Answer answer = new Answer(PADSQL.SendQuery(request.toSQL(),
 					request.getNumberOfObjects()), request.getOffset(), PADSQL
 					.getQueryListLength(request.getSQLLength()));
+			
+			PADSQL.Close();
 
 			// Answer answer = new Answer();
 

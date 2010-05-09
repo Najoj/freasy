@@ -33,6 +33,16 @@ public class PADSQL {
 		}
 
 	}
+	
+	public static void Close()
+	{
+		try {
+			db.close();
+		} catch (Exception e) 
+		{
+			System.err.println("Error vid stängning av databasconnection");
+		}
+	}
 
 	public static int getQueryListLength(String query) throws SQLException {
 

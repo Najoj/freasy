@@ -1,6 +1,6 @@
 package Static;
 
-import Database.PADSQL;
+//import Database.PADSQL;
 
 public class Initializer 
 {
@@ -12,7 +12,7 @@ public class Initializer
 		//FilePrinter.setRequestLog( new File("requestLog") );
 		
 		
-		PADSQL.Initialize();
+		//PADSQL.Initialize();
 		LogFiles.Initialize();
 		/**try	{ PADSQL.Initialize(); }
 		catch (Exception e)	
