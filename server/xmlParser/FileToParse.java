@@ -43,15 +43,16 @@ public class FileToParse {
 			// System.out.println("Request: "+ request.toString());
 
 			System.out.println("Försöker öppna databaskopplingen");
-			PADSQL.Initialize();
+			PADSQL database = new PADSQL();
+			database.Initialize();
 			
-			Answer answer = new Answer(PADSQL.SendQuery(request.toSQL(),
-					request.getNumberOfObjects()), request.getOffset(), PADSQL
+			Answer answer = new Answer(database.SendQuery(request.toSQL(),
+					request.getNumberOfObjects()), request.getOffset(), database
 					.getQueryListLength(request.getSQLLength()));
 			
 			System.out.println("Korrekta svar från databasen");
 			
-			PADSQL.Close();
+			database.Close();
 			System.out.println("Databaskopplingen korrekt stängd");
 
 			// Answer answer = new Answer();

@@ -10,10 +10,10 @@ import java.util.Properties;
 
 public class PADSQL {
 
-	private static Connection db;
+	private Connection db;
 
 	// public void main (String[] args) throws Exception
-	public static void Initialize() {
+	public void Initialize() {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (Exception e) {
@@ -34,7 +34,7 @@ public class PADSQL {
 
 	}
 	
-	public static void Close()
+	public void Close()
 	{
 		try {
 			db.close();
@@ -44,7 +44,7 @@ public class PADSQL {
 		}
 	}
 
-	public static int getQueryListLength(String query) throws SQLException {
+	public int getQueryListLength(String query) throws SQLException {
 
 		System.out.println("Försöker skicka listlängdrequest till databasen");
 		
@@ -55,7 +55,7 @@ public class PADSQL {
 
 	}
 
-	public static ArrayList<HashMap<String, String>> SendQuery(String query,
+	public ArrayList<HashMap<String, String>> SendQuery(String query,
 			int expectedLength) throws SQLException {
 		
 		System.out.println("Försöker skicka request till databasen");
