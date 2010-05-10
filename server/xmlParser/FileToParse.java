@@ -68,19 +68,15 @@ public class FileToParse {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
-			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genrererat ett XMLParseException.");
-			
-			appendExceptionLog( files );
-			
+			appendExceptionLog( files, new Date() + " - Requesten har genrererat ett XMLParseException." );
+
 			System.err.println("Requesten har genrererat ett XMLParseException.");
 
 		} catch (SAXParseException e) {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
-			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genrererat ett SAXParseException.");
-			
-			appendExceptionLog( files );
+			appendExceptionLog( files, new Date() + " - Requesten har genrererat ett SAXParseException." );
 			
 			System.err.println("Requesten har genrererat ett SAXParseException.");
 		} catch (SQLException e) {
@@ -88,9 +84,7 @@ public class FileToParse {
 			answerString = new ExceptionParser()
 					.parseMessageToXML("Fel innuti servern!");
 
-			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genererat ett SQLException.");
-
-			appendExceptionLog( files );
+			appendExceptionLog( files, new Date() + " - Requesten har genrererat ett SQLException." );
 			
 			System.err.println("Requesten har genererat ett SQLException.");
 			System.err.println("Exception: " + e.getMessage());
@@ -100,9 +94,7 @@ public class FileToParse {
 
 			// Spara undan requesten, kolla varför felet inträffade!
 
-			LogFiles.getRequestLog().appendToLog(new Date() + " !!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
-			
-			appendExceptionLog( files );
+			appendExceptionLog( files, new Date() + " !!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!" );
 			
 		}
 		/**
@@ -116,9 +108,9 @@ public class FileToParse {
 
 	}
 	
-	private void appendExceptionLog( RequestAnswer files )
+	private void appendExceptionLog( RequestAnswer files, String exceptionAnswer )
 	{
-		LogFiles.getExceptionLog().appendToLog(new Date() + " - Requesten har genererat ett Exception."+"\n\n"+
-				files.getRequest()+"\n\n"+files.getAnswer()+"\n\n"+"\n\n"+"\n\n");
+		LogFiles.getRequestLog().appendToLog(exceptionAnswer);
+		LogFiles.getExceptionLog().appendToLog(exceptionAnswer+"\n\n"+files.getRequest()+"\n\n"+files.getAnswer()+"\n\n"+"\n\n"+"\n\n");
 	}
 }
