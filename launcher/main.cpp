@@ -13,7 +13,10 @@
 
 using namespace MAUtil;
 
-static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
+//static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
+//static const char* browserURL = "http://www.csc.kth.se/~ohassel/freasy/CharlieTheUnicornSoundboard/application.comb";
+static const char* browserURL =
+		"http://picturelogin.dyndns.org/browser/program.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
@@ -52,7 +55,9 @@ public:
 		} else {
 			maDrawImage(LOG, (w >> 1) - (EXTENT_X(logoExtents) >> 1), 0);
 		}
-		maWait(5000);
+		maSetColor(0x000000); //white
+		maDrawText(1, h - 14, "Exit");
+		maWait(3000);
 		state = Idle;
 		checkExitGracefully();//check exitGracefully
 		download.addDownloadListener(this);
@@ -71,7 +76,7 @@ public:
 
 	void keyPressEvent(int keyCode, int nativeCode) {
 		// handle key presses
-		if (keyCode == MAK_0) {
+		if (keyCode == MAK_SOFTLEFT) {
 			if (download.isDownloading()) {
 				download.cancelDownloading();
 			}
@@ -134,15 +139,15 @@ public:
 		}
 		String app = "application.comb";
 		urls[0].append(app.c_str(), app.length());
-		/*printf("%s", urls[0].c_str());
-		maWait(4000);
-		MAHandle data = PlaceholderPool::alloc();
-		maCreateData(data, urls[0].length());
-		maWriteData(data, urls[0].c_str(), 0, urls[0].length());
-		MAHandle store = maOpenStore("tmpURL.txt", MAS_CREATE_IF_NECESSARY);
-		maWriteStore(store, data);
-		maCloseStore(store, 0);
-		PlaceholderPool::put(data);*/
+		//printf("%s", urls[0].c_str());
+		/*maWait(4000);
+		 MAHandle data = PlaceholderPool::alloc();
+		 maCreateData(data, urls[0].length());
+		 maWriteData(data, urls[0].c_str(), 0, urls[0].length());
+		 MAHandle store = maOpenStore("tmpURL.txt", MAS_CREATE_IF_NECESSARY);
+		 maWriteStore(store, data);
+		 maCloseStore(store, 0);
+		 PlaceholderPool::put(data);*/
 		download.beginDownloading(urls[0].c_str(), 0);
 	}
 
@@ -207,6 +212,7 @@ public:
 				maWait(1000);//debug purpose
 				http.close();//close http connection to save money
 				maLoadProgram(browser, 1);
+
 			} else {
 				printf("Out of system memory. Press 0 to exit.");
 			}
@@ -217,7 +223,7 @@ public:
 			int res = maWriteStore(store, downloadedData);
 			if (res != STERR_FULL) {
 				maReadStore(store, program);
-				maCloseStore(store, -1);
+				maCloseStore(store, -1);//-1
 				//exitGracefully file write
 				MAHandle data = PlaceholderPool::alloc();
 				maCreateData(data, programID.length());
@@ -229,12 +235,19 @@ public:
 				PlaceholderPool::put(data);
 
 				//Clears background
-						maSetColor(0x000000);
-						MAFrameBufferInfo info;
-						maFrameBufferGetInfo(&info);
-						maFillRect(0,0, info.width,info.height);
+				maSetColor(0x000000);
+				MAFrameBufferInfo info;
+				maFrameBufferGetInfo(&info);
+				maFillRect(0, 0, info.width, info.height);
 
 				maLoadProgram(program, 1);/*start the program*/
+				/*MAHandle data1 = PlaceholderPool::alloc();
+				 maCreateData(data1, urls[0].length());
+				 maWriteData(data1, urls[0].c_str(), 0, urls[0].length());
+				 MAHandle store1 = maOpenStore("tmpURLLP.txt", MAS_CREATE_IF_NECESSARY);
+				 maWriteStore(store1, data1);
+				 maCloseStore(store1, 0);
+				 PlaceholderPool::put(data1);*/
 			} else {
 				printf("Out of system memory. Press 0 to exit.");
 			}
@@ -264,9 +277,9 @@ public:
 				//printf("Downloading from %s\n", urls[urlIterator].c_str());
 				download.beginDownloading(urls[urlIterator].c_str(), 0);
 			}
-		}
-		else{
+		} else {
 			printf("error %i\n", errorCode);
+			printf("Exit");
 			maWait(5000);
 			maExit(0);
 		}
@@ -274,28 +287,32 @@ public:
 	}
 
 	virtual void httpFinished(HttpConnection* c, int res) {
-		http.getResponseHeader("last-modified", &browserVersion);// get last-modified header and stroe it in browserversion
-		//printf("server browser version\n%s\n", browserVersion.c_str());
-		if (browserVersion == "") {
-			maExit(0);
-		}
-		if (getVersion() == browserVersion) {
-			//load saved browser
-			MAHandle store = maOpenStore(browserSave, 0);
-			if (store > 0) {
-				int result = maReadStore(store, browser);
-				maCloseStore(store, 0);
-				if (result < 0) {
-					//error: could not read
-					printf("Can't read file\n");
-					printf("Restart Freasy!\n");
-					//todo: delete old files to remove error?
-					maExit(0);
-				}
-				maLoadProgram(browser, 1);
+		if (res >= 200 && res <= 299) { //ok
+			http.getResponseHeader("last-modified", &browserVersion);// get last-modified header and stroe it in browserversion
+			//printf("server browser version\n%s\n", browserVersion.c_str());
+			if (browserVersion == "") {
+				maExit(0);
 			}
-		} else {
-			downloadBrowser();
+			if (getVersion() == browserVersion) {
+				//load saved browser
+				MAHandle store = maOpenStore(browserSave, 0);
+				if (store > 0) {
+					int result = maReadStore(store, browser);
+					maCloseStore(store, 0);
+					if (result < 0) {
+						//error: could not read
+						printf("Can't read file\n");
+						printf("Restart Freasy!\n");
+						//todo: delete old files to remove error?
+						maExit(0);
+					}
+					maLoadProgram(browser, 1);
+				}
+			} else {
+				downloadBrowser();
+			}
+		}else{
+			printf("ERROR: %i\n",res);
 		}
 		return;
 	}
