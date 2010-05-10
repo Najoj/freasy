@@ -115,7 +115,7 @@ public class FileToParse {
 	private void appendExceptionLog( RequestAnswer files, String exceptionAnswer )
 	{
 		LogFiles.getRequestLog().appendToLog(exceptionAnswer);
-		LogFiles.getExceptionLog().appendToLog("//////////////////////////////////////////////////////"+"\n\n"+
+		LogFiles.getExceptionLog().appendToLog("//////////////////////////////////////////////////////"+"\n\n\n"+
 				exceptionAnswer+"\n\n"+files.getRequest()+"\n\n"+files.getAnswer()+"\n\n"+
 				"//////////////////////////////////////////////////////");
 	}
