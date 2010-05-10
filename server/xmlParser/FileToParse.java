@@ -69,6 +69,9 @@ public class FileToParse {
 			answerString = error.parseException(e);
 
 			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genrererat ett XMLParseException.");
+			
+			appendExceptionLog( files );
+			
 			System.err.println("Requesten har genrererat ett XMLParseException.");
 
 		} catch (SAXParseException e) {
@@ -76,6 +79,8 @@ public class FileToParse {
 			answerString = error.parseException(e);
 
 			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genrererat ett SAXParseException.");
+			
+			appendExceptionLog( files );
 			
 			System.err.println("Requesten har genrererat ett SAXParseException.");
 		} catch (SQLException e) {
@@ -85,6 +90,8 @@ public class FileToParse {
 
 			LogFiles.getRequestLog().appendToLog(new Date() + " - Requesten har genererat ett SQLException.");
 
+			appendExceptionLog( files );
+			
 			System.err.println("Requesten har genererat ett SQLException.");
 			System.err.println("Exception: " + e.getMessage());
 			e.printStackTrace();
@@ -94,6 +101,9 @@ public class FileToParse {
 			// Spara undan requesten, kolla varför felet inträffade!
 
 			LogFiles.getRequestLog().appendToLog(new Date() + " !!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!");
+			
+			appendExceptionLog( files );
+			
 		}
 		/**
 		 * CLASSIC JAKE HAX!!!
@@ -104,5 +114,11 @@ public class FileToParse {
 
 		files.setAnswer(answerString);
 
+	}
+	
+	private void appendExceptionLog( RequestAnswer files )
+	{
+		LogFiles.getExceptionLog().appendToLog(new Date() + " - Requesten har genererat ett Exception."+"\n\n"+
+				files.getRequest()+"\n\n"+files.getAnswer()+"\n\n"+"\n\n"+"\n\n");
 	}
 }
