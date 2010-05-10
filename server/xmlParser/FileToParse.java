@@ -68,6 +68,7 @@ public class FileToParse {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
+			files.setAnswer(answerString);
 			appendExceptionLog( files, new Date() + " - Requesten har genrererat ett XMLParseException." );
 
 			System.err.println("Requesten har genrererat ett XMLParseException.");
@@ -76,6 +77,7 @@ public class FileToParse {
 			ExceptionParser error = new ExceptionParser();
 			answerString = error.parseException(e);
 
+			files.setAnswer(answerString);
 			appendExceptionLog( files, new Date() + " - Requesten har genrererat ett SAXParseException." );
 			
 			System.err.println("Requesten har genrererat ett SAXParseException.");
@@ -84,6 +86,7 @@ public class FileToParse {
 			answerString = new ExceptionParser()
 					.parseMessageToXML("Fel innuti servern!");
 
+			files.setAnswer(answerString);
 			appendExceptionLog( files, new Date() + " - Requesten har genrererat ett SQLException." );
 			
 			System.err.println("Requesten har genererat ett SQLException.");
@@ -94,6 +97,7 @@ public class FileToParse {
 
 			// Spara undan requesten, kolla varför felet inträffade!
 
+			files.setAnswer(answerString);
 			appendExceptionLog( files, new Date() + " !!- Requesten har genrererat ett ofångat fel, vad har dom gjort?!? -!!" );
 			
 		}
@@ -111,6 +115,8 @@ public class FileToParse {
 	private void appendExceptionLog( RequestAnswer files, String exceptionAnswer )
 	{
 		LogFiles.getRequestLog().appendToLog(exceptionAnswer);
-		LogFiles.getExceptionLog().appendToLog(exceptionAnswer+"\n\n"+files.getRequest()+"\n\n"+files.getAnswer()+"\n\n"+"\n\n"+"\n\n");
+		LogFiles.getExceptionLog().appendToLog("//////////////////////////////////////////////////////"+"\n\n"+
+				exceptionAnswer+"\n\n"+files.getRequest()+"\n\n"+files.getAnswer()+"\n\n"+
+				"//////////////////////////////////////////////////////");
 	}
 }
