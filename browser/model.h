@@ -28,17 +28,31 @@ using namespace Mtx;
  * APPLICATION STRUCT
  * used as a container of information about an application
  *****************************************************************************/
-struct application {
-	char  * name; 			 	 /* name of application  					*/
-	char  * author_first_name; 	 /* author of application (first name)	  	*/
-	char  * author_last_name;  	 /* author of application (last name)       */
-	char  * description;       	 /* description of the application			*/
-	char  * category; 		 	 /* application category					*/
-	char  * primary_dl_url; 	 /* primary download URL					*/
-	char  * secondary_dl_url;	 /* secondary download URL					*/
-	int     id; 			 	 /* unique id of application 				*/
-	bool	icon;				 /* tells if there's an icon available 		*/
-};
+typedef struct application {
+	bool icon;						/* tells if there's an icon available 		*/
+	int  id;						/* unique id of application 				*/
+	char name 				[100];	/* name of application  					*/
+	char author_first_name 	[100];	/* author of application (first name)	  	*/
+	char author_last_name 	[100];	/* author of application (last name)        */
+	char description 		[100];	/* description of the application			*/
+	char primary_dl_url 	[100];  /* primary download URL						*/
+	char secondary_dl_url 	[100];	/* secondary download URL					*/
+	char category 			[100];	/* application category						*/
+
+} application;
+
+
+//typedef struct application {
+//	char  * name; 			 	 /* name of application  					*/
+//	char  * author_first_name; 	 /* author of application (first name)	  	*/
+//	char  * author_last_name;  	 /* author of application (last name)       */
+//	char  * description;       	 /* description of the application			*/
+//	char  * category; 		 	 /* application category					*/
+//	char  * primary_dl_url; 	 /* primary download URL					*/
+//	char  * secondary_dl_url;	 /* secondary download URL					*/
+//	int     id; 			 	 /* unique id of application 				*/
+//	bool	icon;				 /* tells if there's an icon available 		*/
+//} application;
 
 
 /*****************************************************************************
@@ -80,17 +94,16 @@ class XMLParser : public XmlListener, public MtxListener {
 		/**************************************************
 		 * Variables
 		 **************************************************/
-		Context 	   context;
-		char 	       buffer [BUFFERSIZE];
-		char 	    ** buffer_pointer;
 		application ** applications;
-		const char   * current_tag;
+		char 		   data [100];
+		char 	    ** buffer_pointer;
 		int 		   index;
 		int 	     * count;
 		int 		 * offset;
-		bool 		 * done;
-		char 		 * data;
 		int			   length;
+		bool 		 * done;
+		char 	       buffer [BUFFERSIZE];
+		Context 	   context;
 
 };
 
@@ -125,7 +138,7 @@ class model {
 		int  connect 			() ;
 		int  close				() ;
 		bool parse 				() ;
-		int  send_request   	(String request) ;
+		int  send_request   	(String * request) ;
 		int  receive_answer 	() ;
 		int  search_by_category (char * category) ;
 		int  search_by_name     (char * name) ;
@@ -139,14 +152,14 @@ class model {
 		/**************************************************
 		 * VARIABLES
 		 **************************************************/
-		XMLParser	  	* parser;
-		Connection 	  	  connection;
-		ImageDownloader * downloader;
-		int 			  offset;
-		application     * applications;
 		char 		    * buffer;
+		int 			  offset;
+		XMLParser	  	* parser;
+		ImageDownloader * downloader;
+		application     * applications;
+		Connection 	  	  connection;
+		String			* request;
 
-		/* home.ohassel.se:8989 */
 };
 
 #endif /* MODEL_H_ */

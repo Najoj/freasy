@@ -73,16 +73,15 @@ void browserView::showCategories() {
 void browserView::showApplications(application *applications, int count) {
 
 	int height = 30;
-	Layout * softkey_layout = new Layout(0, scrHeight, scrWidth, height, NULL, 2, 1);
-	Label * softLeft  = new Label (0, 0, scrWidth / 2, height, softkey_layout);
+	Layout * softkey_layout = new Layout (0, scrHeight, scrWidth, height, NULL, 2, 1);
+	Label  * softLeft  		= new Label  (0, 0, scrWidth / 2, height, softkey_layout);
 	softLeft->setCaption ("select");
 
-	if(applications[0].name == NULL){
+	if (count == 0) {
 		createInfoLabel ("", "No apps in this category", list_box);
 		this->currentScreen = BROWSER_VIEW;
 		softLeft->setCaption ("");
 	}
-
 
 	softLeft->setBackgroundColor (0);
 	softLeft->setHorizontalAlignment (Label::HA_LEFT);

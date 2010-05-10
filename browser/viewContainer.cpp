@@ -74,7 +74,8 @@ void ViewContainer::prevItem (){
  * UTILITY FUNCTIONS
  ********************************************************/
 
-char* ViewContainer::getSelected(){
+char * ViewContainer::getSelected () {
+
 	switch (* current_view) {
 
 		case CATEGORY_VIEW :
@@ -173,7 +174,3 @@ void ViewContainer::showImage(MAHandle image) {
 	app_info_view->show ();
 
 }
-
-//void ViewContainer::setCategoryChoosen(int i){
-	//browser_view ->selectedItem = i;
-//}

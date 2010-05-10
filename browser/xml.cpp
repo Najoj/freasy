@@ -17,11 +17,15 @@ XMLParser::XMLParser (int * count, 				   int * offset,
 	* this->buffer_pointer = this->buffer;
 
 	this->length = 0;
-	this->data   = NULL;
+	memset (data, 0, 30);
+	//this->data   = NULL;
+
+
 }
 
 XMLParser::~ XMLParser () {
-
+	this->~XmlListener ();
+	this->~MtxListener ();
 }
 
 int XMLParser::process () {
@@ -47,7 +51,6 @@ void XMLParser::mtxEncoding (const char * value) {
 }
 
 void XMLParser::mtxTagStart (const char * name, int len) {
-	current_tag = name;
 	//printf ("current tag : %s\n", current_tag);
 	if (strcmp (name, "exception") == 0) { printf ("exception in answer!\n"); stop (); }
 }
@@ -67,9 +70,15 @@ void XMLParser::mtxTagData (const char * tag_data, int length) {
 	/* ignore whitespace */
 	if (strcmp (tag_data, "\n") == 0 || strcmp (tag_data, " ") == 0) return;
 
+	//printf ("tag_data %s, length : %d\n", tag_data, length);
+
 	/* if no data from previous parse alloc new data array */
 	if (this->length == 0) {
-		data = (char *) memcpy (new char [length + 1], tag_data, length + 1);
+//		data = (char *) malloc (30);
+//		memset (data, 0, 30),
+		memcpy (data, tag_data, length + 1);
+		//data = (char *) memcpy (new char [length + 1], tag_data, length + 1);
+		//data = (char *) memcpy (malloc (length + 1), tag_data, length + 1);
 		this->length = length;
 	}
 	/* else append to previous data */
@@ -77,11 +86,15 @@ void XMLParser::mtxTagData (const char * tag_data, int length) {
 		memcpy (data + this->length, tag_data, length + 1);
 		this->length += length;
 	}
+
+	//printf ("data : %s\n", data);
 }
 
 void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 
-	length = 0;
+	length ++;
+
+	//printf ("%s\n", data);
 
 	if (strcmp (name, "answer") == 0) {
 		* done 		   = true; /* parser is now done */
@@ -113,8 +126,8 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 	else if (strcmp (name, "app_name") == 0) {
 		//if (applications [index].name != NULL) {/* printf ("freeing name %s\n", applications[index].name);*/ free (applications [index].name); }
 		//(* applications) [index].name = (char *) memcpy (new char [length], data, length);
-		//applications [index].name [length] = 0;
-		(* applications) [index].name = data;
+//		(* applications) [index].name = data;
+		memcpy ((* applications) [index].name, data, length);
 	}
 
 	else if (strcmp (name, "category") == 0) {
@@ -123,7 +136,8 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//applications->category = data;
 		//printf ("data : %s\n", data);
 		//(* applications) [index].category = (char *) memcpy (new char [length], data, length);
-		(* applications) [index].category = data;
+		//(* applications) [index].category = data;
+		memcpy ((* applications) [index].category, data, length);
 	}
 
 	else if (strcmp (name, "author_first_name") == 0) {
@@ -132,7 +146,8 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//applications->author_first_name = data;
 		//printf ("data : %s\n", data);
 		//(* applications) [index].author_first_name = (char *) memcpy (new char [length], data, length);
-		(* applications) [index].author_first_name = data;
+		//(* applications) [index].author_first_name = data;
+		memcpy ((* applications) [index].author_first_name, data, length);
 	}
 
 	else if (strcmp (name, "author_last_name") == 0) {
@@ -141,7 +156,8 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//applications->author_last_name = data;
 		//printf ("data : %s\n", data);
 		//(* applications) [index].author_last_name = (char *) memcpy (new char [length], data, length);
-		(* applications) [index].author_last_name = data;
+		//(* applications) [index].author_last_name = data;
+		memcpy ((* applications) [index].author_last_name, data, length);
 	}
 
 	else if (strcmp (name, "short_description") == 0) {
@@ -151,7 +167,8 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("data : %s\n", data);
 		//printf ("%s\n",(* applications) [index].description);
 		//(* applications) [index].description = (char *) memcpy (new char [length], data, length);
-		(* applications) [index].description = data;
+		//(* applications) [index].description = data;
+		memcpy ((* applications) [index].description, data, length);
 
 	}
 
@@ -161,7 +178,8 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//applications->primary_dl_url = data;
 		//printf ("data : %s\n", data);
 		//(* applications) [index].primary_dl_url = (char *) memcpy (new char [length], data, length);
-		(* applications) [index].primary_dl_url = data;
+		//(* applications) [index].primary_dl_url = data;
+		memcpy ((* applications) [index].primary_dl_url, data, length);
 	}
 
 	else if (strcmp (name, "secondary_download_url") == 0) {
@@ -170,13 +188,17 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//applications->secondary_dl_url = data;
 		//printf ("data : %s\n", data);
 		//(* applications) [index].secondary_dl_url = (char *) memcpy (new char [length], data, length);
-		(* applications) [index].secondary_dl_url = data;
+		//(* applications) [index].secondary_dl_url = data;
+		memcpy ((* applications) [index].secondary_dl_url, data, length);
 	}
 
 	else if (strcmp (name, "icon") == 0) {
 		if      (strcmp (data, "f") == 0) (* applications) [index].icon = false;
 		else if (strcmp (data, "t") == 0) (* applications) [index].icon = true;
 	}
+
+	memset (data, 0, 100);
+	length = 0;
 
 
 }

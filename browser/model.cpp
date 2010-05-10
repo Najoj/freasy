@@ -11,7 +11,14 @@ model::model (ConnectionListener * con_listener, DownloadListener * dl_listener)
 }
 
 model::~ model () {
+	delete parser;
+
 	connection.close ();
+	delete & connection;
+
+	delete downloader;
+
+	free (applications);
 }
 
 
@@ -62,10 +69,10 @@ bool model::parse () {
 
 int model::connect () {
 	if (connection.isOpen ()) return -1; /* we're already connected!! */
-	//int result = connection.connect ("socket://home.ohassel.se:8989");
+	int result = connection.connect ("socket://home.ohassel.se:8989");
 	//int result = connection.connect ("socket://130.237.81.39:8989");
 	//int result = connection.connect ("socket://picturelogin.dyndns.org:8989");
-	int result = connection.connect ("socket://213.101.208.221:8989");
+	//int result = connection.connect ("socket://213.101.208.221:8989");
 	if (result < 0) printf ("connecting failed\n");
 
 	return result;
@@ -73,17 +80,19 @@ int model::connect () {
 
 
 int model::close () {
+	delete request;
 	connection.close ();
 	return 0;
 }
 
 
-int model::send_request (String request) {
+int model::send_request (String * request) {
 	if (applications != NULL) free (applications); /* free memory for new data */
 
 	applications = new application [10]; /* make a fresh array ready for the data */
+	//applications = (application *) malloc (sizeof (application) * 10);
 
-	connection.write (request.c_str (), request.length ());
+	connection.write (request->c_str (), request->length ());
 
 	return 0;
 }
@@ -94,20 +103,20 @@ int model::receive_answer () {
 }
 
 int model::search_by_category (char * category) {
-	String request = String ("<request><match_by><attribute>category</attribute><operator>ILIKE</operator><value>%");
-	request += category;
-	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
-	request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><short_description/><category/><primary_download_url/><author_first_name/><author_last_name/><icon/></pad_reference_object></request>";
+	request    = new String ("<request><match_by><attribute>category</attribute><operator>ILIKE</operator><value>%");
+	* request += category;
+	* request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
+	* request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><short_description/><category/><primary_download_url/><author_first_name/><author_last_name/><icon/></pad_reference_object></request>";
 
 	send_request (request);
 	return 0;
 }
 
 int model::search_by_name (char * name) {
-	String request = String ("<request><match_by><attribute>app_name</attribute><operator>ILIKE</operator><value>%");
-	request += name;
-	request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
-	request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/><icon/></pad_reference_object></request>";
+	request    = new String ("<request><match_by><attribute>app_name</attribute><operator>ILIKE</operator><value>%");
+	* request += name;
+	* request += "%</value></match_by><order_by><attribute>app_name</attribute></order_by>";
+	* request += "<answer_format><offset>0</offset><number_of_objects>10</number_of_objects></answer_format><pad_reference_object><app_id/><app_name/><description/><category/><primary_download_url/><icon/></pad_reference_object></request>";
 
 	send_request (request);
 

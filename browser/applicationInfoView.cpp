@@ -6,7 +6,7 @@ AppInfoView::AppInfoView (WidgetSkin * skin) : MainScreen (skin) {
 	int height = 30;
 
 	/*************** main layout **************************/
-	Layout * main_layout    = new Layout (0, 0, scrWidth, scrHeight, NULL, 1, 2);
+	Layout * main_layout = new Layout (0, 0, scrWidth, scrHeight, NULL, 1, 2);
 
 
 	/*************** softkeys ********************/
