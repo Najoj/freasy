@@ -34,7 +34,7 @@ typedef struct application {
 	char name 				[100];	/* name of application  					*/
 	char author_first_name 	[100];	/* author of application (first name)	  	*/
 	char author_last_name 	[100];	/* author of application (last name)        */
-	char description 		[100];	/* description of the application			*/
+	char description 		[500];	/* description of the application			*/ // used to be 100
 	char primary_dl_url 	[100];  /* primary download URL						*/
 	char secondary_dl_url 	[100];	/* secondary download URL					*/
 	char category 			[100];	/* application category						*/
@@ -95,7 +95,7 @@ class XMLParser : public XmlListener, public MtxListener {
 		 * Variables
 		 **************************************************/
 		application ** applications;
-		char 		   data [100];
+		char 		   data [500];	//changed from 100,
 		char 	    ** buffer_pointer;
 		int 		   index;
 		int 	     * count;
