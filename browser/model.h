@@ -20,6 +20,12 @@
 
 #define BUFFERSIZE 1024
 
+//defines how long common strings in application structs are
+#define APPLICATION_MAX_STR_LEN 100
+
+//Defines length of the description
+#define APPLICATION_DESC_LEN 500
+
 using namespace MAUtil;
 using namespace Mtx;
 
@@ -31,13 +37,13 @@ using namespace Mtx;
 typedef struct application {
 	bool icon;						/* tells if there's an icon available 		*/
 	int  id;						/* unique id of application 				*/
-	char name 				[100];	/* name of application  					*/
-	char author_first_name 	[100];	/* author of application (first name)	  	*/
-	char author_last_name 	[100];	/* author of application (last name)        */
-	char description 		[500];	/* description of the application			*/ // used to be 100
-	char primary_dl_url 	[100];  /* primary download URL						*/
-	char secondary_dl_url 	[100];	/* secondary download URL					*/
-	char category 			[100];	/* application category						*/
+	char name 				[APPLICATION_MAX_STR_LEN];	/* name of application  					*/
+	char author_first_name 	[APPLICATION_MAX_STR_LEN];	/* author of application (first name)	  	*/
+	char author_last_name 	[APPLICATION_MAX_STR_LEN];	/* author of application (last name)        */
+	char description 		[APPLICATION_DESC_LEN];	/* description of the application			*/ // used to be 100
+	char primary_dl_url 	[APPLICATION_MAX_STR_LEN];  /* primary download URL						*/
+	char secondary_dl_url 	[APPLICATION_MAX_STR_LEN];	/* secondary download URL					*/
+	char category 			[APPLICATION_MAX_STR_LEN];	/* application category						*/
 
 } application;
 

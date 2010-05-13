@@ -111,7 +111,7 @@ void ViewContainer::showApplications (application * applications, int count) {
 	//Set the previous category
 
 	browser_view->showApplications (applications, count);
-
+	browser_view->list_box->setSelectedIndex (selectedApp);
 	browser_view->show ();
 }
 

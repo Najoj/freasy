@@ -53,17 +53,23 @@ void Freasy::handle_key_softleft () {
 		case CATEGORY_VIEW :
 			views->selectedItem = views->browser_view->list_box->getSelectedIndex ();
 
+			//This has to be reset since not all categoryes have the same number of apps.
+			views->selectedApp = 0;
+
 			dataModel->connect();
 
 			break;
 
 		case BROWSER_VIEW :
+			//Saves the application index we was watching.
+			views->selectedApp = views->browser_view->list_box->getSelectedIndex ();
 			if (dataModel->count == 0) break;
 
 			if (dataModel->get_info (views->getSelected ())->icon)
 				dataModel->download_icon (views->browser_view->list_box->getSelectedIndex ());
 			else {
 				viewed_app = views->browser_view->list_box->getSelectedIndex ();
+
 				views->showInfo (dataModel->get_info (views->getSelected ()), NULL);
 				current_view = APPLICATION_INFO_VIEW;
 			}

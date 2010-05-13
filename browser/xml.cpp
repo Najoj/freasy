@@ -127,7 +127,13 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//if (applications [index].name != NULL) {/* printf ("freeing name %s\n", applications[index].name);*/ free (applications [index].name); }
 		//(* applications) [index].name = (char *) memcpy (new char [length], data, length);
 //		(* applications) [index].name = data;
-		memcpy ((* applications) [index].name, data, length);
+
+		//Checks so that we dont overflow the memcpy, model.h for the define
+		if (length < APPLICATION_MAX_STR_LEN){
+			memcpy ((* applications) [index].name, data, length);
+		}else{
+			memcpy ((* applications) [index].name, data, APPLICATION_MAX_STR_LEN);
+		}
 	}
 
 	else if (strcmp (name, "category") == 0) {
@@ -137,7 +143,13 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("data : %s\n", data);
 		//(* applications) [index].category = (char *) memcpy (new char [length], data, length);
 		//(* applications) [index].category = data;
-		memcpy ((* applications) [index].category, data, length);
+
+		//Checks so that we dont overflow the memcpy, model.h for the define
+		if (length < APPLICATION_MAX_STR_LEN){
+			memcpy ((* applications) [index].category,  data, length);
+		}else{
+			memcpy ((* applications) [index].category,  data, APPLICATION_MAX_STR_LEN);
+		}
 	}
 
 	else if (strcmp (name, "author_first_name") == 0) {
@@ -147,7 +159,14 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("data : %s\n", data);
 		//(* applications) [index].author_first_name = (char *) memcpy (new char [length], data, length);
 		//(* applications) [index].author_first_name = data;
-		memcpy ((* applications) [index].author_first_name, data, length);
+
+		//Checks so that we dont overflow the memcpy, model.h for the define
+		if (length < APPLICATION_MAX_STR_LEN){
+			memcpy ((* applications) [index].author_first_name,  data, length);
+		}else{
+			memcpy ((* applications) [index].author_first_name, data, APPLICATION_MAX_STR_LEN);
+		}
+
 	}
 
 	else if (strcmp (name, "author_last_name") == 0) {
@@ -157,7 +176,13 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("data : %s\n", data);
 		//(* applications) [index].author_last_name = (char *) memcpy (new char [length], data, length);
 		//(* applications) [index].author_last_name = data;
-		memcpy ((* applications) [index].author_last_name, data, length);
+
+		//Checks so that we dont overflow the memcpy, model.h for the define
+		if (length < APPLICATION_MAX_STR_LEN){
+			memcpy ((* applications) [index].author_last_name, data, length);
+		}else{
+			memcpy ((* applications) [index].author_last_name, data, APPLICATION_MAX_STR_LEN);
+		}
 	}
 
 	else if (strcmp (name, "short_description") == 0) {
@@ -168,7 +193,13 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("%s\n",(* applications) [index].description);
 		//(* applications) [index].description = (char *) memcpy (new char [length], data, length);
 		//(* applications) [index].description = data;
-		memcpy ((* applications) [index].description, data, length);
+
+		//Checks so that we dont overflow the memcpy, model.h for the define
+		if (length < APPLICATION_DESC_LEN){
+				memcpy ((* applications) [index].description, data, length);
+			}else{
+				memcpy ((* applications) [index].description, data, APPLICATION_MAX_STR_LEN);
+			}
 
 	}
 
@@ -179,7 +210,14 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("data : %s\n", data);
 		//(* applications) [index].primary_dl_url = (char *) memcpy (new char [length], data, length);
 		//(* applications) [index].primary_dl_url = data;
-		memcpy ((* applications) [index].primary_dl_url, data, length);
+
+		//Checks so that we dont overflow the memcpy, model.h for the define
+		if (length < APPLICATION_MAX_STR_LEN){
+				memcpy ((* applications) [index].primary_dl_url, data, length);
+			}else{
+				memcpy ((* applications) [index].primary_dl_url, data, APPLICATION_MAX_STR_LEN);
+			}
+
 	}
 
 	else if (strcmp (name, "secondary_download_url") == 0) {
@@ -189,7 +227,12 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		//printf ("data : %s\n", data);
 		//(* applications) [index].secondary_dl_url = (char *) memcpy (new char [length], data, length);
 		//(* applications) [index].secondary_dl_url = data;
-		memcpy ((* applications) [index].secondary_dl_url, data, length);
+		if (length < APPLICATION_MAX_STR_LEN){
+				memcpy ((* applications) [index].secondary_dl_url, data, length);
+			}else{
+				memcpy ((* applications) [index].secondary_dl_url, data, APPLICATION_MAX_STR_LEN);
+			}
+
 	}
 
 	else if (strcmp (name, "icon") == 0) {

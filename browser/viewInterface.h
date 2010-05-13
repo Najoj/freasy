@@ -241,7 +241,7 @@ public:
 	AppEditView *app_edit_view;
 
 	int selectedItem;
-
+	int selectedApp;
 private:
 	Font *gFont;
 	WidgetSkin *gSkin;
