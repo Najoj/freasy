@@ -15,7 +15,7 @@ using namespace MAUtil;
 
 //static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
 //static const char* browserURL = "http://www.csc.kth.se/~ohassel/freasy/CharlieTheUnicornSoundboard/application.comb";
-static const char* browserURL = "http://freasy.googlecode.com/files/program.comb";
+static const char* browserURL = "http://frfufkcufkcfukeasy.googlecodefuuck.com/files/program.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
@@ -280,6 +280,7 @@ public:
 			}
 		} else {
 			printf("error %i\n", errorCode);
+
 			printf("Exit");
 			maWait(5000);
 			maExit(0);
@@ -313,7 +314,18 @@ public:
 				downloadBrowser();
 			}
 		}else{
-			printf("ERROR: %i\n",res);
+			/** DISPLAYS ERROR SCREEN!**/
+			//printf("ERROR: %i\n",res);
+			maSetColor(0xffffff);
+			MAExtent e = maGetScrSize();
+			maFillRect(0,0,EXTENT_X(e),EXTENT_Y(e));
+			maSetColor(0x000000);
+			//I dont know if this buffer, should perhaps be  larger.
+			char str[10];
+			sprintf(str,"ERROR: %i",res);
+			maDrawText((EXTENT_X(e)/2)-26,(EXTENT_Y(e)/2),str);
+			maDrawText(EXTENT_X(e)-28, EXTENT_Y(e)- 14, "Exit");
+			maUpdateScreen();
 		}
 		return;
 	}
