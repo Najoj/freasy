@@ -15,8 +15,7 @@ using namespace MAUtil;
 
 //static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
 //static const char* browserURL = "http://www.csc.kth.se/~ohassel/freasy/CharlieTheUnicornSoundboard/application.comb";
-static const char* browserURL =
-		"http://picturelogin.dyndns.org/browser/program.comb";
+static const char* browserURL = "http://freasy.googlecode.com/files/program.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
@@ -55,8 +54,10 @@ public:
 		} else {
 			maDrawImage(LOG, (w >> 1) - (EXTENT_X(logoExtents) >> 1), 0);
 		}
+
+		//Draws "exit" on the screen
 		maSetColor(0x000000); //white
-		maDrawText(1, h - 14, "Exit");
+		maDrawText(w-28, h- 14, "Exit");
 		maWait(3000);
 		state = Idle;
 		checkExitGracefully();//check exitGracefully
@@ -76,7 +77,7 @@ public:
 
 	void keyPressEvent(int keyCode, int nativeCode) {
 		// handle key presses
-		if (keyCode == MAK_SOFTLEFT) {
+		if (keyCode == MAK_SOFTRIGHT){
 			if (download.isDownloading()) {
 				download.cancelDownloading();
 			}
