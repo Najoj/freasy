@@ -15,7 +15,7 @@ using namespace MAUtil;
 
 //static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
 //static const char* browserURL = "http://www.csc.kth.se/~ohassel/freasy/CharlieTheUnicornSoundboard/application.comb";
-static const char* browserURL = "http://freasy.googlecode.com/files/program.comb";
+static const char* browserURL = "http://freasy.googlecode.com/files/stabilBrowser.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
@@ -383,7 +383,7 @@ public:
 		tid = tmp.substr(0, first);
 		if (first == -1) {
 			/*didn't exit gracefully*/
-			printf("didn't exit gracefully");
+//			printf("didn't exit gracefully");
 			maWait(4000);
 			//TODO : report to server
 			return;
