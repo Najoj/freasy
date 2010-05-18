@@ -17,10 +17,7 @@ XMLParser::XMLParser (int * count, 				   int * offset,
 	* this->buffer_pointer = this->buffer;
 
 	this->length = 0;
-	memset (data, 0, 30);
-	//this->data   = NULL;
-
-
+	memset (data, 0, 500);
 }
 
 XMLParser::~ XMLParser () {
@@ -70,15 +67,9 @@ void XMLParser::mtxTagData (const char * tag_data, int length) {
 	/* ignore whitespace */
 	if (strcmp (tag_data, "\n") == 0 || strcmp (tag_data, " ") == 0) return;
 
-	//printf ("tag_data %s, length : %d\n", tag_data, length);
-
 	/* if no data from previous parse alloc new data array */
 	if (this->length == 0) {
-//		data = (char *) malloc (30);
-//		memset (data, 0, 30),
 		memcpy (data, tag_data, length + 1);
-		//data = (char *) memcpy (new char [length + 1], tag_data, length + 1);
-		//data = (char *) memcpy (malloc (length + 1), tag_data, length + 1);
 		this->length = length;
 	}
 	/* else append to previous data */
@@ -86,13 +77,14 @@ void XMLParser::mtxTagData (const char * tag_data, int length) {
 		memcpy (data + this->length, tag_data, length + 1);
 		this->length += length;
 	}
-
-	//printf ("data : %s\n", data);
 }
 
 void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 
-	length ++;
+	if (length >= APPLICATION_MAX_STR_LEN && strcmp (name, "short_description") != 0)
+		length = APPLICATION_MAX_STR_LEN - 1;
+
+	else length ++;
 
 	//printf ("%s\n", data);
 
@@ -104,135 +96,53 @@ void XMLParser::mtxTagEnd (const char * name, int tag_length) {
 		memset (buffer, 0, BUFFERSIZE); /* reset our buffer by freeing it from old memory */
 		* buffer_pointer = buffer; 		/* start writing at the start of our buffer */
 
+		memset (data, 0, APPLICATION_DESC_LEN);
+
 		stop (); /* this is the last tag, stop so we dont process trailing characters */
 	}
 
 	if (strcmp (name, "number_of_objects") == 0)
-		//printf ("data : %s\n", data);
 		* count = atoi (data);
 
 	else if (strcmp (name, "offset") == 0) {
-		//printf ("data : %s\n", data);
 		* offset = atoi (data);
 	}
 
 	else if (strcmp (name, "app_id") == 0) {
-		//if (applications [index].id != NULL) free (& applications [index].id);
 		(* applications) [index].id = atoi (data);
-		//applications->id = atoi (data);
-		//printf ("data : %s\n", data);
 	}
 
 	else if (strcmp (name, "app_name") == 0) {
-		//if (applications [index].name != NULL) {/* printf ("freeing name %s\n", applications[index].name);*/ free (applications [index].name); }
-		//(* applications) [index].name = (char *) memcpy (new char [length], data, length);
-//		(* applications) [index].name = data;
-
-		//Checks so that we dont overflow the memcpy, model.h for the define
-		if (length < APPLICATION_MAX_STR_LEN){
-			memcpy ((* applications) [index].name, data, length);
-		}else{
-			memcpy ((* applications) [index].name, data, APPLICATION_MAX_STR_LEN);
-		}
+		memcpy ((* applications) [index].name, data, length);
 	}
 
 	else if (strcmp (name, "category") == 0) {
-		//if (applications [index].category != NULL) free (applications [index].category);
-		//applications [index].category = data;
-		//applications->category = data;
-		//printf ("data : %s\n", data);
-		//(* applications) [index].category = (char *) memcpy (new char [length], data, length);
-		//(* applications) [index].category = data;
-
-		//Checks so that we dont overflow the memcpy, model.h for the define
-		if (length < APPLICATION_MAX_STR_LEN){
-			memcpy ((* applications) [index].category,  data, length);
-		}else{
-			memcpy ((* applications) [index].category,  data, APPLICATION_MAX_STR_LEN);
-		}
+		memcpy ((* applications) [index].category,  data, length);
 	}
 
 	else if (strcmp (name, "author_first_name") == 0) {
-		//if (applications [index].author_first_name != NULL) free (applications [index].author_first_name);
-		//applications [index].author_first_name = data;
-		//applications->author_first_name = data;
-		//printf ("data : %s\n", data);
-		//(* applications) [index].author_first_name = (char *) memcpy (new char [length], data, length);
-		//(* applications) [index].author_first_name = data;
-
-		//Checks so that we dont overflow the memcpy, model.h for the define
-		if (length < APPLICATION_MAX_STR_LEN){
-			memcpy ((* applications) [index].author_first_name,  data, length);
-		}else{
-			memcpy ((* applications) [index].author_first_name, data, APPLICATION_MAX_STR_LEN);
-		}
-
+		memcpy ((* applications) [index].author_first_name,  data, length);
 	}
 
 	else if (strcmp (name, "author_last_name") == 0) {
-		//if (applications [index].author_last_name != NULL) free (applications [index].author_last_name);
-		//applications [index].author_last_name = data;
-		//applications->author_last_name = data;
-		//printf ("data : %s\n", data);
-		//(* applications) [index].author_last_name = (char *) memcpy (new char [length], data, length);
-		//(* applications) [index].author_last_name = data;
-
-		//Checks so that we dont overflow the memcpy, model.h for the define
-		if (length < APPLICATION_MAX_STR_LEN){
-			memcpy ((* applications) [index].author_last_name, data, length);
-		}else{
-			memcpy ((* applications) [index].author_last_name, data, APPLICATION_MAX_STR_LEN);
-		}
+		memcpy ((* applications) [index].author_last_name, data, length);
 	}
 
 	else if (strcmp (name, "short_description") == 0) {
-		//if (applications [index].description != NULL) free (applications [index].description);
-		//applications [index].description = data;
-		//applications->description = data;
-		//printf ("data : %s\n", data);
-		//printf ("%s\n",(* applications) [index].description);
-		//(* applications) [index].description = (char *) memcpy (new char [length], data, length);
-		//(* applications) [index].description = data;
-
 		//Checks so that we dont overflow the memcpy, model.h for the define
-		if (length < APPLICATION_DESC_LEN){
-				memcpy ((* applications) [index].description, data, length);
-			}else{
-				memcpy ((* applications) [index].description, data, APPLICATION_MAX_STR_LEN);
-			}
+		if (length < APPLICATION_DESC_LEN)
+			memcpy ((* applications) [index].description, data, length);
+
+		else memcpy ((* applications) [index].description, data, APPLICATION_DESC_LEN);
 
 	}
 
 	else if (strcmp (name, "primary_download_url") == 0) {
-		//if (applications [index].primary_dl_url != NULL) free (applications [index].primary_dl_url);
-		//applications [index].primary_dl_url = data;
-		//applications->primary_dl_url = data;
-		//printf ("data : %s\n", data);
-		//(* applications) [index].primary_dl_url = (char *) memcpy (new char [length], data, length);
-		//(* applications) [index].primary_dl_url = data;
-
-		//Checks so that we dont overflow the memcpy, model.h for the define
-		if (length < APPLICATION_MAX_STR_LEN){
-				memcpy ((* applications) [index].primary_dl_url, data, length);
-			}else{
-				memcpy ((* applications) [index].primary_dl_url, data, APPLICATION_MAX_STR_LEN);
-			}
-
+		memcpy ((* applications) [index].primary_dl_url, data, length);
 	}
 
 	else if (strcmp (name, "secondary_download_url") == 0) {
-		//if (applications [index].secondary_dl_url != NULL) free (applications [index].secondary_dl_url);
-		//applications [index].secondary_dl_url = data;
-		//applications->secondary_dl_url = data;
-		//printf ("data : %s\n", data);
-		//(* applications) [index].secondary_dl_url = (char *) memcpy (new char [length], data, length);
-		//(* applications) [index].secondary_dl_url = data;
-		if (length < APPLICATION_MAX_STR_LEN){
-				memcpy ((* applications) [index].secondary_dl_url, data, length);
-			}else{
-				memcpy ((* applications) [index].secondary_dl_url, data, APPLICATION_MAX_STR_LEN);
-			}
-
+		memcpy ((* applications) [index].secondary_dl_url, data, length);
 	}
 
 	else if (strcmp (name, "icon") == 0) {
