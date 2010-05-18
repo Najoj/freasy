@@ -15,7 +15,7 @@ using namespace MAUtil;
 
 //static const char* browserURL = "http://www.csc.kth.se/~jacobnor/browser.comb";
 //static const char* browserURL = "http://www.csc.kth.se/~ohassel/freasy/CharlieTheUnicornSoundboard/application.comb";
-static const char* browserURL = "http://frfufkcufkcfukeasy.googlecodefuuck.com/files/program.comb";
+static const char* browserURL = "http://freasy.googlecode.com/files/program.comb";
 static const char* browserSave = "browser.sav";
 static const char* browserVSave = "browserVersion.sav";
 static const char* exitGracefullyFile = "ExitGracefully.sav";
@@ -279,7 +279,8 @@ public:
 				download.beginDownloading(urls[urlIterator].c_str(), 0);
 			}
 		} else {
-			printf("error %i\n", errorCode);
+//			printf("error %i\n", errorCode);
+			printf("error Connecting, check your connection");
 
 			printf("Exit");
 			maWait(5000);
@@ -322,8 +323,9 @@ public:
 			maSetColor(0x000000);
 			//I dont know if this buffer, should perhaps be  larger.
 			char str[10];
-			sprintf(str,"ERROR: %i",res);
-			maDrawText((EXTENT_X(e)/2)-26,(EXTENT_Y(e)/2),str);
+//			sprintf(str,"ERROR: %i",res);
+			sprintf(str,"Connection error",res);
+			maDrawText((EXTENT_X(e)/2)-46,(EXTENT_Y(e)/2),str);
 			maDrawText(EXTENT_X(e)-28, EXTENT_Y(e)- 14, "Exit");
 			maUpdateScreen();
 		}
