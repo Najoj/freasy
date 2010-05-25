@@ -42,7 +42,7 @@ public class SNOR {
      *  XXX Remember to change for you own purpose! XXX
      *  XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
      */
-    private final static int PORT = 8989;
+    private final static int PORT = 80;
     private final static Random random = new Random();
 
     private static ServerSocket serverSocket;
@@ -75,7 +75,7 @@ public class SNOR {
         while(true) 
         {
             try {
-                System.out.println(new Date() + ": Väntar... ");
+                System.out.println(new Date() + ": Väntar på svar via port " + PORT);
                 new SnortHead( serverSocket.accept(), new Date().getTime(), random.nextInt() ).start();
                 System.out.println(" Tråd skapad.");
             } catch(IOException e) {
