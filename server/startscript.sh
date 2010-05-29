@@ -11,8 +11,6 @@ killall -9 java
 
 svn checkout http://freasy.googlecode.com/svn/trunk/server .
 
-javac */*.java
-
 make
 
 java -jar Server.jar

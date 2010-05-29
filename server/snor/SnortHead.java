@@ -2,8 +2,8 @@
  *  
  *  Send aNd Only Recive THrEAD     (SNORTHEAD)
  *
- *  Writtend by Johan Öhlin     and Olle Hassel
- *              johanohl@kth.se     ohassel@kth.se
+ *  Written by Johan Öhlin     and Olle Hassel
+ *             johanohl@kth.se     ohassel@kth.se
  *
  *  License:  GNU General Public License, version 2
  *
